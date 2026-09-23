@@ -1,0 +1,122 @@
+@import 'tailwindcss';
+
+/*
+  Theming strategy
+  ----------------
+  Semantic design tokens are declared as raw CSS custom properties on :root
+  (light — the brand default) and overridden under .dark. The `.dark` class is
+  toggled on <html> by the useTheme hook (and pre-paint in index.html).
+
+  @theme inline maps those raw variables into Tailwind's token namespaces, so
+  utilities like `bg-canvas`, `text-ink`, `rounded-card`, `shadow-lift` resolve
+  to the live variable and therefore swap automatically between themes — no
+  `dark:` variants needed on components.
+*/
+
+:root {
+  /* Surfaces & text */
+  --canvas: #f4f4f5;
+  --surface: #ffffff;
+  --elevated: #fafafa;
+  --ink: #111111;
+  --muted: #6b6b70;
+  --faint: #9a9aa0;
+  --line: #e5e5e8;
+
+  /* Interactive */
+  --pill: #111111;
+  --pill-fg: #fafafa;
+  --focus: #2563eb;
+
+  /* Status chip (in-progress) */
+  --chip-bg: #fdf3e7;
+  --chip-fg: #9a5b12;
+  --chip-dot: #e08a1e;
+
+  /* Elevation */
+  --sh-card: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px rgba(17, 17, 17, 0.05);
+  --sh-lift: 0 2px 4px rgba(17, 17, 17, 0.05), 0 18px 40px rgba(17, 17, 17, 0.09);
+}
+
+.dark {
+  --canvas: #0e0e10;
+  --surface: #17171a;
+  --elevated: #1d1d21;
+  --ink: #f5f5f6;
+  --muted: #a2a2aa;
+  --faint: #6e6e77;
+  --line: #2a2a2e;
+
+  --pill: #f5f5f6;
+  --pill-fg: #111111;
+  --focus: #7aa2ff;
+
+  --chip-bg: #3a2a12;
+  --chip-fg: #f0c486;
+  --chip-dot: #e7a23e;
+
+  --sh-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --sh-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 18px 40px rgba(0, 0, 0, 0.5);
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-pill: var(--pill);
+  --color-pill-fg: var(--pill-fg);
+  --color-focus: var(--focus);
+  --color-chip-bg: var(--chip-bg);
+  --color-chip-fg: var(--chip-fg);
+  --color-chip-dot: var(--chip-dot);
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --radius-card: 22px;
+  --radius-med: 14px;
+
+  --shadow-card: var(--sh-card);
+  --shadow-lift: var(--sh-lift);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    letter-spacing: -0.011em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--ink);
+    color: var(--canvas);
+  }
+
+  :focus-visible {
+    outline: 2.5px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
