@@ -1,36 +1,34 @@
-# Gerardo Moreira — Portfolio
+# Raíz
 
-A fast, accessible single-page developer portfolio built with **Vite + React +
-TypeScript + Tailwind CSS**. Light/dark theming, recruiter-focused layout, and
-data-driven content.
+Modern web studio for small businesses in Guanacaste, Costa Rica. This repo
+holds **both the company website and the company documentation**.
 
-## Quick start
+## Structure
+
+```
+docs/
+├── company/      Business foundations, brand, pricing, services
+│   └── foundations.md   ✓ vision, positioning, offer ladder, 12-mo goals
+└── website/      Website architecture & content plans (in progress)
+
+src/               The Raíz website (Vite + React + TypeScript + Tailwind v4)
+```
+
+## Stack
+
+Vite 6 · React 19 · TypeScript 5 · Tailwind CSS v4 · oxlint.
+
+## Scripts
 
 ```bash
 npm install
 npm run dev        # http://localhost:5173
+npm run build      # type-check + production build → dist/
+npm run preview    # preview the build
+npm run lint       # oxlint
 ```
 
-## Scripts
+## Status
 
-| Command             | Description                             |
-| ------------------- | --------------------------------------- |
-| `npm run dev`       | Start the dev server with hot reload.   |
-| `npm run build`     | Type-check and build to `dist/`.        |
-| `npm run preview`   | Preview the production build locally.   |
-| `npm run typecheck` | Type-check without building.            |
-
-## Editing content
-
-All content lives in `src/data/`:
-
-- `profile.ts` — name, tagline, email, social links
-- `projects.ts` — your projects
-- `skills.ts` — grouped skills
-
-Drop your `resume.pdf` into `public/` so the Résumé link works.
-
-## Learn more
-
-See [`ARCHITECTURE.md`](./ARCHITECTURE.md) for the full structure, theming
-system, and how-to guide.
+Foundations set (`docs/company/foundations.md`). Website is a fresh scaffold with
+a placeholder page — full design & architecture next.

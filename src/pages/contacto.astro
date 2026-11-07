@@ -1,0 +1,33 @@
+---
+import Base from '@/layouts/Base.astro';
+import { whatsappLink, site } from '@/site';
+---
+
+<Base
+  title="Contacto"
+  description="Escríbenos por WhatsApp y conversemos sobre el sitio web de tu negocio."
+>
+  <section class="container py-20 max-w-xl">
+    <h1 class="text-4xl font-extrabold tracking-tight">Hablemos</h1>
+    <p class="text-muted mt-3">
+      La forma más rápida es por WhatsApp. Conversamos sin compromiso sobre lo
+      que tu negocio necesita.
+    </p>
+
+    <a
+      href={whatsappLink}
+      target="_blank"
+      rel="noopener"
+      class="inline-block mt-8 rounded-full bg-[#25D366] text-white font-medium px-6 py-3 transition-transform active:scale-[0.97]"
+    >
+      Escribir por WhatsApp
+    </a>
+
+    <div class="mt-10 text-sm text-muted space-y-1">
+      <p>Correo: {site.email}</p>
+      <p>{site.location}</p>
+    </div>
+
+    <p class="text-muted mt-10 text-sm font-mono">[Formulario de contacto · mapa · perfil de Google]</p>
+  </section>
+</Base>

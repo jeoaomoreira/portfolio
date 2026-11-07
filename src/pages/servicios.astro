@@ -1,0 +1,33 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const offers = [
+  { name: 'Lanzamiento', desc: 'Sitio web nuevo y moderno + perfil de Google Business.' },
+  { name: 'Renovación', desc: 'Rediseño y mejora de un sitio que ya tenés.' },
+  { name: 'Plan Raíz', desc: 'Hospedaje, mantenimiento, cambios, SEO básico y soporte — mensual.' },
+];
+---
+
+<Base
+  title="Servicios"
+  description="Lanzamiento, Renovación y Plan Raíz — presencia digital completa para tu negocio."
+>
+  <section class="container py-20">
+    <h1 class="text-4xl font-extrabold tracking-tight">Servicios</h1>
+    <p class="text-muted mt-3 max-w-xl">
+      Todo lo que tu negocio necesita para que lo encuentren, confíen en él y lo elijan.
+    </p>
+
+    <div class="grid gap-6 sm:grid-cols-3 mt-12">
+      {
+        offers.map((o) => (
+          <div class="rounded-[var(--radius)] border border-border bg-surface p-6">
+            <h2 class="font-bold text-xl">{o.name}</h2>
+            <p class="text-muted mt-2 text-sm">{o.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="text-muted mt-10 text-sm font-mono">[Precios — pendiente documento de precios]</p>
+  </section>
+</Base>

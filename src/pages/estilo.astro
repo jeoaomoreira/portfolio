@@ -1,0 +1,89 @@
+---
+import Base from '@/layouts/Base.astro';
+
+// Internal brand/design-system reference. Not for the public site (noindex).
+const swatches = [
+  { name: 'Canvas', token: '--color-canvas', hex: '#FAF6F0', role: 'Fondo de página', dark: false },
+  { name: 'Surface', token: '--color-surface', hex: '#FFFFFF', role: 'Tarjetas', dark: false },
+  { name: 'Sand', token: '--color-sand', hex: '#F1E9DD', role: 'Relleno suave', dark: false },
+  { name: 'Ink', token: '--color-ink', hex: '#1F1A17', role: 'Texto principal', dark: true },
+  { name: 'Muted', token: '--color-muted', hex: '#6B6259', role: 'Texto secundario', dark: true },
+  { name: 'Brand', token: '--color-brand', hex: '#2F5D45', role: 'Marca · enlaces · confianza', dark: true },
+  { name: 'Brand strong', token: '--color-brand-strong', hex: '#244A37', role: 'Hover de marca', dark: true },
+  { name: 'Accent', token: '--color-accent', hex: '#B8502E', role: 'Botones / CTA', dark: true },
+  { name: 'Accent strong', token: '--color-accent-strong', hex: '#9C3F22', role: 'Hover de CTA', dark: true },
+  { name: 'Border', token: '--color-border', hex: '#E7DED2', role: 'Líneas', dark: false },
+];
+
+const typeScale = [
+  { label: 'Display / H1', cls: 'text-5xl font-semibold tracking-tight', font: 'Fraunces 600' },
+  { label: 'H2', cls: 'text-3xl font-semibold tracking-tight', font: 'Fraunces 600' },
+  { label: 'H3', cls: 'text-xl font-semibold', font: 'Fraunces 600' },
+  { label: 'Body large', cls: 'text-lg', font: 'Inter 400' },
+  { label: 'Body', cls: 'text-base', font: 'Inter 400' },
+  { label: 'Small / muted', cls: 'text-sm text-muted', font: 'Inter 400' },
+];
+---
+
+<Base title="Estilo" noindex={true}>
+  <section class="container py-16 max-w-4xl">
+    <p class="text-brand font-medium">Sistema de diseño · v1</p>
+    <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight mt-2">Raíz — Estilo</h1>
+    <p class="text-muted mt-3 max-w-xl">
+      Referencia interna de marca. Cálido, con raíces locales; moderno y claro.
+      <span class="font-mono text-sm">(/estilo — no indexado)</span>
+    </p>
+
+    {/* Colors */}
+    <h2 class="text-2xl font-semibold mt-14">Color</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-6">
+      {
+        swatches.map((s) => (
+          <div class="rounded-[var(--radius)] border border-border overflow-hidden bg-surface">
+            <div
+              class="h-24 flex items-end p-3"
+              style={`background:${s.hex};color:${s.dark ? '#fff' : '#1F1A17'}`}
+            >
+              <span class="text-sm font-medium">{s.hex}</span>
+            </div>
+            <div class="p-3">
+              <p class="font-medium">{s.name}</p>
+              <p class="text-muted text-sm">{s.role}</p>
+              <p class="font-mono text-xs text-muted mt-1">{s.token}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    {/* Typography */}
+    <h2 class="text-2xl font-semibold mt-16">Tipografía</h2>
+    <p class="text-muted mt-2">
+      <strong class="text-ink">Fraunces</strong> para títulos (serif cálida, moderna) ·
+      <strong class="text-ink">Inter</strong> para cuerpo y UI (clara, legible en español).
+    </p>
+    <div class="mt-6 divide-y divide-border rounded-[var(--radius)] border border-border bg-surface">
+      {
+        typeScale.map((t) => (
+          <div class="p-5 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
+            <span class="text-xs font-mono text-muted w-32 shrink-0">{t.font}</span>
+            <span class={t.cls}>Negocios que crecen con raíces</span>
+          </div>
+        ))
+      }
+    </div>
+
+    {/* Buttons */}
+    <h2 class="text-2xl font-semibold mt-16">Botones</h2>
+    <div class="flex flex-wrap items-center gap-4 mt-6">
+      <button class="btn btn-accent">Hablemos de tu proyecto</button>
+      <button class="btn btn-accent btn-sm">Hablemos</button>
+      <button class="btn btn-ghost">Ver trabajos</button>
+    </div>
+
+    <h2 class="text-2xl font-semibold mt-16">Marca</h2>
+    <blockquote class="mt-4 border-l-4 border-brand pl-5 text-lg text-ink max-w-xl">
+      Con raíces aquí, modernos para el mundo.
+    </blockquote>
+  </section>
+</Base>
