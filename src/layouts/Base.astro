@@ -60,5 +60,27 @@ const ogImageUrl = new URL(image, Astro.site).href;
     </main>
     <Footer />
     <WhatsAppButton />
+
+    <script>
+      // Lenis smooth scrolling — site-wide. Skipped entirely for visitors who
+      // prefer reduced motion (they keep native scroll). Driven by GSAP's ticker
+      // so there is a single rAF loop and future ScrollTriggers stay in sync.
+      import Lenis from 'lenis';
+      import 'lenis/dist/lenis.css';
+      import { gsap } from 'gsap';
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const lenis = new Lenis({
+          duration: 1.05, // modest — close to native, not floaty
+          anchors: true, // smooth in-page anchor links (nav/footer jumps)
+        });
+
+        gsap.ticker.add((time) => lenis.raf(time * 1000)); // seconds → ms
+        gsap.ticker.lagSmoothing(0);
+
+        // When ScrollTrigger is added later, also:
+        // lenis.on('scroll', ScrollTrigger.update);
+      }
+    </script>
   </body>
 </html>

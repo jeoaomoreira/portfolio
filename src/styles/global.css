@@ -39,10 +39,15 @@
 
   /* Shape */
   --radius: 0.875rem;
+
+  /* Motion — one strong ease-out shared by CSS and GSAP (JS matches via CustomEase). */
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @layer base {
-  html {
+  /* Native smooth scroll for no-JS / reduced-motion. When Lenis is active it
+     adds `.lenis` to <html>, so we hand scrolling over to it (no double-smooth). */
+  html:not(.lenis) {
     scroll-behavior: smooth;
   }
   body {
