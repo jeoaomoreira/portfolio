@@ -1,0 +1,372 @@
+---
+import Base from '@/layouts/Base.astro';
+import MacbookFrame from '@/components/mockups/MacbookFrame.astro';
+import PhoneFrame from '@/components/mockups/PhoneFrame.astro';
+import { projects, type Project } from '@/projects';
+import { whatsappLink } from '@/site';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+// Shown in the mockup address bars — a neutral placeholder, not the real host.
+const mockUrl = 'example.com';
+
+// The narrative, in the order the architecture doc prescribes (§5).
+const story = [
+  { label: 'El reto', body: project.challenge },
+  { label: 'Lo que hicimos', body: project.solution },
+  { label: 'El resultado', body: project.result },
+];
+---
+
+<Base
+  title={project.name}
+  description={`${project.name} — ${project.summary}`}
+  image={project.cover.src}
+>
+  {/* ── Hero ─────────────────────────────────────────────────────── */}
+  <section class="pd-hero">
+    <div class="container">
+      <a href="/proyectos" class="pd-back">← Proyectos</a>
+
+      <p class="kicker mt-6">{project.sector}</p>
+      <h1 class="page-title mt-1">{project.name}</h1>
+
+      <p class="pd-meta mt-3">
+        <span>{project.location}</span>
+        <span class="pd-dot" aria-hidden="true">·</span>
+        <span>{project.year}</span>
+      </p>
+
+      <p class="pd-intro mt-6">{project.intro}</p>
+
+      <div class="pd-cta mt-7">
+        <a href={project.url} target="_blank" rel="noopener" class="btn btn-accent">
+          Visitar sitio →
+        </a>
+        <a href={whatsappLink} target="_blank" rel="noopener" class="btn btn-ghost">
+          Hablemos
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Showcase: MacBook + iPhone on a studio backdrop ──────────── */}
+  <section class="container">
+    <div class="pd-stage">
+      <div class="pd-stage__mac">
+        <MacbookFrame src={project.cover} alt={project.coverAlt} url={mockUrl} loading="eager" />
+      </div>
+      {
+        project.mobileShots[0] && (
+          <div class="pd-stage__phone">
+            <PhoneFrame
+              src={project.mobileShots[0].src}
+              alt={project.mobileShots[0].alt}
+              url={mockUrl}
+              loading="eager"
+            />
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  {/* ── Narrative: reto / lo que hicimos / resultado ─────────────── */}
+  <section class="container section">
+    <div class="pd-story">
+      {
+        story.map((s) => (
+          <div class="pd-story__row">
+            <h2 class="pd-story__label">{s.label}</h2>
+            <div class="pd-story__body">
+              <p>{s.body}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ── Mobile panel (dark) ──────────────────────────────────────── */}
+  {
+    project.mobileShots.length > 0 && (
+      <section class="pd-mobile">
+        <div class="container pd-mobile__grid">
+          <div class="pd-mobile__copy">
+            <h2 class="section-title pd-mobile__title">Pensada para la pantalla donde compran</h2>
+            <p class="pd-mobile__text">
+              Sus clientes llegan desde el celular — un enlace de Instagram o WhatsApp.
+              Por eso cada vista se diseñó primero para el teléfono: rápida, clara y
+              fácil de tocar.
+            </p>
+            <a href={project.url} target="_blank" rel="noopener" class="pd-mobile__link">
+              Visitar sitio
+            </a>
+          </div>
+
+          <div class="pd-phones">
+            {project.mobileShots.slice(0, 3).map((shot, i) => (
+              <div class={`pd-phones__item pd-phones__item--${i}`}>
+                <PhoneFrame src={shot.src} alt={shot.alt} url={mockUrl} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {/* ── CTA final ────────────────────────────────────────────────── */}
+  <section class="container section">
+    <div class="pd-final">
+      <h2 class="section-title pd-final__title">¿Querés algo así para tu negocio?</h2>
+      <p class="pd-final__text">
+        Conversemos sin compromiso sobre la presencia digital de tu negocio.
+      </p>
+      <a href={whatsappLink} target="_blank" rel="noopener" class="btn btn-accent mt-6">
+        Hablemos por WhatsApp
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ── Hero ──────────────────────────────────────────────────────── */
+  .pd-hero {
+    /* A soft warm wash behind the title. Pull the band up under the fixed pill nav
+       (cancelling main's nav clearance) so no bare canvas strip shows behind it; the
+       padding then restores comfortable, viewport-scaled clearance below the pill. */
+    background:
+      radial-gradient(120% 90% at 85% -10%, color-mix(in srgb, var(--color-brand) 10%, transparent), transparent 60%),
+      linear-gradient(180deg, var(--color-sand), var(--color-canvas));
+    margin-top: calc(-1 * var(--nav-h));
+    padding-top: calc(var(--nav-h) + clamp(1.5rem, 4vw, 3rem));
+    padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .pd-back {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-muted);
+    transition: color 160ms ease;
+  }
+  .pd-back:hover {
+    color: var(--color-brand);
+  }
+  .pd-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+  .pd-dot {
+    opacity: 0.6;
+  }
+  .pd-intro {
+    max-width: 40rem;
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: var(--color-ink);
+  }
+  .pd-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* ── Showcase: studio device composition (MacBook + iPhone) ────── */
+  .pd-stage {
+    margin-top: 0.5rem;
+    border-radius: 24px;
+    background: radial-gradient(130% 120% at 50% 0%, #f5f4f6 0%, #eae8ec 68%, #e3e0e6 100%);
+    box-shadow: inset 0 0 0 1px rgba(31, 26, 23, 0.05);
+    padding: clamp(1.75rem, 5vw, 3.75rem) clamp(1rem, 4vw, 3rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: center;
+    gap: clamp(1.5rem, 5vw, 3.5rem);
+  }
+  /* Cap the laptop below the screenshot's pixel width so it never upscales. */
+  .pd-stage__mac {
+    width: min(100%, 600px);
+    flex: 0 1 600px;
+  }
+  .pd-stage__phone {
+    width: clamp(136px, 17vw, 196px);
+    flex: none;
+  }
+  /* Stacked: laptop on top, phone tucked up over its base. */
+  @media (max-width: 680px) {
+    .pd-stage {
+      gap: 0;
+    }
+    .pd-stage__phone {
+      width: 150px;
+      margin-top: -1.75rem;
+    }
+  }
+
+  /* ── Narrative ─────────────────────────────────────────────────── */
+  .pd-story {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+  .pd-story__row {
+    display: grid;
+    gap: 0.5rem 2.5rem;
+  }
+  @media (min-width: 768px) {
+    .pd-story__row {
+      grid-template-columns: 14rem 1fr;
+    }
+    .pd-story {
+      gap: 3rem;
+    }
+  }
+  .pd-story__label {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-brand);
+  }
+  .pd-story__body {
+    max-width: 42rem;
+  }
+  .pd-story__body p {
+    font-size: 1.075rem;
+    line-height: 1.6;
+    color: var(--color-ink);
+  }
+
+  /* ── Mobile panel (dark) ───────────────────────────────────────── */
+  .pd-mobile {
+    margin-top: 1rem;
+    /* deep bosque-green → near-black, the one dark surface on the site */
+    background: linear-gradient(165deg, #22402f 0%, #1a1613 70%);
+    color: #f3efe8;
+    padding-block: 4rem;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .pd-mobile {
+      padding-block: 5.5rem;
+    }
+  }
+  .pd-mobile__grid {
+    display: grid;
+    /* minmax(0, …) lets the single column stay within the viewport — otherwise the
+       phone cluster's intrinsic width would stretch the column and clip the copy. */
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .pd-mobile__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 4rem;
+    }
+  }
+  .pd-mobile__title {
+    margin-top: 0.4rem;
+    color: #ffffff;
+    max-width: 18ch;
+  }
+  .pd-mobile__text {
+    margin-top: 1.1rem;
+    max-width: 34rem;
+    line-height: 1.6;
+    color: rgba(243, 239, 232, 0.82);
+  }
+  .pd-mobile__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    font-weight: 600;
+    color: #1a1613;
+    background: #f3efe8;
+    transition:
+      transform 160ms var(--ease-out-strong),
+      background-color 160ms ease;
+  }
+  .pd-mobile__link:hover {
+    background: #ffffff;
+  }
+  .pd-mobile__link:active {
+    transform: scale(0.97);
+  }
+
+  /* Phone cluster — overlapping, lightly fanned (the "mobile views" moment). */
+  .pd-phones {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    max-width: 100%;
+  }
+  .pd-phones__item {
+    /* scales with the viewport so three overlapping phones always fit the row */
+    width: clamp(96px, 26vw, 170px);
+    flex: none;
+  }
+  /* overlap the three phones and stagger them */
+  .pd-phones__item--0 {
+    transform: rotate(-5deg) translateY(10px);
+    z-index: 1;
+  }
+  .pd-phones__item--1 {
+    margin-inline: -34px;
+    z-index: 3;
+    transform: translateY(-14px);
+  }
+  .pd-phones__item--2 {
+    transform: rotate(5deg) translateY(10px);
+    z-index: 2;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pd-phones__item {
+      transform: none !important;
+    }
+    .pd-phones__item--1 {
+      margin-inline: -20px;
+    }
+  }
+
+  /* ── CTA final ─────────────────────────────────────────────────── */
+  .pd-final {
+    border-radius: var(--radius);
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+  @media (min-width: 640px) {
+    .pd-final {
+      padding: 4rem 2rem;
+    }
+  }
+  .pd-final__title {
+    color: #ffffff;
+    max-width: 22ch;
+    margin-inline: auto;
+  }
+  .pd-final__text {
+    margin-top: 1rem;
+    max-width: 32rem;
+    margin-inline: auto;
+    color: rgba(255, 255, 255, 0.82);
+  }
+</style>

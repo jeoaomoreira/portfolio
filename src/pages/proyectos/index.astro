@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import { projects } from '@/projects';
+---
+
+<Base
+  title="Proyectos"
+  description="Proyectos de Raíz para negocios de Guanacaste — sitios web, Google y presencia digital."
+>
+  <section class="container section">
+    <h1 class="page-title">Proyectos</h1>
+    <p class="text-muted mt-3 max-w-xl">
+      Los negocios de Guanacaste con los que hemos trabajado. Cada proyecto es
+      una historia de cómo pasaron a verse — y a venderse — mejor.
+    </p>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-12">
+      {
+        projects.map((p) => (
+          <a
+            href={`/proyectos/${p.slug}`}
+            class="card card-surface block overflow-hidden group"
+          >
+            <div class="aspect-[4/3] bg-sand overflow-hidden">
+              <Image
+                src={p.cover}
+                alt={p.coverAlt}
+                widths={[400, 600, 800]}
+                sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 90vw"
+                format="webp"
+                quality={72}
+                loading="lazy"
+                decoding="async"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              />
+            </div>
+            <div class="p-5">
+              <p class="text-xs uppercase tracking-wide text-brand font-medium">{p.sector}</p>
+              <h2 class="text-lg mt-1">{p.name}</h2>
+              <p class="text-muted text-sm mt-1">{p.summary}</p>
+              <p class="text-muted text-xs mt-3 font-mono">{p.location}</p>
+              <span class="inline-block mt-4 text-brand font-medium group-hover:text-brand-strong transition-colors">
+                Ver proyecto →
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Base>

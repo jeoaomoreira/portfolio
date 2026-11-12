@@ -1,53 +1,22 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
-import { whatsappLink } from '@/site';
+import HeroRaiz from '@/components/HeroRaiz.astro';
+import Icon from '@/components/Icon.astro';
+import { whatsappLink, offers, steps } from '@/site';
+import { projects } from '@/projects';
 
 // Home page — section order per docs/company/website-architecture.md §4.
 // NOTE: `cases` and `proofSectors` below are PLACEHOLDERS marked for replacement
 // with Gerardo's real clients/projects before this page goes public.
+// `offers` and `steps` come from src/site.ts so /servicios can never drift out
+// of sync with this page.
 //
 // HERO (Direction: "the work is the hero", per design-taste-frontend / service kind):
 // the two device mockups are STAND-INS for real client sites — swap them for real
 // screenshots of Gerardo's projects before launch. Demo businesses are illustrative.
 
 const proofSectors = ['Sodas', 'Hoteles & cabinas', 'Tours', 'Salones', 'Talleres', 'Tiendas'];
-
-const pains = [
-  {
-    title: 'Invisible en Google',
-    body: 'Cuando alguien busca lo que ofrecés, aparecen otros negocios. No el tuyo.',
-    icon: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
-  },
-  {
-    title: 'Una página que no te representa',
-    body: 'O no tenés sitio web, o el que tenés se ve viejo y te da pena compartirlo.',
-    icon: '<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
-  },
-  {
-    title: 'Perdés clientes sin darte cuenta',
-    body: 'Negocios con peor servicio, pero mejor presencia, se llevan a tus clientes.',
-    icon: '<polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/>',
-  },
-];
-
-// PLACEHOLDER case studies — replace with real projects.
-const cases = [
-  { sector: 'Soda', title: 'Caso de ejemplo', result: 'Más reservas por WhatsApp cada semana.' },
-  { sector: 'Hotel', title: 'Caso de ejemplo', result: 'Primero en Google para su zona.' },
-  { sector: 'Tour', title: 'Caso de ejemplo', result: 'Una página que por fin da confianza.' },
-];
-
-const offers = [
-  { name: 'Lanzamiento', desc: 'Sitio web nuevo y moderno + tu perfil de Google Business.' },
-  { name: 'Renovación', desc: 'Rediseño y mejora del sitio que ya tenés.' },
-  { name: 'Plan Raíz', desc: 'Hospedaje, mantenimiento, cambios y soporte — todos los meses.' },
-];
-
-const steps = [
-  { n: '01', title: 'Conversamos', body: 'Entendemos tu negocio y qué necesitás, en palabras simples.' },
-  { n: '02', title: 'Creamos', body: 'Diseñamos y lanzamos tu sitio, y te ponemos en Google.' },
-  { n: '03', title: 'Cuidamos', body: 'Lo mantenemos al día con el Plan Raíz. No desaparecemos.' },
-];
 
 const whys = [
   {
@@ -68,578 +37,132 @@ const whys = [
 ];
 ---
 
-<Base>
-  {/* Hide the hero bits before GSAP reveals them — only when JS is on (.gsap)
-      AND motion is allowed (see <style>), so no-JS / reduced-motion always sees
-      content. Safety timeout reveals them if the GSAP bundle never runs. */}
-  <script is:inline>
-    document.documentElement.classList.add('gsap');
-    setTimeout(() => document.documentElement.classList.remove('gsap'), 3000);
-  </script>
+<Base overHero>
+  <HeroRaiz />
 
-  {/* 1. HERO — the work leads. Device mockups are stand-ins for real client sites. */}
-  <section class="hero">
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <p class="hero-eyebrow text-brand font-medium">Estudio web · Guanacaste</p>
-        <h1 class="hero-title">Sitios web para negocios de Guanacaste.</h1>
-        <p class="hero-sub">
-          Modernos, fáciles de encontrar en Google y con mantenimiento continuo —
-          para que tu negocio se vea en internet tan bueno como es en persona.
+  {/* Everything below the hero rides in one opaque layer that scrolls up over the
+      now-fixed hero image, fully covering it. */}
+  <div class="scroll-over">
+    {/* 2. SOCIAL PROOF (placeholder sectors — swap for real client logos) */}
+    <section class="border-y border-border bg-sand/60">
+      <div class="container py-8">
+        <p class="text-sm text-muted text-center">
+          Negocios de Guanacaste que crecen con una presencia digital hecha con raíz
         </p>
-        <div class="hero-cta">
-          <a href={whatsappLink} target="_blank" rel="noopener" class="btn btn-accent">
-            Hablemos de tu proyecto
-          </a>
-          <a href="/trabajos" class="btn btn-ghost">Ver trabajos</a>
+        <ul class="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-4 text-ink/70 font-medium">
+          {proofSectors.map((s) => <li>{s}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    {/* 3. CASOS DESTACADOS (the sales engine — each card links to its detail page) */}
+    <section class="container section section-divided">
+      <div class="flex items-end justify-between gap-4 flex-wrap">
+        <div>
+          <p class="kicker">Proyectos</p>
+          <h2 class="section-title mt-1">Negocios que ya dieron el paso</h2>
         </div>
-        <p class="hero-fact">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" />
-          </svg>
-          Hecho desde Tempate, Guanacaste
-        </p>
+        <a href="/proyectos" class="text-brand font-medium hover:text-brand-strong transition-colors">
+          Ver todos →
+        </a>
       </div>
 
-      {/* The work. Links to the portfolio; mockups = stand-ins for real screenshots. */}
-      <a class="hero-work" href="/trabajos" aria-label="Ver los trabajos de Raíz">
-        <div class="mock mock-browser">
-          <div class="mock-bar" aria-hidden="true">
-            <span class="mock-dots"><i></i><i></i><i></i></span>
-            <span class="mock-url">cabinastempate.cr</span>
-          </div>
-          <div class="demo demo-cabina" aria-hidden="true">
-            <div class="demo-nav">
-              <span class="demo-logo">Cabinas&nbsp;Tempate</span>
-              <span class="demo-links"><i></i><i></i><i></i></span>
-            </div>
-            <div class="demo-hero">
-              <span class="demo-kicker">A 5 min de Playa Grande</span>
-              <span class="demo-h">Descansá donde empieza Guanacaste</span>
-              <span class="demo-btn">Reservar</span>
-            </div>
-            <div class="demo-row">
-              <span class="demo-card"></span><span class="demo-card"></span><span class="demo-card"></span>
-            </div>
-          </div>
-        </div>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-10">
+        {
+          projects.map((p) => (
+            <a href={`/proyectos/${p.slug}`} class="card card-surface block overflow-hidden group">
+              <div class="aspect-[4/3] bg-sand overflow-hidden">
+                <Image
+                  src={p.cover}
+                  alt={p.coverAlt}
+                  widths={[400, 600, 800]}
+                  sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 90vw"
+                  format="webp"
+                  quality={72}
+                  loading="lazy"
+                  decoding="async"
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              </div>
+              <div class="p-5">
+                <p class="text-xs uppercase tracking-wide text-brand font-medium">{p.sector}</p>
+                <h3 class="text-lg mt-1">{p.name}</h3>
+                <p class="text-muted text-sm mt-1">{p.summary}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
 
-        <div class="mock mock-phone">
-          <div class="demo demo-soda" aria-hidden="true">
-            <span class="demo-logo demo-logo--sm">Soda La Guaria</span>
-            <span class="soda-line"><span>Casado</span><b>₡3 500</b></span>
-            <span class="soda-line"><span>Gallo pinto</span><b>₡2 200</b></span>
-            <span class="soda-line"><span>Batido natural</span><b>₡1 500</b></span>
-            <span class="demo-btn demo-btn--wa">Pedí por WhatsApp</span>
-          </div>
-        </div>
-
-        <span class="hero-work__hint">Trabajos de ejemplo →</span>
+    {/* 5. QUÉ HACEMOS */}
+    <section class="container section section-divided">
+      <h2 class="section-title">Todo lo que tu negocio necesita en línea</h2>
+      <div class="grid gap-6 sm:grid-cols-3 mt-10">
+        {
+          offers.map((o) => (
+            <div class="card card-surface p-6">
+              <h3 class="text-xl">{o.name}</h3>
+              <p class="text-muted mt-2 text-sm">{o.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+      <a
+        href="/servicios"
+        class="inline-block mt-8 text-brand font-medium hover:text-brand-strong transition-colors"
+      >
+        Ver servicios y planes →
       </a>
-    </div>
-  </section>
+    </section>
 
-  {/* 2. SOCIAL PROOF (placeholder sectors — swap for real client logos) */}
-  <section class="border-y border-border bg-sand/60">
-    <div class="container py-8">
-      <p class="text-sm text-muted text-center">
-        Negocios de Guanacaste que crecen con una presencia digital hecha con raíz
-      </p>
-      <ul class="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-4 text-ink/70 font-medium">
-        {proofSectors.map((s) => <li>{s}</li>)}
-      </ul>
-    </div>
-  </section>
-
-  {/* 3. EL PROBLEMA */}
-  <section class="container py-20">
-    <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight max-w-2xl">
-      ¿Tu negocio es excelente, pero en internet no se nota?
-    </h2>
-    <div class="grid gap-8 sm:grid-cols-3 mt-12">
-      {
-        pains.map((p) => (
-          <div>
-            <div class="flex items-center justify-center h-11 w-11 rounded-xl bg-sand text-brand">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true" set:html={p.icon} />
+    {/* 6. CÓMO TRABAJAMOS */}
+    <section class="container section section-divided">
+      <h2 class="section-title">Simple, de principio a fin</h2>
+      <div class="grid gap-10 sm:grid-cols-3 mt-12">
+        {
+          steps.map((s) => (
+            <div>
+              <span class="font-display text-3xl text-accent">{s.n}</span>
+              <h3 class="text-xl mt-3">{s.title}</h3>
+              <p class="text-muted mt-2">{s.body}</p>
             </div>
-            <h3 class="text-xl mt-4">{p.title}</h3>
-            <p class="text-muted mt-2">{p.body}</p>
-          </div>
-        ))
-      }
-    </div>
-  </section>
+          ))
+        }
+      </div>
+    </section>
 
-  {/* 4. CASOS DESTACADOS (placeholder cards — the sales engine) */}
-  <section class="container py-20 border-t border-border">
-    <div class="flex items-end justify-between gap-4 flex-wrap">
-      <div>
-        <p class="text-brand font-medium">Trabajos</p>
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight mt-1">
-          Negocios que ya dieron el paso
+    {/* 7. POR QUÉ RAÍZ */}
+    <section class="container section section-divided">
+      <h2 class="section-title">Por qué Raíz</h2>
+      <div class="grid gap-8 sm:grid-cols-3 mt-12">
+        {
+          whys.map((w) => (
+            <div>
+              <div class="flex items-center justify-center h-11 w-11 rounded-xl bg-brand/10 text-brand">
+                <Icon paths={w.icon} />
+              </div>
+              <h3 class="text-xl mt-4">{w.title}</h3>
+              <p class="text-muted mt-2">{w.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    {/* 8. CTA FINAL */}
+    <section class="container pb-24">
+      <div class="rounded-[var(--radius)] bg-brand text-on-brand px-6 py-14 sm:px-12 sm:py-20 text-center">
+        <h2 class="section-title max-w-2xl mx-auto text-white">
+          ¿Listo para que te encuentren y te elijan?
         </h2>
+        <p class="mt-4 text-white/80 max-w-lg mx-auto">
+          Conversemos sin compromiso sobre la presencia digital de tu negocio.
+        </p>
+        <a href={whatsappLink} target="_blank" rel="noopener" class="btn btn-accent mt-8">
+          Hablemos por WhatsApp
+        </a>
       </div>
-      <a href="/trabajos" class="text-brand font-medium hover:text-brand-strong transition-colors">
-        Ver todos →
-      </a>
-    </div>
-
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-10">
-      {
-        cases.map((c) => (
-          <a href="/trabajos" class="card group block rounded-[var(--radius)] border border-border bg-surface overflow-hidden">
-            <div class="aspect-[4/3] bg-sand flex items-center justify-center text-muted text-sm font-mono">
-              [imagen del proyecto]
-            </div>
-            <div class="p-5">
-              <p class="text-xs uppercase tracking-wide text-brand font-medium">{c.sector}</p>
-              <h3 class="text-lg mt-1">{c.title}</h3>
-              <p class="text-muted text-sm mt-1">{c.result}</p>
-            </div>
-          </a>
-        ))
-      }
-    </div>
-    <p class="text-muted text-sm font-mono mt-6">[Ejemplos — se reemplazan con tus proyectos reales]</p>
-  </section>
-
-  {/* 5. QUÉ HACEMOS */}
-  <section class="container py-20 border-t border-border">
-    <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight">
-      Todo lo que tu negocio necesita en línea
-    </h2>
-    <div class="grid gap-6 sm:grid-cols-3 mt-10">
-      {
-        offers.map((o) => (
-          <div class="card rounded-[var(--radius)] border border-border bg-surface p-6">
-            <h3 class="text-xl">{o.name}</h3>
-            <p class="text-muted mt-2 text-sm">{o.desc}</p>
-          </div>
-        ))
-      }
-    </div>
-    <a href="/servicios" class="inline-block mt-8 text-brand font-medium hover:text-brand-strong transition-colors">
-      Ver servicios y planes →
-    </a>
-  </section>
-
-  {/* 6. CÓMO TRABAJAMOS */}
-  <section class="container py-20 border-t border-border">
-    <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight">Simple, de principio a fin</h2>
-    <div class="grid gap-10 sm:grid-cols-3 mt-12">
-      {
-        steps.map((s) => (
-          <div>
-            <span class="font-display text-3xl text-accent">{s.n}</span>
-            <h3 class="text-xl mt-3">{s.title}</h3>
-            <p class="text-muted mt-2">{s.body}</p>
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  {/* 7. POR QUÉ RAÍZ */}
-  <section class="container py-20 border-t border-border">
-    <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight">Por qué Raíz</h2>
-    <div class="grid gap-8 sm:grid-cols-3 mt-12">
-      {
-        whys.map((w) => (
-          <div>
-            <div class="flex items-center justify-center h-11 w-11 rounded-xl bg-brand/10 text-brand">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true" set:html={w.icon} />
-            </div>
-            <h3 class="text-xl mt-4">{w.title}</h3>
-            <p class="text-muted mt-2">{w.body}</p>
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  {/* 8. CTA FINAL */}
-  <section class="container pb-24">
-    <div class="rounded-[var(--radius)] bg-brand text-on-brand px-6 py-14 sm:px-12 sm:py-20 text-center">
-      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight max-w-2xl mx-auto" style="color:#fff">
-        ¿Listo para que te encuentren y te elijan?
-      </h2>
-      <p class="mt-4 text-white/80 max-w-lg mx-auto">
-        Conversemos sin compromiso sobre la presencia digital de tu negocio.
-      </p>
-      <a href={whatsappLink} target="_blank" rel="noopener" class="btn btn-accent mt-8">
-        Hablemos por WhatsApp
-      </a>
-    </div>
-  </section>
+    </section>
+  </div>
 </Base>
-
-<style>
-  /* ════ HERO — the work leads ════════════════════════════════ */
-  .hero {
-    position: relative;
-    overflow: hidden;
-  }
-  .hero-grid {
-    display: grid;
-    gap: 2.75rem;
-    align-items: center;
-    padding-block: 2.75rem 3.25rem;
-  }
-  @media (min-width: 980px) {
-    .hero-grid {
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 3.5rem;
-      padding-block: 4.5rem 5.5rem;
-    }
-  }
-
-  .hero-copy {
-    max-width: 34rem;
-  }
-  .hero-title {
-    font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.04;
-    font-size: clamp(2.25rem, 5.4vw, 3.6rem);
-    margin-top: 0.85rem;
-  }
-  .hero-sub {
-    color: var(--color-muted);
-    font-size: 1.075rem;
-    line-height: 1.55;
-    margin-top: 1.25rem;
-    max-width: 30rem;
-  }
-  .hero-cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1.75rem;
-  }
-  .hero-fact {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    margin-top: 1.6rem;
-    color: var(--color-muted);
-    font-size: 0.9rem;
-  }
-  .hero-fact svg {
-    width: 1.05rem;
-    height: 1.05rem;
-    color: var(--color-accent);
-  }
-
-  /* ── The work cluster (a single link to /trabajos) ───────── */
-  .hero-work {
-    position: relative;
-    display: block;
-    padding-bottom: 2.5rem; /* room for the overlapping phone */
-  }
-  @media (min-width: 980px) {
-    .hero-work {
-      padding-bottom: 0;
-    }
-  }
-
-  .mock {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.6) inset,
-      0 28px 64px -34px rgba(31, 26, 23, 0.45);
-  }
-
-  /* Browser frame */
-  .mock-browser {
-    position: relative;
-    z-index: 1;
-  }
-  .mock-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.6rem 0.8rem;
-    background: var(--color-sand);
-    border-bottom: 1px solid var(--color-border);
-  }
-  .mock-dots {
-    display: inline-flex;
-    gap: 0.35rem;
-  }
-  .mock-dots i {
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 50%;
-    background: #d9ccba;
-  }
-  .mock-url {
-    font-size: 0.72rem;
-    color: var(--color-muted);
-    background: var(--color-canvas);
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    padding: 0.18rem 0.7rem;
-  }
-
-  /* Demo site inside the browser */
-  .demo {
-    font-family: var(--font-sans);
-  }
-  .demo-cabina {
-    background: var(--color-surface);
-  }
-  .demo-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.7rem 1rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-  .demo-logo {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 0.82rem;
-    color: var(--color-ink);
-  }
-  .demo-links {
-    display: inline-flex;
-    gap: 0.45rem;
-  }
-  .demo-links i {
-    width: 1.4rem;
-    height: 0.38rem;
-    border-radius: 999px;
-    background: var(--color-border);
-  }
-  .demo-hero {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    padding: 1.6rem 1.2rem;
-    background:
-      radial-gradient(120% 140% at 85% 10%, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent 55%),
-      linear-gradient(160deg, color-mix(in srgb, var(--color-brand) 92%, #000), var(--color-brand));
-  }
-  .demo-kicker {
-    font-size: 0.6rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.72);
-  }
-  .demo-h {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.05rem;
-    line-height: 1.15;
-    color: #fff;
-    max-width: 14rem;
-  }
-  .demo-btn {
-    margin-top: 0.3rem;
-    font-size: 0.68rem;
-    font-weight: 600;
-    color: var(--color-on-accent);
-    background: var(--color-accent);
-    border-radius: 999px;
-    padding: 0.32rem 0.8rem;
-  }
-  .demo-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.6rem;
-    padding: 0.9rem 1.2rem 1.2rem;
-  }
-  .demo-card {
-    aspect-ratio: 4 / 3;
-    border-radius: 7px;
-    background: var(--color-sand);
-    border: 1px solid var(--color-border);
-  }
-  .demo-card:nth-child(2) {
-    background: color-mix(in srgb, var(--color-accent) 16%, var(--color-sand));
-  }
-  .demo-card:nth-child(3) {
-    background: color-mix(in srgb, var(--color-brand) 14%, var(--color-sand));
-  }
-
-  /* Phone frame — overlaps the browser's lower-left */
-  .mock-phone {
-    position: absolute;
-    z-index: 2;
-    left: 0;
-    bottom: 0;
-    width: 32%;
-    max-width: 150px;
-    border-radius: 20px;
-    padding: 0.45rem;
-    background: #2a2521;
-    border-color: #2a2521;
-  }
-  @media (min-width: 980px) {
-    .mock-phone {
-      left: -7%;
-      bottom: -9%;
-    }
-  }
-  .demo-soda {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    padding: 0.75rem 0.65rem 0.65rem;
-    background: var(--color-canvas);
-    border-radius: 13px;
-  }
-  .demo-logo--sm {
-    font-size: 0.72rem;
-    margin-bottom: 0.2rem;
-  }
-  .soda-line {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    font-size: 0.6rem;
-    color: var(--color-muted);
-    border-bottom: 1px dotted var(--color-border);
-    padding-bottom: 0.2rem;
-  }
-  .soda-line b {
-    color: var(--color-ink);
-    font-weight: 600;
-  }
-  .demo-btn--wa {
-    align-self: stretch;
-    text-align: center;
-    margin-top: 0.4rem;
-    background: var(--color-brand);
-    color: var(--color-on-brand);
-    font-size: 0.6rem;
-    padding: 0.34rem 0.5rem;
-  }
-
-  .hero-work__hint {
-    position: absolute;
-    right: 0;
-    bottom: -1.6rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--color-brand);
-    opacity: 0;
-    transform: translateY(-4px);
-    transition:
-      opacity 220ms var(--ease-out-strong),
-      transform 220ms var(--ease-out-strong);
-  }
-  @media (min-width: 980px) {
-    .hero-work__hint {
-      bottom: -2rem;
-    }
-  }
-  @media (max-width: 420px) {
-    .mock-phone {
-      display: none; /* keep the first screen clean on small phones */
-    }
-  }
-
-  /* ── Motion ──────────────────────────────────────────────
-     The entrance is a GSAP timeline (see the <script> below).
-     Hide the hero bits up front so they can't flash before GSAP
-     reveals them — but only when JS is on (.gsap, added inline) and
-     motion is allowed, so no-JS and reduced-motion visitors always
-     see content. GSAP clears these inline styles when it finishes. */
-  @media (prefers-reduced-motion: no-preference) {
-    .gsap .hero-eyebrow,
-    .gsap .hero-title,
-    .gsap .hero-sub,
-    .gsap .hero-cta,
-    .gsap .hero-fact,
-    .gsap .hero-work {
-      visibility: hidden;
-    }
-  }
-
-  /* Quiet lift on the work — same affordance for pointer hover and keyboard
-     focus, so keyboard users get the "links to your work" cue too. 2px matches
-     the site's card hover language (global.css .card:hover). */
-  .hero-work {
-    transition: transform 260ms var(--ease-out-strong);
-    border-radius: 16px; /* so the focus ring hugs the whole cluster */
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .hero-work:hover {
-      transform: translateY(-2px);
-    }
-    .hero-work:hover .mock-browser {
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.6) inset,
-        0 34px 70px -32px rgba(31, 26, 23, 0.5);
-    }
-    .hero-work:hover .hero-work__hint {
-      opacity: 1;
-      transform: none;
-    }
-  }
-  /* Keyboard focus: same lift + hint, always available, on-brand ring. */
-  .hero-work:focus-visible {
-    transform: translateY(-2px);
-    outline: 2px solid var(--color-brand);
-    outline-offset: 4px;
-  }
-  .hero-work:focus-visible .mock-browser {
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.6) inset,
-      0 34px 70px -32px rgba(31, 26, 23, 0.5);
-  }
-  .hero-work:focus-visible .hero-work__hint {
-    opacity: 1;
-    transform: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero-work {
-      transition: none;
-    }
-  }
-</style>
-
-<script>
-  // GSAP hero entrance — applies the gsap-core idioms: a timeline with the
-  // position parameter for overlap, autoAlpha for fades, and matchMedia so
-  // visitors who prefer reduced motion get no animation (and no hidden content).
-  import { gsap } from 'gsap';
-  import { CustomEase } from 'gsap/CustomEase';
-
-  gsap.registerPlugin(CustomEase);
-  // Same curve as the CSS --ease-out-strong token, so JS and CSS motion match.
-  const easeOutStrong = CustomEase.create('ease-out-strong', '0.23,1,0.32,1');
-
-  const targets = ['.hero-eyebrow', '.hero-title', '.hero-sub', '.hero-cta', '.hero-fact', '.hero-work'];
-
-  // Reveal = drop the pre-hide class and strip GSAP's inline styles so the
-  // CSS hover on .hero-work takes over cleanly.
-  const reveal = () => {
-    document.documentElement.classList.remove('gsap');
-    gsap.set(targets, { clearProps: 'all' });
-  };
-
-  const mm = gsap.matchMedia();
-
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
-    const tl = gsap.timeline({ defaults: { ease: easeOutStrong }, onComplete: reveal });
-    tl.from('.hero-eyebrow', { autoAlpha: 0, y: 12, duration: 0.5 })
-      .from('.hero-title', { autoAlpha: 0, y: 16, duration: 0.6 }, '-=0.35')
-      .from('.hero-sub', { autoAlpha: 0, y: 12, duration: 0.5 }, '-=0.4')
-      .from('.hero-cta', { autoAlpha: 0, y: 12, duration: 0.5 }, '-=0.35')
-      .from('.hero-fact', { autoAlpha: 0, y: 10, duration: 0.45 }, '-=0.35')
-      .from('.hero-work', { autoAlpha: 0, y: 26, scale: 0.985, duration: 0.9 }, '-=0.7');
-
-    // If the preference flips to reduced, matchMedia reverts the tweens; make
-    // sure the content ends up visible and un-styled.
-    return () => reveal();
-  });
-</script>

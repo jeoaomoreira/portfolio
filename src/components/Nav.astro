@@ -5,37 +5,481 @@ import Logo from '@/components/Logo.astro';
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
   href === '/' ? path === '/' : path.startsWith(href);
+
+interface Props {
+  /**
+   * The page has a full-bleed hero sitting behind the nav (the home page).
+   * The pill starts as transparent glass over the hero and turns solid once the
+   * hero scrolls past (driven by the script below). Interior pages omit this and
+   * are solid from the top via CSS alone — no JS needed.
+   */
+  overHero?: boolean;
+}
+const { overHero = false } = Astro.props;
+
+// The links flank a centered logo (Inicio is dropped — the logo links home).
+const links = nav.filter((item) => item.href !== '/');
+const half = Math.ceil(links.length / 2);
+const leftLinks = links.slice(0, half);
+const rightLinks = links.slice(half);
 ---
 
-<header class="border-b border-border bg-canvas/80 backdrop-blur sticky top-0 z-40">
-  <nav class="container flex items-center justify-between h-16">
-    <a href="/" class="flex items-center gap-2 font-display font-semibold text-xl tracking-tight">
-      <Logo class="h-7 w-auto text-brand" title={site.name} />
-      {site.name}
-    </a>
-
-    <ul class="hidden md:flex items-center gap-7 text-sm">
+<header class="site-nav" data-site-nav data-over-hero={overHero ? '' : undefined}>
+  <nav class="site-nav__pill" aria-label="Navegación principal">
+    <ul class="site-nav__links site-nav__links--left">
       {
-        nav
-          .filter((item) => item.href !== '/')
-          .map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class:list={[
-                  'transition-colors hover:text-ink',
-                  isActive(item.href) ? 'text-ink font-medium' : 'text-muted',
-                ]}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
+        leftLinks.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={['site-nav__link', isActive(item.href) && 'is-active']}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
       }
     </ul>
 
-    <a href={whatsappLink} target="_blank" rel="noopener" class="btn btn-accent btn-sm">
-      Hablemos
+    <a href="/" class="site-nav__logo" aria-label={`${site.name} — inicio`}>
+      <Logo class="site-nav__logo-svg" title={site.name} />
     </a>
+
+    <ul class="site-nav__links site-nav__links--right">
+      {
+        rightLinks.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={['site-nav__link', isActive(item.href) && 'is-active']}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    {/* At and below md (768px) the split links give way to this (see the overlay below). */}
+    <button
+      class="site-nav__burger"
+      type="button"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="site-menu"
+    >
+      <span></span>
+      <span></span>
+    </button>
   </nav>
 </header>
+
+{/* Mobile menu overlay — opened by the burger. */}
+<div class="site-menu" id="site-menu" aria-hidden="true">
+  <div class="site-menu__panel" data-menu-panel>
+    <nav class="site-menu__links" aria-label="Menú">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={['site-menu__link', isActive(item.href) && 'is-active']}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+    <a href={whatsappLink} target="_blank" rel="noopener" class="btn btn-accent site-menu__cta">
+      Hablemos
+    </a>
+  </div>
+</div>
+
+<style>
+  /* ── Floating pill ────────────────────────────────────────────────
+     A fixed, ~85%-wide pill centered at the top. Transparent gutters beside it
+     stay click-through (pointer-events), so the hero behind remains interactive. */
+  .site-nav {
+    position: fixed;
+    top: var(--nav-top);
+    left: 0;
+    right: 0;
+    z-index: 50;
+    /* While the mobile sheet is up the pill has to stay ABOVE it, or its own
+       close (X) button is buried under the sheet and the menu can only be
+       dismissed by picking a link. */
+    display: flex;
+    justify-content: center;
+    padding-inline: 1rem;
+    pointer-events: none;
+  }
+
+  .site-nav.is-menu-open {
+    z-index: 70;
+  }
+
+  .site-nav__pill {
+    pointer-events: auto;
+    position: relative;
+    width: 70%;
+    max-width: 72rem;
+    min-width: 0; /* a flex item defaults to min-width:auto; let it narrow when docked */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 1.5rem;
+    border-radius: 999px;
+    /* Default (solid) state — what interior pages use, and where the home pill
+       lands once the hero has scrolled past. */
+    color: #fff;
+    background: rgba(31, 26, 23, 0.3);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 16px 38px -20px rgba(31, 26, 23, 0.55);
+    transition:
+      width 360ms var(--ease-out-strong),
+      max-width 360ms var(--ease-out-strong),
+      background-color 300ms var(--ease-out-strong),
+      border-color 300ms var(--ease-out-strong),
+      box-shadow 300ms var(--ease-out-strong),
+      color 280ms ease;
+  }
+
+  .site-nav.is-menu-open .site-nav__pill {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    color: var(--color-ink);
+  }
+
+  /* Glass state — transparent over the hero, until it docks (solid) at the cards. */
+  .site-nav[data-over-hero]:not(.is-solid) .site-nav__pill {
+    color: #fff;
+    background: rgba(20, 18, 16, 0.26);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 10px 30px -24px rgba(31, 26, 23, 0.5);
+  }
+
+  /* Docked state — once the hero scrolls past (the cards reach the nav), the pill
+     turns solid (via the glass rule above excluding it) and tightens its LENGTH
+     only: width 70% → 52%, cap 72rem → 54rem (a moderate draw-in, between full and
+     half). Height, padding, text and logo keep their size (no scale). */
+  .site-nav.is-solid .site-nav__pill {
+    width: 52%;
+    max-width: 54rem;
+    /* Contracted state becomes a SOLID terracotta pill (the palette accent),
+       no longer glass — the default dark glass gives way to it. */
+    background: var(--color-accent);
+    border-color: var(--color-accent-strong);
+    color: #fff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .site-nav__links {
+    display: flex;
+    align-items: center;
+    gap: 1.9rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .site-nav__links--left {
+    justify-self: start;
+  }
+  .site-nav__links--right {
+    justify-self: end;
+  }
+
+  .site-nav__link {
+    color: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    opacity: 0.82;
+    transition: opacity 160ms ease;
+  }
+  .site-nav__link:hover {
+    opacity: 1;
+  }
+  .site-nav__link.is-active {
+    opacity: 1;
+    font-weight: 600;
+  }
+  /* A touch of shadow keeps the glass-state links legible over busier roots. */
+  .site-nav[data-over-hero]:not(.is-solid) .site-nav__link {
+    text-shadow: 0 1px 10px rgba(28, 22, 18, 0.28);
+  }
+
+  .site-nav__logo {
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    color: #fff;
+    transition: color 280ms ease;
+  }
+  .site-nav[data-over-hero]:not(.is-solid) .site-nav__logo {
+    color: #fff;
+  }
+  /* The mark lives in the child <Logo> component, so pierce Astro's style
+     scoping to size it (color still inherits via the SVG's currentColor fill). */
+  .site-nav__logo :global(.site-nav__logo-svg) {
+    /* Pill padding is unchanged, so the top margin between the mark and the pill
+       edge holds — the logo grows inward, not toward the border. */
+    height: 3rem;
+    width: auto;
+  }
+
+  /* ── Burger (mobile only) ─────────────────────────────────────── */
+  .site-nav__burger {
+    position: absolute;
+    right: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+  .site-nav__burger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition:
+      transform 220ms var(--ease-out-strong),
+      opacity 160ms ease;
+  }
+  .site-nav__burger.is-open span:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+  .site-nav__burger.is-open span:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+
+  /* ── Mobile overlay menu ──────────────────────────────────────── */
+  .site-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--color-canvas) 88%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity 240ms var(--ease-out-strong),
+      visibility 0s linear 240ms;
+  }
+  .site-menu.is-open {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 240ms var(--ease-out-strong);
+  }
+  .site-menu__panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .site-menu__links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+  }
+  .site-menu__link {
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+  }
+  .site-menu__link.is-active {
+    color: var(--color-brand);
+  }
+  .site-menu__cta {
+    margin-top: 0.75rem;
+  }
+
+  /* ── Breakpoints ──────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .site-nav__pill {
+      width: 92%;
+      padding: 0.55rem 1.1rem;
+    }
+    /* On phones the pill is just logo + burger, so the length-halve would leave
+       it cramped — keep it wide when docked. */
+    .site-nav.is-solid .site-nav__pill {
+      width: 72%;
+      max-width: none;
+    }
+    .site-nav__links {
+      display: none;
+    }
+    /* With the link columns gone, span the whole pill so the logo truly centers
+       (the burger floats over the right edge, out of flow). */
+    .site-nav__logo {
+      grid-column: 1 / -1;
+    }
+    .site-nav__burger {
+      display: inline-flex;
+    }
+  }
+  /* The overlay only exists for the burger (mobile); never let it linger on desktop. */
+  @media (min-width: 769px) {
+    .site-menu {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-nav__pill,
+    .site-nav__logo,
+    .site-nav__burger span,
+    .site-menu {
+      transition:
+        background-color 200ms ease,
+        border-color 200ms ease,
+        color 200ms ease,
+        opacity 200ms ease;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const header = document.querySelector<HTMLElement>('[data-site-nav]');
+  const burger = document.querySelector<HTMLButtonElement>('.site-nav__burger');
+  const menu = document.getElementById('site-menu');
+
+  // Dock-on-approach — only when the pill floats over a hero. The pill turns
+  // solid (and shrinks 15%) the moment the hero's cards rise to just under the
+  // nav, i.e. as they're about to touch it — tracked from the title card's live
+  // position rather than a fixed scroll point (the hero is pinned/scrubbed).
+  // Interior pages have no `data-over-hero`, so they stay solid at full width.
+  if (header?.hasAttribute('data-over-hero')) {
+    const hero = document.querySelector('.rhero');
+    // The hero image is fixed and the `.scroll-over` layer rises up over it, so the
+    // nav solidifies as that covering layer reaches it. Fall back to the hero's
+    // title card if the layer isn't present.
+    const ref =
+      document.querySelector('.scroll-over') ??
+      document.querySelector('.rhero__content .copy-card--title');
+    if (hero && ref) {
+      // Where the nav's lower edge sits, read from the shared --nav-h token so
+      // this can't drift from the CSS; plus a small lead-in so the pill is
+      // already solid as the covering layer arrives.
+      const navH =
+        parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 70;
+      const NAV_EDGE = navH + 26;
+      const sync = () => {
+        header.classList.toggle('is-solid', ref.getBoundingClientRect().top <= NAV_EDGE);
+      };
+      ScrollTrigger.create({
+        trigger: hero,
+        start: 'top top',
+        end: 'bottom top',
+        onUpdate: sync,
+        onLeave: () => header.classList.add('is-solid'), // hero gone → stay solid below
+        onLeaveBack: () => header.classList.remove('is-solid'), // back at the very top → glass
+      });
+      sync();
+    } else {
+      header.classList.add('is-solid');
+    }
+  }
+
+  // Mobile menu toggle.
+  if (burger && menu) {
+    const lenis = () => (window as unknown as { lenis?: { stop(): void; start(): void } }).lenis;
+    const setOpen = (open: boolean) => {
+      header?.classList.toggle('is-menu-open', open);
+      burger.classList.toggle('is-open', open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+      menu.classList.toggle('is-open', open);
+      menu.setAttribute('aria-hidden', String(!open));
+      // Lock the page behind the overlay (pause Lenis if it's running).
+      if (open) {
+        lenis()?.stop();
+        document.documentElement.style.overflow = 'hidden';
+      } else {
+        lenis()?.start();
+        document.documentElement.style.overflow = '';
+      }
+    };
+
+    // Keyboard: move focus into the panel on open, hand it back to the burger
+    // on close, and keep Tab from wandering onto the page behind the overlay.
+    let lastFocused: HTMLElement | null = null;
+    const focusables = () =>
+      Array.from(menu.querySelectorAll<HTMLElement>('a[href]')).filter(
+        (el) => el.offsetParent !== null,
+      );
+
+    menu.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0]!;
+      const last = items[items.length - 1]!;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    burger.addEventListener('click', () => {
+      const opening = !menu.classList.contains('is-open');
+      if (opening) lastFocused = document.activeElement as HTMLElement;
+      setOpen(opening);
+      if (opening) focusables()[0]?.focus();
+      else lastFocused?.focus();
+    });
+    menu
+      .querySelectorAll('a')
+      .forEach((a) => a.addEventListener('click', () => setOpen(false)));
+    // Tapping the backdrop (anywhere outside the panel) closes the sheet.
+    menu.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('[data-menu-panel]')) {
+        setOpen(false);
+        burger.focus();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape' || !menu.classList.contains('is-open')) return;
+      setOpen(false);
+      burger.focus();
+    });
+    // If the viewport grows back to desktop while open, close it.
+    window
+      .matchMedia('(min-width: 769px)')
+      .addEventListener('change', (e) => {
+        if (e.matches) setOpen(false);
+      });
+  }
+</script>

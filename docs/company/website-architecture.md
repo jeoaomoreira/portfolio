@@ -29,8 +29,8 @@ Success metric for the site = **consults booked** (feeds the "land first clients
 
 ```
 /                       Inicio        — pitch + proof, the whole story in one scroll
-/trabajos               Trabajos      — all case studies (the showcase hub)
-/trabajos/:slug         Caso          — single case study (the core sales asset)
+/proyectos              Proyectos     — all case studies (the showcase hub)
+/proyectos/:slug        Caso          — single case study (the core sales asset)
 /servicios              Servicios     — offer ladder + Plan Raíz, pricing
 /nosotros               Nosotros      — the local story (trust moat)
 /contacto               Contacto      — WhatsApp, form, location, Google profile
@@ -38,7 +38,7 @@ Success metric for the site = **consults booked** (feeds the "land first clients
 
 Keep it to these 5 top-level pages at launch. No blog yet (add in Q3 for SEO when there's capacity to write).
 
-**Navigation:** `Inicio · Trabajos · Servicios · Nosotros · Contacto` + a visually distinct **"Hablemos"** button (WhatsApp).
+**Navigation:** `Inicio · Proyectos · Servicios · Nosotros · Contacto` + a visually distinct **"Hablemos"** button (WhatsApp).
 
 ## 4. Home page (`/`) — section order
 
@@ -53,7 +53,7 @@ The order is the sales argument. Each section answers the owner's next unspoken 
 7. **Por qué Raíz** — "¿Por qué ellos?" → the local wedge: rooted in Guanacaste, in person, long-term. (foundations §4)
 8. **CTA final + contacto** — "Listo." → WhatsApp + form.
 
-## 5. Case study detail (`/trabajos/:slug`) — the template
+## 5. Case study detail (`/proyectos/:slug`) — the template
 
 The single highest-leverage template on the site. Every completed project becomes one. Structure:
 
@@ -66,11 +66,11 @@ The single highest-leverage template on the site. Every completed project become
 
 ## 6. Content data model
 
-The site is data-driven — case studies are content, not hand-coded pages. Define one typed collection; all showcase surfaces (home features, /trabajos grid, detail pages) read from it.
+The site is data-driven — case studies are content, not hand-coded pages. Define one typed collection; all showcase surfaces (home features, /proyectos grid, detail pages) read from it.
 
 ```ts
 type CaseStudy = {
-  slug: string;            // url: /trabajos/:slug
+  slug: string;            // url: /proyectos/:slug
   client: string;
   sector: string;          // soda, hotel, tour, salón…
   location: string;        // "Tempate, Guanacaste"

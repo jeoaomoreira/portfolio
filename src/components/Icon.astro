@@ -1,0 +1,27 @@
+---
+/**
+ * Inline stroke icon. The caller passes the raw path data (`d`-level markup in
+ * a Lucide-style 24×24 box); this component owns the svg attributes so every
+ * icon on the site shares one stroke weight, cap and join.
+ */
+interface Props {
+  /** Raw SVG children for a 24×24 viewBox (paths, circles, polylines…). */
+  paths: string;
+  /** Sizing/color utility classes. */
+  class?: string;
+}
+const { paths, class: className = 'h-5 w-5' } = Astro.props;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.75"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={className}
+  aria-hidden="true"
+  set:html={paths}
+/>

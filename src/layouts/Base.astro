@@ -10,6 +10,14 @@ interface Props {
   description?: string;
   image?: string;
   noindex?: boolean;
+  /** Hide the global nav entirely (rare). */
+  hideNav?: boolean;
+  /**
+   * The page opens with a full-bleed hero behind the nav (the home page). The
+   * floating pill starts transparent over it and turns solid on scroll. Interior
+   * pages leave this false and get a solid pill with top spacing for the content.
+   */
+  overHero?: boolean;
 }
 
 const {
@@ -17,6 +25,8 @@ const {
   description = site.description,
   image = site.ogImage,
   noindex = false,
+  hideNav = false,
+  overHero = false,
 } = Astro.props;
 
 const pageTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.tagline}`;
@@ -49,17 +59,18 @@ const ogImageUrl = new URL(image, Astro.site).href;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body>
-    <Nav />
-    <main>
+  <body class:list={[overHero && 'has-fixed-hero']}>
+    {!hideNav && <Nav overHero={overHero} />}
+    <main class:list={[!hideNav && !overHero && 'has-fixed-nav']}>
       <slot />
     </main>
     <Footer />
-    <WhatsAppButton />
+    {/* WhatsApp floating button hidden for now. */}
+    {/* <WhatsAppButton /> */}
 
     <script>
       // Lenis smooth scrolling — site-wide. Skipped entirely for visitors who
@@ -68,6 +79,9 @@ const ogImageUrl = new URL(image, Astro.site).href;
       import Lenis from 'lenis';
       import 'lenis/dist/lenis.css';
       import { gsap } from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+      gsap.registerPlugin(ScrollTrigger);
 
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const lenis = new Lenis({
@@ -75,11 +89,13 @@ const ogImageUrl = new URL(image, Astro.site).href;
           anchors: true, // smooth in-page anchor links (nav/footer jumps)
         });
 
+        // Expose it so the nav can pause scrolling behind its mobile overlay.
+        (window as unknown as { lenis?: typeof lenis }).lenis = lenis;
+
+        // Keep ScrollTrigger scrubbing in sync with Lenis's smooth scroll.
+        lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add((time) => lenis.raf(time * 1000)); // seconds → ms
         gsap.ticker.lagSmoothing(0);
-
-        // When ScrollTrigger is added later, also:
-        // lenis.on('scroll', ScrollTrigger.update);
       }
     </script>
   </body>

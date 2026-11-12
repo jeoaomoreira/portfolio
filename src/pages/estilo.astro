@@ -16,19 +16,19 @@ const swatches = [
 ];
 
 const typeScale = [
-  { label: 'Display / H1', cls: 'text-5xl font-semibold tracking-tight', font: 'Fraunces 600' },
-  { label: 'H2', cls: 'text-3xl font-semibold tracking-tight', font: 'Fraunces 600' },
-  { label: 'H3', cls: 'text-xl font-semibold', font: 'Fraunces 600' },
-  { label: 'Body large', cls: 'text-lg', font: 'Inter 400' },
-  { label: 'Body', cls: 'text-base', font: 'Inter 400' },
-  { label: 'Small / muted', cls: 'text-sm text-muted', font: 'Inter 400' },
+  { cls: 'page-title', font: 'Inter 600 · Display / H1' },
+  { cls: 'section-title', font: 'Inter 600 · H2' },
+  { cls: 'text-xl font-semibold', font: 'Inter 600 · H3' },
+  { cls: 'text-lg', font: 'Inter 400 · Body large' },
+  { cls: 'text-base', font: 'Inter 400 · Body' },
+  { cls: 'text-sm text-muted', font: 'Inter 400 · Small' },
 ];
 ---
 
 <Base title="Estilo" noindex={true}>
-  <section class="container py-16 max-w-4xl">
-    <p class="text-brand font-medium">Sistema de diseño · v1</p>
-    <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight mt-2">Raíz — Estilo</h1>
+  <section class="container section max-w-4xl">
+    <p class="kicker">Sistema de diseño · v1</p>
+    <h1 class="page-title mt-2">Raíz — Estilo</h1>
     <p class="text-muted mt-3 max-w-xl">
       Referencia interna de marca. Cálido, con raíces locales; moderno y claro.
       <span class="font-mono text-sm">(/estilo — no indexado)</span>
@@ -39,7 +39,7 @@ const typeScale = [
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-6">
       {
         swatches.map((s) => (
-          <div class="rounded-[var(--radius)] border border-border overflow-hidden bg-surface">
+          <div class="card-surface overflow-hidden">
             <div
               class="h-24 flex items-end p-3"
               style={`background:${s.hex};color:${s.dark ? '#fff' : '#1F1A17'}`}
@@ -59,14 +59,14 @@ const typeScale = [
     {/* Typography */}
     <h2 class="text-2xl font-semibold mt-16">Tipografía</h2>
     <p class="text-muted mt-2">
-      <strong class="text-ink">Fraunces</strong> para títulos (serif cálida, moderna) ·
-      <strong class="text-ink">Inter</strong> para cuerpo y UI (clara, legible en español).
+      <strong class="text-ink">Inter</strong> en todo el sitio — títulos, cuerpo y UI.
+      Una sola familia: menos peso que cargar y una voz tipográfica consistente.
     </p>
-    <div class="mt-6 divide-y divide-border rounded-[var(--radius)] border border-border bg-surface">
+    <div class="card-surface mt-6 divide-y divide-border">
       {
         typeScale.map((t) => (
           <div class="p-5 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
-            <span class="text-xs font-mono text-muted w-32 shrink-0">{t.font}</span>
+            <span class="text-xs font-mono text-muted sm:w-44 shrink-0">{t.font}</span>
             <span class={t.cls}>Negocios que crecen con raíces</span>
           </div>
         ))
@@ -78,7 +78,8 @@ const typeScale = [
     <div class="flex flex-wrap items-center gap-4 mt-6">
       <button class="btn btn-accent">Hablemos de tu proyecto</button>
       <button class="btn btn-accent btn-sm">Hablemos</button>
-      <button class="btn btn-ghost">Ver trabajos</button>
+      <button class="btn btn-ghost">Ver proyectos</button>
+      <button class="btn btn-whatsapp">Escribir por WhatsApp</button>
     </div>
 
     <h2 class="text-2xl font-semibold mt-16">Marca</h2>

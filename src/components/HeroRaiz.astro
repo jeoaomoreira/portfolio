@@ -1,0 +1,1108 @@
+---
+// HeroRaiz — implementation of the Claude Design "Raiz Hero.dc.html" (option 1a).
+// The Design-Canvas runtime (image-slot.js / support.js / DCLogic) is NOT copied;
+// the scroll motion is rebuilt with GSAP ScrollTrigger (synced to Lenis in Base.astro),
+// and <image-slot> becomes a real <img> from /public/images.
+import { Image } from 'astro:assets';
+import Icon from '@/components/Icon.astro';
+import heroRoots from '@/assets/hero-roots.png';
+
+// The hero's second frame (revealed once "raíz" fades) states the problem the
+// studio solves — the headline + three pains that hook the visitor.
+const pains = [
+  {
+    title: 'Invisible en Google',
+    body: 'Cuando alguien busca lo que ofrecés, aparecen otros negocios. No el tuyo.',
+    icon: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  },
+  {
+    title: 'Una página que no te representa',
+    body: 'O no tenés sitio web, o el que tenés se ve viejo y te da pena compartirlo.',
+    icon: '<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
+  },
+  {
+    title: 'Perdés clientes sin darte cuenta',
+    body: 'Negocios con peor servicio, pero mejor presencia, se llevan a tus clientes.',
+    icon: '<polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/>',
+  },
+];
+---
+
+<section class="rhero" aria-label="Raíz — presencia digital para negocios de Guanacaste">
+  <div class="rhero__stage">
+    <div class="rhero__bg">
+      <Image
+        class="rhero__img"
+        src={heroRoots}
+        alt=""
+        widths={[640, 960, 1280, 1672]}
+        sizes="100vw"
+        format="webp"
+        quality={72}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
+
+    {/* Same subtle tint the raíz title sits on — fades in behind the content. */}
+    <div class="rhero__scrim" aria-hidden="true"></div>
+
+    {/* The "raíz" wordmark as a knockout mask over the roots image. */}
+    <svg class="rhero__mark" viewBox="0 0 1280 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <mask id="rhero-tint" maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="800">
+          <rect width="1280" height="800" fill="#fff"></rect>
+          <text class="rhero__word" x="640" y="450" text-anchor="middle" fill="#000">raız</text>
+        </mask>
+        <mask id="rhero-in" maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="800">
+          <text class="rhero__word" x="640" y="450" text-anchor="middle" fill="#fff">raız</text>
+        </mask>
+      </defs>
+      <rect width="1280" height="800" fill="#201e1d" fill-opacity="0.22" mask="url(#rhero-tint)"></rect>
+      <rect width="1280" height="800" fill="#262626" style="mix-blend-mode:color-dodge" mask="url(#rhero-in)"></rect>
+    </svg>
+
+    {/* Once "raíz" has faded, this fades in over the same (scrimmed) image. */}
+    <div class="rhero__content">
+      <div class="container rhero__problem">
+        <h2 class="rhero__problem-title">
+          ¿Tu negocio es excelente, pero en internet no se nota?
+        </h2>
+        <div class="rhero__problem-grid">
+          {
+            pains.map((p) => (
+              <div class="rhero__problem-item">
+                <span class="rhero__problem-ico">
+                  <Icon paths={p.icon} />
+                </span>
+                <h3 class="rhero__problem-h">{p.title}</h3>
+                <p class="rhero__problem-b">{p.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    {/* Frame-1 overlay: a bottom-left tagline + a scroll cue under the wordmark.
+        Both fade out with "raíz" as the reveal scrubs (opacity: var(--fade)). */}
+    <div class="rhero__intro">
+      <p class="rhero__intro-title">Hacemos tu<br />página web</p>
+      <div class="rhero__intro-row">
+        <a href="/contacto" class="rhero__intro-btn">
+          Cotiza
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+        <p class="rhero__intro-sub">Te ponemos en Google<br />y la cuidamos.</p>
+      </div>
+    </div>
+
+    <div class="rhero__scroll" aria-hidden="true">
+      <span class="rhero__scroll-label">Scroll</span>
+      <svg class="rhero__scroll-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+    </div>
+
+    {/* Right-side value card: a quick read on how we work. Fades with the frame. */}
+    <aside class="rhero__method" aria-label="Plan Raíz">
+      <p class="rhero__intro-title">Estratégico y<br />personalizado</p>
+      <div class="rhero__intro-row">
+        <a href="/servicios" class="rhero__intro-btn">
+          Conocé el Plan Raíz
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+        <p class="rhero__intro-sub">Hospedaje y soporte.<br />Mes a mes.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .rhero {
+    position: relative;
+    /* Pin distance. Hybrid reveal: "raíz" is scrubbed over the first stretch of
+       this scroll (the visitor drives its fade/drift), then the cards are
+       triggered to play themselves. Sized to give the scrub a generous distance
+       plus a little hold for the card play before the stage releases. */
+    height: 175vh;
+    /* Warm light tone matching the (tinted) image, so the brief moment before
+       the hero image paints isn't a dark flash. */
+    background: #cdc7be;
+    /* scroll-driven values (GSAP animates these; CSS below reads them) */
+    --bgScale: 1.18;
+    --wordY: 0;
+    --track: -24;
+    --wordOp: 1;
+    --fade: 1;
+    --gate: 1; /* cards' exit gate, driven from --wordOp (see <script>) */
+  }
+
+  /* The stage is pinned to the viewport (fixed) so the roots image stays put and
+     the page's following sections scroll up over it. z-index 0 keeps it behind
+     the covering content (`.scroll-over`, footer at z-index 1) but above nothing,
+     while the fixed nav (z-index 50) still floats on top. */
+  .rhero__stage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100svh;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .rhero__bg {
+    position: absolute;
+    inset: 0;
+    transform: scale(var(--bgScale));
+    transform-origin: 50% 60%;
+    will-change: transform;
+  }
+  .rhero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.95);
+  }
+
+  .rhero__mark {
+    position: absolute;
+    inset: 0;
+    /* No z-index here on purpose: a stacking context would isolate the
+       mix-blend-mode knockout from the image. DOM order keeps it above the bg. */
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* IMPORTANT: never animate this element's opacity. Its mix-blend-mode
+       color-dodge knockout only works while opacity is exactly 1 — at any
+       fractional value the browser composites the subtree offscreen and the
+       dodge can't sample the backdrop, so "raíz" renders flat dark grey. The
+       word fades in/out instead through the scrubbed --wordOp (the SVG mask
+       alpha), which leaves opacity at 1 and keeps the blend live. */
+  }
+  .rhero__word {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 300px; /* 10% smaller than the original 400px */
+    letter-spacing: calc(var(--track) * 1px);
+    transform: translateY(calc(var(--wordY) * 1px));
+    transform-origin: 640px 215px;
+    opacity: var(--wordOp);
+  }
+
+  /* ── Frame-1 overlay: bottom-left tagline + scroll cue ─────────────
+     Both live in the stage and fade out with the wordmark (opacity: var(--fade)),
+     so they clear before the work cards play in. */
+  .rhero__intro {
+    position: absolute;
+    left: clamp(1.25rem, 5vw, 4rem);
+    bottom: clamp(2rem, 7vh, 4rem);
+    z-index: 5;
+    max-width: 30rem;
+    opacity: var(--fade);
+    will-change: opacity;
+  }
+  .rhero__intro-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500; /* a touch thinner */
+    letter-spacing: -0.02em;
+    line-height: 0.96;
+    font-size: clamp(2.4rem, 5.75vw, 3.57rem); /* +15% */
+    color: var(--color-canvas);
+    text-shadow: 0 2px 20px rgba(20, 14, 10, 0.5);
+  }
+  .rhero__intro-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.9rem 1.1rem;
+    margin-top: 1.15rem;
+  }
+  .rhero__intro-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--color-ink); /* dark text now the pill is light */
+    background: rgba(250, 246, 240, 0.62); /* a touch lighter than the roots */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(250, 246, 240, 0.55);
+    white-space: nowrap;
+    transition:
+      background-color 180ms ease,
+      transform 160ms var(--ease-out-strong);
+  }
+  .rhero__intro-btn:hover {
+    background: rgba(250, 246, 240, 0.8);
+  }
+  .rhero__intro-btn:active {
+    transform: scale(0.97);
+  }
+  .rhero__intro-btn svg {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+  .rhero__intro-sub {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    color: rgba(250, 246, 240, 0.9);
+    text-shadow: 0 1px 12px rgba(20, 14, 10, 0.55);
+  }
+
+  .rhero__scroll {
+    /* Desktop only (see the lg rule below) — below that the stacked hero needs
+       the full stage height and the cue would sit on the mockups. */
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: clamp(1.5rem, 4vh, 2.5rem);
+    transform: translateX(-50%);
+    z-index: 5;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--color-canvas);
+    opacity: var(--fade);
+    pointer-events: none;
+  }
+  @media (min-width: 1024px) {
+    .rhero__scroll {
+      display: flex;
+    }
+  }
+  .rhero__scroll-label {
+    font-size: 0.64rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 8px rgba(20, 14, 10, 0.5);
+  }
+  .rhero__scroll-ico {
+    width: 1.2rem;
+    height: 1.2rem;
+    filter: drop-shadow(0 1px 6px rgba(20, 14, 10, 0.5));
+    animation: rhero-scroll-bob 1.8s var(--ease-out-strong) infinite;
+  }
+  @keyframes rhero-scroll-bob {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.65;
+    }
+    50% {
+      transform: translateY(5px);
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rhero__scroll-ico {
+      animation: none;
+    }
+  }
+
+  /* Right-side "Plan Raíz" block — a mirror of the bottom-left intro (it reuses
+     the .rhero__intro-* styles), so the two bottom corners read as a pair. Open
+     text on the roots, no card. Desktop only: below lg there's no room beside the
+     intro without colliding with the scroll cue and the WhatsApp button. */
+  .rhero__method {
+    display: none;
+    position: absolute;
+    right: clamp(1.25rem, 4vw, 3.5rem);
+    bottom: clamp(2rem, 7vh, 4rem);
+    z-index: 5;
+    max-width: 30rem;
+    opacity: var(--fade);
+    will-change: opacity;
+  }
+  @media (min-width: 1024px) {
+    .rhero__method {
+      display: block;
+    }
+  }
+
+  /* Once the reveal has played, keep the frame-1 overlays gone + non-interactive. */
+  .rhero.is-revealed .rhero__intro,
+  .rhero.is-revealed .rhero__scroll,
+  .rhero.is-revealed .rhero__method {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .rhero__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: #201e1d;
+    opacity: 0;
+    pointer-events: none;
+    /* In normal motion the reveal darkening comes from the wordmark's own tint
+       as --wordOp → 0 (scrubbed, so no blend-breaking opacity animation), and
+       this scrim stays at 0. It is only used as a reduced-motion fallback. */
+  }
+
+  .rhero__content {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    /* clear the pill nav, then center the grid in the remaining space */
+    padding-top: calc(var(--nav-h) + 1.5rem);
+    padding-bottom: 2.5rem;
+    /* The children carry their own entrance, so the content itself only gates
+       pointer events — it never animates opacity (an opacity group would render
+       this subtree offscreen and kill the cards' backdrop-filter mid-fade). */
+    pointer-events: none;
+  }
+  /* In the pinned stage the content must fit one screen — drop the standalone
+     hero's own vertical padding and top-align the two columns. */
+  .rhero__content .hero-grid {
+    padding-block: 0;
+  }
+  /* Only very short screens top-anchor, so the headline can't clip under the nav. */
+  @media (max-height: 540px) {
+    .rhero__content {
+      align-items: flex-start;
+    }
+  }
+  /* Revealed: "raíz" has faded via the scrub → the work content fades in. The
+     image darkening is already supplied by the wordmark tint (no scrim here). */
+  .rhero.is-revealed .rhero__content {
+    pointer-events: auto;
+  }
+  /* ── Scroll-scrubbed entrance (matches the wordmark's feel) ─────
+     The cards and mockups fade + rise from the bottom in lockstep with scroll,
+     driven by per-element CSS vars that GSAP scrubs (see the <script>). The two
+     differ in HOW they fade:
+       • Mockups have no backdrop-filter → a plain opacity fade is fine.
+       • Glass cards must NOT fade via opacity (it kills backdrop-filter at any
+         fractional value). They fade through a mask-alpha var instead, exactly
+         like the wordmark fades through its mask — element opacity stays 1 and
+         the blur is live the whole way. */
+  /* Visibility is PLAY × GATE:
+       • --*Play is driven by the self-play timeline (the triggered entrance).
+       • --gate is driven every scroll frame from --wordOp (how far "raíz" has
+         cleared). It's scroll-locked, so when "raíz" snaps back on a fast
+         scroll-up the gate shuts instantly and the cards can't lag behind it.
+     Cards fade via mask-alpha (keeps backdrop-filter live); mockups via opacity. */
+  /* The headline (no backdrop-filter) fades via opacity × the scroll-locked gate. */
+  .rhero__content .rhero__problem-title {
+    --play: 0;
+    --riseY: 42; /* px of rise, unitless */
+    opacity: calc(var(--play) * var(--gate, 1));
+    transform: translateY(calc(var(--riseY) * 1px));
+    will-change: transform, opacity;
+  }
+  /* The glass cards fade via a mask-alpha instead, so their backdrop-filter blur
+     stays live the whole way (opacity would kill it). They stagger in. */
+  .rhero__content .rhero__problem-item {
+    --play: 0;
+    --riseY: 42;
+    transform: translateY(calc(var(--riseY) * 1px));
+    -webkit-mask-image: linear-gradient(
+      rgba(0, 0, 0, calc(var(--play) * var(--gate, 1))),
+      rgba(0, 0, 0, calc(var(--play) * var(--gate, 1)))
+    );
+    mask-image: linear-gradient(
+      rgba(0, 0, 0, calc(var(--play) * var(--gate, 1))),
+      rgba(0, 0, 0, calc(var(--play) * var(--gate, 1)))
+    );
+    will-change: transform;
+  }
+
+  /* ── Problem content shown in the hero reveal (light on the roots) ── */
+  .rhero__problem {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .rhero__problem-title {
+    margin: 0 auto;
+    max-width: 50rem;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.06;
+    font-size: clamp(2.1rem, 4.8vw, 3.5rem); /* slightly bigger */
+    color: var(--color-canvas);
+    text-shadow: 0 2px 22px rgba(20, 14, 10, 0.6);
+  }
+  .rhero__problem-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2.75rem;
+    width: 100%;
+    max-width: 64rem;
+  }
+  /* Each observation sits in a glass card with the navbar pill's properties. */
+  .rhero__problem-item {
+    padding: 1.5rem 1.5rem 1.65rem;
+    border-radius: 1rem;
+    background: rgba(31, 26, 23, 0.3);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 16px 38px -20px rgba(31, 26, 23, 0.55);
+  }
+  .rhero__problem-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.8rem;
+    color: var(--color-canvas);
+    background: rgba(250, 246, 240, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+  }
+  .rhero__problem-ico :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+  .rhero__problem-h {
+    margin: 0.9rem 0 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-canvas);
+  }
+  .rhero__problem-b {
+    margin: 0.45rem 0 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: rgba(250, 246, 240, 0.82);
+  }
+  @media (max-width: 760px) {
+    .rhero__problem-grid {
+      grid-template-columns: 1fr;
+      gap: 1.4rem;
+      margin-top: 1.75rem;
+    }
+    .rhero__problem-h {
+      margin-top: 0.75rem;
+    }
+  }
+  /* Reduced motion has no scrub, so the vars never advance. Reveal both pieces
+     instantly via the class instead (gate stays 1). */
+  @media (prefers-reduced-motion: reduce) {
+    .rhero.is-revealed .rhero__problem-title,
+    .rhero.is-revealed .rhero__problem-item {
+      --play: 1;
+      --riseY: 0;
+    }
+  }
+  /* The wordmark is NOT hidden by a class here — the scrub's --wordOp fades it
+     out through the mask, so its opacity stays 1 and the color-dodge never
+     breaks. */
+  /* Reduced motion has no scrub, so --wordOp stays 1 and the wordmark can't fade
+     itself out. Fall back to the class-based (instant) hide + scrim darkening. */
+  @media (prefers-reduced-motion: reduce) {
+    .rhero.is-revealed .rhero__mark {
+      opacity: 0;
+    }
+    .rhero.is-revealed .rhero__scrim {
+      opacity: 0.22;
+    }
+  }
+
+  /* ── Work-led content (scrolls in as the wordmark fades up) ──── */
+  .hero-grid {
+    display: grid;
+    gap: 2.75rem;
+    align-items: center;
+    padding-block: 2.75rem 3.25rem;
+    width: 100%;
+  }
+  @media (min-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 5.75rem;
+      padding-block: 4.5rem 5.5rem;
+    }
+  }
+  .hero-copy {
+    /* 36rem, not 34: at 34 the card's content box was 386px and the two CTAs
+       need 402px, so "Ver proyectos" dropped to a second row. */
+    max-width: 36rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  /* Each copy block is its own near-clear frosted card over the roots. */
+  .copy-card {
+    border-radius: 35px;
+    background: rgba(250, 246, 240, 0.3);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 1.6rem 1.9rem;
+  }
+  .copy-card--body {
+    padding-bottom: 1.9rem;
+    /* Paragraph copy needs a steadier backing than the title card: lift the
+       frost so the smaller text stays legible over the busy roots. */
+    background: rgba(250, 246, 240, 0.72);
+  }
+  /* Title card — a 2-column grid: the logo on the left, the headline on the
+     right. The logo is a white fill of /logo.svg (a white box shaped by the
+     mark), sitting on the frosted card. */
+  .copy-card--title {
+    display: grid;
+    grid-template-columns: minmax(78px, 0.4fr) 1fr;
+    align-items: center;
+    gap: 1.1rem;
+  }
+  .copy-card__logo {
+    justify-self: center;
+    width: 100%;
+    max-width: 101px;
+    aspect-ratio: 1;
+    background: #ffffff;
+    -webkit-mask: url('/logo.svg') center / contain no-repeat;
+    mask: url('/logo.svg') center / contain no-repeat;
+  }
+  /* Headline sits in the right column, sized down so it doesn't crowd the mark. */
+  .copy-card--title .hero-title {
+    grid-column: 2;
+    font-size: clamp(1.6rem, 3vw, 2.35rem);
+    line-height: 1.08;
+    font-weight: 500; /* a touch more presence than the paragraph, still soft */
+  }
+  /* Card padding governs the inner rhythm, so the copy drops its stacked top
+     margins; and on the cream frost the copy reads in dark ink. (The ghost
+     button needs no override here — global.css already styles it this way.) */
+  .copy-card .hero-title,
+  .copy-card .hero-sub {
+    margin-top: 0;
+    color: var(--color-ink);
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.04;
+    font-size: clamp(2.25rem, 5.4vw, 3.6rem);
+    margin-top: 0.85rem;
+  }
+  .hero-sub {
+    color: var(--color-muted);
+    font-size: 1.075rem;
+    line-height: 1.55;
+    margin-top: 1.25rem;
+    max-width: 30rem;
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+  .hero-work {
+    position: relative;
+    display: block;
+    padding-bottom: 2.5rem;
+    transition: transform 260ms var(--ease-out-strong);
+    border-radius: 16px;
+  }
+  @media (min-width: 1024px) {
+    .hero-work {
+      padding-bottom: 0;
+    }
+  }
+  .mock {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 28px 64px -34px rgba(31, 26, 23, 0.45);
+  }
+  .mock-browser {
+    position: relative;
+    z-index: 1;
+  }
+  .mock-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--color-sand);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .mock-dots {
+    display: inline-flex;
+    gap: 0.35rem;
+  }
+  .mock-dots i {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: #d9ccba;
+  }
+  .mock-url {
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    background: var(--color-canvas);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 0.18rem 0.7rem;
+  }
+  .demo {
+    font-family: var(--font-sans);
+  }
+  .demo-cabina {
+    background: var(--color-surface);
+  }
+  .demo-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .demo-logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.82rem;
+    color: var(--color-ink);
+  }
+  .demo-links {
+    display: inline-flex;
+    gap: 0.45rem;
+  }
+  .demo-links i {
+    width: 1.4rem;
+    height: 0.38rem;
+    border-radius: 999px;
+    background: var(--color-border);
+  }
+  .demo-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1.6rem 1.2rem;
+    background:
+      radial-gradient(120% 140% at 85% 10%, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent 55%),
+      linear-gradient(160deg, color-mix(in srgb, var(--color-brand) 92%, #000), var(--color-brand));
+  }
+  .demo-kicker {
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .demo-h {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    line-height: 1.15;
+    color: #fff;
+    max-width: 14rem;
+  }
+  .demo-btn {
+    margin-top: 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--color-on-accent);
+    background: var(--color-accent);
+    border-radius: 999px;
+    padding: 0.32rem 0.8rem;
+  }
+  .demo-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    padding: 0.9rem 1.2rem 1.2rem;
+  }
+  .demo-card {
+    aspect-ratio: 4 / 3;
+    border-radius: 7px;
+    background: var(--color-sand);
+    border: 1px solid var(--color-border);
+  }
+  .demo-card:nth-child(2) {
+    background: color-mix(in srgb, var(--color-accent) 16%, var(--color-sand));
+  }
+  .demo-card:nth-child(3) {
+    background: color-mix(in srgb, var(--color-brand) 14%, var(--color-sand));
+  }
+  .mock-phone {
+    /* lg only — see the note in the stacked-hero block. */
+    display: none;
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    bottom: 0;
+    width: 32%;
+    max-width: 150px;
+    border-radius: 20px;
+    padding: 0.45rem;
+    background: #2a2521;
+    border-color: #2a2521;
+  }
+  @media (min-width: 1024px) {
+    .mock-phone {
+      display: block;
+      left: -7%;
+      bottom: -9%;
+    }
+  }
+  .demo-soda {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.75rem 0.65rem 0.65rem;
+    background: var(--color-canvas);
+    border-radius: 13px;
+  }
+  .demo-logo--sm {
+    font-size: 0.72rem;
+    margin-bottom: 0.2rem;
+  }
+  .soda-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    color: var(--color-muted);
+    border-bottom: 1px dotted var(--color-border);
+    padding-bottom: 0.2rem;
+  }
+  .soda-line b {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  .demo-btn--wa {
+    align-self: stretch;
+    text-align: center;
+    margin-top: 0.4rem;
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+    font-size: 0.6rem;
+    padding: 0.34rem 0.5rem;
+  }
+  .hero-work__hint {
+    position: absolute;
+    right: 0;
+    bottom: -1.6rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-brand);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+      opacity 220ms var(--ease-out-strong),
+      transform 220ms var(--ease-out-strong);
+  }
+  @media (min-width: 1024px) {
+    .hero-work__hint {
+      bottom: -2rem;
+    }
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .hero-work:hover {
+      transform: translateY(-2px);
+    }
+    .hero-work:hover .mock-browser {
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.6) inset,
+        0 34px 70px -32px rgba(31, 26, 23, 0.5);
+    }
+    .hero-work:hover .hero-work__hint {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .hero-work:focus-visible {
+    transform: translateY(-2px);
+    outline: 2px solid var(--color-brand);
+    outline-offset: 4px;
+  }
+  .hero-work:focus-visible .mock-browser {
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 34px 70px -32px rgba(31, 26, 23, 0.5);
+  }
+  .hero-work:focus-visible .hero-work__hint {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── Stacked hero (< lg) ────────────────────────────────────────
+     One column, so the copy and the mockups share one screen's height. Cap the
+     mockup and ease the type down; without this the browser frame overflowed
+     the pinned stage on every tablet and large phone. */
+  @media (max-width: 1023px) {
+    .hero-grid {
+      justify-items: center;
+      text-align: left;
+    }
+    .hero-copy {
+      max-width: 38rem;
+      width: 100%;
+    }
+    .copy-card--title .hero-title {
+      font-size: clamp(1.45rem, 4.2vw, 2rem);
+    }
+    .hero-sub {
+      font-size: 1rem;
+      max-width: none;
+    }
+    .hero-work {
+      width: min(100%, 20rem);
+      margin-inline: auto;
+      padding-bottom: 0.75rem;
+    }
+  }
+
+  /* ── Phone (≤ sm) ───────────────────────────────────────────────
+     The stage is pinned at 100svh with overflow hidden, so everything in the
+     hero has to FIT one screen — otherwise the mockups (the whole point of
+     this hero) fall off the bottom and are never seen. Measured on 375×667:
+     the composition has to come in under ~533px of usable height. */
+  @media (max-width: 640px) {
+    .rhero {
+      --track: 0; /* tighter start so the wordmark fits a phone */
+    }
+    .rhero__word {
+      font-size: 144px; /* scaled so "raíz" fits portrait width */
+    }
+    .rhero__content {
+      align-items: flex-start;
+      padding-top: calc(var(--nav-h) + 0.75rem);
+      padding-bottom: 1rem;
+    }
+    .copy-card {
+      padding: 1rem 1.15rem;
+      border-radius: 26px;
+    }
+    .copy-card--title {
+      grid-template-columns: minmax(54px, 0.3fr) 1fr;
+      gap: 0.85rem;
+    }
+    .copy-card__logo {
+      max-width: 62px;
+    }
+    .copy-card--title .hero-title {
+      font-size: 1.45rem;
+      line-height: 1.12;
+    }
+    .copy-card--body {
+      padding-bottom: 1.15rem;
+    }
+    .hero-sub {
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    /* Both CTAs share one row so the card doesn't grow a second button line. */
+    .hero-cta {
+      gap: 0.5rem;
+      margin-top: 1rem;
+      flex-wrap: nowrap;
+    }
+    .hero-cta .btn {
+      flex: 1 1 0;
+      min-width: 0;
+      padding-inline: 0.5rem;
+      font-size: 0.88rem;
+    }
+    .hero-copy {
+      gap: 0.6rem;
+    }
+    .hero-grid {
+      gap: 1.1rem;
+    }
+    /* Scale the mockups down so the browser frame lands inside the stage
+       instead of being clipped in half. */
+    .hero-work {
+      width: min(100%, 15rem);
+      margin-inline: auto;
+      padding-bottom: 1rem;
+    }
+    .demo-hero {
+      padding: 1rem 0.85rem;
+    }
+    .demo-h {
+      font-size: 0.9rem;
+    }
+    /* Drop the mock's placeholder card row on phones: it costs ~70px and the
+       nav + hero band already read as "a real site" at this size. Keeping it
+       would mean shrinking the whole mockup until nothing in it is legible. */
+    .demo-row {
+      display: none;
+    }
+    .demo-cabina {
+      padding-bottom: 0.4rem;
+    }
+    .hero-work__hint {
+      display: none; /* hover-only affordance; no hover on a phone */
+    }
+    .rhero__intro-title {
+      font-size: 2.1rem;
+    }
+    /* Stack the button above its caption so the row never crowds. */
+    .rhero__intro-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+  }
+
+  /* Short phones (landscape, SE-class): shave the intro so it can't ride over
+     the composition. */
+  @media (max-width: 640px) and (max-height: 700px) {
+    .rhero__intro {
+      display: none;
+    }
+  }
+
+  /* ── Reduced motion: hold a composed, readable state ─────── */
+  @media (prefers-reduced-motion: reduce) {
+    .rhero {
+      --bgScale: 1;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector<HTMLElement>('.rhero');
+  if (section) {
+    const mm = gsap.matchMedia();
+
+    // Discrete "revealed" state: gate the hero content's pointer-events once the
+    // work has played in. (The nav is a separate, site-wide component now.)
+    const setRevealed = (on: boolean) => {
+      section.classList.toggle('is-revealed', on);
+    };
+
+    // Hybrid reveal:
+    //   • "raíz" is SCRUBBED — tied to scroll, so the visitor drives its fade
+    //     and drift directly. Opacity fades linearly (tracks the scroll 1:1);
+    //     the drift/scale keep an ease-out for a settled feel.
+    //   • Once "raíz" has been scrubbed fully out, that TRIGGERS the cards +
+    //     mockups to play in on their own (self-paced), reversing on scroll-up.
+    // Reduced motion skips both and uses the class-based reveal below.
+    mm.add(
+      {
+        desktop: '(min-width: 641px) and (prefers-reduced-motion: no-preference)',
+        mobile: '(max-width: 640px) and (prefers-reduced-motion: no-preference)',
+      },
+      (ctx) => {
+        const mobile = ctx.conditions!.mobile;
+        const probTitle = section.querySelector('.rhero__problem-title');
+        const probItems = section.querySelectorAll('.rhero__problem-item');
+        // Scroll distance the visitor scrubs "raíz" over before the cards fire.
+        // This is the "trigger later" knob — raise it for more interaction.
+        const scrubEnd = mobile ? 300 : 360;
+
+        // "raíz" drift + bg scale — scrubbed, with an ease-out settle.
+        gsap.to(section, {
+          ease: 'power2.out',
+          '--bgScale': 1,
+          '--wordY': mobile ? -200 : -320,
+          '--track': mobile ? 16 : 66,
+          '--fade': -0.4,
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: `top top-=${scrubEnd}`,
+            scrub: true,
+          },
+        });
+        // "raíz" fade — scrubbed and LINEAR, so it tracks the scroll evenly and
+        // reaches 0 right as the cards get triggered. Its progress ALSO drives
+        // the cards' --gate: 1 while "raíz" is gone, ramping to 0 as it returns.
+        // Because the gate is scroll-locked to "raíz", the cards' exit can never
+        // lag "raíz" on a fast scroll-up (their entrance is still self-played).
+        const setGate = (wordOp: number) => {
+          const g = Math.min(Math.max(1 - wordOp / 0.2, 0), 1);
+          section.style.setProperty('--gate', String(g));
+        };
+        gsap.to(section, {
+          ease: 'none',
+          '--wordOp': 0,
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: `top top-=${scrubEnd}`,
+            scrub: true,
+            onUpdate: (self) => setGate(1 - self.progress), // --wordOp === 1 − progress
+            onLeave: () => setGate(0), // past the end → "raíz" gone → gate open
+            onLeaveBack: () => setGate(1), // above the start → "raíz" full → gate shut
+          },
+        });
+
+        // Cards + mockups — a paused timeline that PLAYS ITSELF once "raíz" is
+        // gone. It animates the --*Play vars (the entrance); the --gate above
+        // then multiplies them for the actual visibility. Cards fade via a
+        // mask-alpha (backdrop-filter stays live); mockups via opacity. Staggered.
+        const cards = gsap.timeline({
+          paused: true,
+          defaults: { ease: 'power2.out' },
+        });
+        cards
+          .to(probTitle, { duration: 0.5, '--play': 1, '--riseY': 0 })
+          .to(
+            probItems,
+            { duration: 0.5, '--play': 1, '--riseY': 0, stagger: 0.1 },
+            '<0.12',
+          );
+
+        // Trigger at the end of "raíz"'s scrub: cross it going down to play the
+        // cards in. There's no time-based reverse — the scroll-locked --gate
+        // fades them out in step with "raíz" returning, so they never linger.
+        ScrollTrigger.create({
+          trigger: section,
+          start: `top top-=${scrubEnd}`,
+          onEnter: () => {
+            cards.play();
+            setRevealed(true);
+          },
+          onLeaveBack: () => {
+            setRevealed(false);
+          },
+        });
+      },
+    );
+
+    // Reduced motion: no timeline. Reveal the composed state instantly via the
+    // class (the CSS under prefers-reduced-motion shows the cards and hides
+    // "raíz") once the visitor scrolls a little into the hero.
+    mm.add('(prefers-reduced-motion: reduce)', () => {
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top top-=160',
+        onEnter: () => setRevealed(true),
+        onLeaveBack: () => setRevealed(false),
+      });
+    });
+
+    // The mask uses the Inter webfont; re-measure once it has painted.
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(() =>
+      ScrollTrigger.refresh(),
+    );
+  }
+</script>
