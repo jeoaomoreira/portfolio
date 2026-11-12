@@ -171,13 +171,14 @@ const rightLinks = links.slice(half);
   .site-nav.is-solid .site-nav__pill {
     width: 52%;
     max-width: 54rem;
-    /* Contracted state becomes a SOLID terracotta pill (the palette accent),
-       no longer glass — the default dark glass gives way to it. */
-    background: var(--color-accent);
-    border-color: var(--color-accent-strong);
+    /* Docked over the white page below the hero: stays dark glass, just narrower.
+       A heavier tint than the over-hero state so the pill still reads dark (and
+       its white text stays legible) against white content, not a pale wash. */
+    background: rgba(22, 21, 20, 0.72);
+    border-color: rgba(255, 255, 255, 0.14);
     color: #fff;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
   }
 
   .site-nav__links {
@@ -321,7 +322,7 @@ const rightLinks = links.slice(half);
   @media (max-width: 768px) {
     .site-nav__pill {
       width: 92%;
-      padding: 0.55rem 1.1rem;
+      padding: 0.15rem 1.1rem;
     }
     /* On phones the pill is just logo + burger, so the length-halve would leave
        it cramped — keep it wide when docked. */
@@ -332,10 +333,11 @@ const rightLinks = links.slice(half);
     .site-nav__links {
       display: none;
     }
-    /* With the link columns gone, span the whole pill so the logo truly centers
-       (the burger floats over the right edge, out of flow). */
+    /* With the link columns gone, span the whole pill and pin the logo to the
+       left (the burger floats over the right edge, out of flow). */
     .site-nav__logo {
       grid-column: 1 / -1;
+      justify-self: start;
     }
     .site-nav__burger {
       display: inline-flex;

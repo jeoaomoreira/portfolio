@@ -3,9 +3,25 @@
 // The Design-Canvas runtime (image-slot.js / support.js / DCLogic) is NOT copied;
 // the scroll motion is rebuilt with GSAP ScrollTrigger (synced to Lenis in Base.astro),
 // and <image-slot> becomes a real <img> from /public/images.
-import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
 import Icon from '@/components/Icon.astro';
-import heroRoots from '@/assets/hero-roots.png';
+import heroBranchWide from '@/assets/hero-branch-wide.png';
+import heroBranchVertical from '@/assets/hero-branch-vertical.png';
+
+// Art-directed hero background: the wide branch on desktop, the vertical one on
+// phones. Native <picture> (Astro's <Image> can't switch source by viewport).
+const heroWide = await getImage({
+  src: heroBranchWide,
+  widths: [960, 1280, 1672, 2048],
+  format: 'webp',
+  quality: 72,
+});
+const heroVertical = await getImage({
+  src: heroBranchVertical,
+  widths: [480, 640, 828, 1080],
+  format: 'webp',
+  quality: 72,
+});
 
 // The hero's second frame (revealed once "raíz" fades) states the problem the
 // studio solves — the headline + three pains that hook the visitor.
@@ -31,18 +47,25 @@ const pains = [
 <section class="rhero" aria-label="Raíz — presencia digital para negocios de Guanacaste">
   <div class="rhero__stage">
     <div class="rhero__bg">
-      <Image
-        class="rhero__img"
-        src={heroRoots}
-        alt=""
-        widths={[640, 960, 1280, 1672]}
-        sizes="100vw"
-        format="webp"
-        quality={72}
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-      />
+      <picture>
+        <source
+          media="(max-width: 640px)"
+          srcset={heroVertical.srcSet.attribute}
+          sizes="100vw"
+        />
+        <img
+          class="rhero__img"
+          src={heroWide.src}
+          srcset={heroWide.srcSet.attribute}
+          sizes="100vw"
+          alt=""
+          width={heroBranchWide.width}
+          height={heroBranchWide.height}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
     </div>
 
     {/* Same subtle tint the raíz title sits on — fades in behind the content. */}
@@ -60,7 +83,7 @@ const pains = [
         </mask>
       </defs>
       <rect width="1280" height="800" fill="#201e1d" fill-opacity="0.22" mask="url(#rhero-tint)"></rect>
-      <rect width="1280" height="800" fill="#262626" style="mix-blend-mode:color-dodge" mask="url(#rhero-in)"></rect>
+      <rect width="1280" height="800" fill="#808080" style="mix-blend-mode:color-dodge" mask="url(#rhero-in)"></rect>
     </svg>
 
     {/* Once "raíz" has faded, this fades in over the same (scrimmed) image. */}
@@ -194,7 +217,9 @@ const pains = [
     font-weight: 400;
     font-size: 300px; /* 10% smaller than the original 400px */
     letter-spacing: calc(var(--track) * 1px);
-    transform: translateY(calc(var(--wordY) * 1px));
+    /* --wordBaseY is a per-breakpoint resting offset (0 on desktop); --wordY is
+       the scroll-scrubbed drift on top of it. */
+    transform: translateY(calc((var(--wordBaseY, 0) + var(--wordY)) * 1px));
     transform-origin: 640px 215px;
     opacity: var(--wordOp);
   }
@@ -882,8 +907,15 @@ const pains = [
     .rhero {
       --track: 0; /* tighter start so the wordmark fits a phone */
     }
+    /* Poster layout on phones: the tagline rides at the top-left under the nav,
+       and "raíz" is dropped large to the bottom edge, overflowing off-screen. */
     .rhero__word {
-      font-size: 144px; /* scaled so "raíz" fits portrait width */
+      font-size: 300px; /* large; overflows the side edges */
+      --wordBaseY: 400; /* dropped to the very bottom — only its top edge shows */
+    }
+    .rhero__intro {
+      top: calc(var(--nav-h) + 3rem); /* clear of the navbar */
+      bottom: auto;
     }
     .rhero__content {
       align-items: flex-start;
@@ -956,7 +988,7 @@ const pains = [
       display: none; /* hover-only affordance; no hover on a phone */
     }
     .rhero__intro-title {
-      font-size: 2.1rem;
+      font-size: 3.3rem;
     }
     /* Stack the button above its caption so the row never crowds. */
     .rhero__intro-row {
@@ -966,9 +998,10 @@ const pains = [
     }
   }
 
-  /* Short phones (landscape, SE-class): shave the intro so it can't ride over
-     the composition. */
-  @media (max-width: 640px) and (max-height: 700px) {
+  /* Short LANDSCAPE phones only: the intro now sits at the top in portrait, so it
+     no longer crowds the composition there (incl. 375×667 SE-class). In landscape
+     the stage is too short for it, so hide it just there. */
+  @media (max-height: 500px) and (orientation: landscape) {
     .rhero__intro {
       display: none;
     }

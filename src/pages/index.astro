@@ -3,20 +3,39 @@ import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import HeroRaiz from '@/components/HeroRaiz.astro';
 import Icon from '@/components/Icon.astro';
-import { whatsappLink, offers, steps } from '@/site';
+import { whatsappLink, offers } from '@/site';
 import { projects } from '@/projects';
 
 // Home page — section order per docs/company/website-architecture.md §4.
 // NOTE: `cases` and `proofSectors` below are PLACEHOLDERS marked for replacement
 // with Gerardo's real clients/projects before this page goes public.
-// `offers` and `steps` come from src/site.ts so /servicios can never drift out
-// of sync with this page.
+// `offers` comes from src/site.ts so /servicios can never drift out of sync
+// with this page.
 //
 // HERO (Direction: "the work is the hero", per design-taste-frontend / service kind):
 // the two device mockups are STAND-INS for real client sites — swap them for real
 // screenshots of Gerardo's projects before launch. Demo businesses are illustrative.
 
 const proofSectors = ['Sodas', 'Hoteles & cabinas', 'Tours', 'Salones', 'Talleres', 'Tiendas'];
+
+// The way we work — the three traits behind "El partner que te mereces".
+const pillars = [
+  {
+    n: '01',
+    title: 'Curiosidad para entender.',
+    body: 'Preguntamos, investigamos y aprendemos antes de recomendar. Tu contexto importa más que una receta.',
+  },
+  {
+    n: '02',
+    title: 'Ingenio para avanzar.',
+    body: 'Buscamos soluciones prácticas y costo-eficientes. La tecnología tiene que tener sentido para tu negocio.',
+  },
+  {
+    n: '03',
+    title: 'Compromiso para acompañar.',
+    body: 'Trabajamos con visión de largo plazo, trato cercano y disposición para resolver, no solo para entregar.',
+  },
+];
 
 const whys = [
   {
@@ -52,6 +71,28 @@ const whys = [
         <ul class="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-4 text-ink/70 font-medium">
           {proofSectors.map((s) => <li>{s}</li>)}
         </ul>
+      </div>
+    </section>
+
+    {/* 2.5 EL PARTNER QUE TE MERECES — how we work, before the proof. */}
+    <section class="container section section-divided">
+      <div>
+        <p class="text-sm font-medium text-accent uppercase tracking-wide">El partner que te mereces</p>
+        <h2 class="mt-4 max-w-2xl text-[clamp(2.5rem,5.5vw,4rem)] font-semibold leading-[1.02] tracking-[-0.025em]">
+          Que alguien entienda tu negocio cambia todo.
+        </h2>
+      </div>
+
+      <div class="grid gap-x-8 gap-y-10 sm:grid-cols-3 mt-14">
+        {
+          pillars.map((p) => (
+            <div class="border-t border-border pt-5">
+              <span class="font-display text-sm font-semibold text-accent">{p.n}</span>
+              <h3 class="text-xl mt-4">{p.title}</h3>
+              <p class="text-muted mt-3">{p.body}</p>
+            </div>
+          ))
+        }
       </div>
     </section>
 
@@ -114,22 +155,6 @@ const whys = [
       >
         Ver servicios y planes →
       </a>
-    </section>
-
-    {/* 6. CÓMO TRABAJAMOS */}
-    <section class="container section section-divided">
-      <h2 class="section-title">Simple, de principio a fin</h2>
-      <div class="grid gap-10 sm:grid-cols-3 mt-12">
-        {
-          steps.map((s) => (
-            <div>
-              <span class="font-display text-3xl text-accent">{s.n}</span>
-              <h3 class="text-xl mt-3">{s.title}</h3>
-              <p class="text-muted mt-2">{s.body}</p>
-            </div>
-          ))
-        }
-      </div>
     </section>
 
     {/* 7. POR QUÉ RAÍZ */}

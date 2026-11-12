@@ -16,31 +16,41 @@
 */
 
 @theme {
+  /* ── Monochrome system (v2, 2026-11-12) ──
+     Black + white + one warm accent. The page carries no color of its own; the
+     terracotta earns all its attention as the single accent, tied to the roots
+     hero. Near-black (not pure #000) and off-white keep large fills from buzzing.
+     All text/UI pairs verified ≥ 4.5:1 (WCAG AA). */
+
   /* Surfaces */
-  --color-canvas: #faf6f0; /* warm paper — page background */
-  --color-surface: #ffffff; /* cards */
-  --color-sand: #f1e9dd; /* subtle warm fill */
+  --color-canvas: #ffffff; /* white — page background */
+  --color-surface: #ffffff; /* cards (separated by border, not fill) */
+  --color-sand: #f3f2f0; /* subtle neutral fill */
 
   /* Text */
-  --color-ink: #1f1a17; /* warm near-black — headings & body */
-  --color-muted: #6b6259; /* warm gray — secondary text */
+  --color-ink: #161514; /* near-black — headings & body */
+  --color-muted: #6c6a67; /* neutral gray — secondary text */
 
-  /* Brand green (roots, trust, nature) */
-  --color-brand: #2f5d45;
-  --color-brand-strong: #244a37; /* hover/pressed */
+  /* "Brand" now carries the mono weight — repointed from green to ink so every
+     brand-colored element (kickers aside) reads black. Kept as a token so the
+     site can go back to a colored brand without touching every component. */
+  --color-brand: #161514;
+  --color-brand-strong: #000000; /* hover/pressed */
   --color-on-brand: #ffffff;
 
-  /* Terracotta accent (energy, earth) — primary CTAs */
-  --color-accent: #b8502e;
-  --color-accent-strong: #9c3f22; /* hover/pressed */
+  /* Terracotta accent — the one color on the page (dustier, less red than v1).
+     Primary CTAs, kickers, the docked nav. */
+  --color-accent: #a85c34;
+  --color-accent-strong: #8c4a28; /* hover/pressed */
   --color-on-accent: #ffffff;
 
-  /* WhatsApp brand green — the one third-party color we reproduce exactly. */
-  --color-whatsapp: #25d366;
-  --color-whatsapp-strong: #1da851;
+  /* WhatsApp semantic — kept for the token, but the UI renders WhatsApp actions
+     in the accent to hold the monochrome palette (see WhatsAppButton). */
+  --color-whatsapp: #a85c34;
+  --color-whatsapp-strong: #8c4a28;
 
   /* Lines */
-  --color-border: #e7ded2;
+  --color-border: #e6e4e1;
 
   /* Type */
   /* One typeface across the site: Inter for display and body alike. */
@@ -178,9 +188,10 @@ main.has-fixed-nav {
   line-height: 1.12;
   letter-spacing: -0.02em;
 }
-/* The small brand-green kicker above a section title. */
+/* The small kicker above a section title — the accent's cue that a section
+   is starting. (The one spot of color on an otherwise black-and-white page.) */
 .kicker {
-  color: var(--color-brand);
+  color: var(--color-accent);
   font-weight: 500;
 }
 
