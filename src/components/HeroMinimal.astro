@@ -28,13 +28,8 @@ const year = new Date().getFullYear();
       </ul>
     </div>
 
-    {/* Middle: breathing room with crosshair markers (fabrica's quiet texture) */}
-    <div class="hmin__field" aria-hidden="true">
-      <span class="hmin__plus"></span>
-      <span class="hmin__plus"></span>
-      <span class="hmin__plus"></span>
-      <span class="hmin__plus"></span>
-    </div>
+    {/* Middle: breathing room (empty spacer that pushes the bottom row down) */}
+    <div class="hmin__field" aria-hidden="true"></div>
 
     {/* Bottom row: two-tone tagline (left) + CTA & meta (right) */}
     <div class="hmin__bottom">
@@ -148,40 +143,11 @@ const year = new Date().getFullYear();
   }
 
   /* ── Middle field ────────────────────────────────────────────── */
+  /* Empty breathing room — grows to push the bottom row to the card's base. */
   .hmin__field {
-    position: relative;
     flex: 1 1 auto;
     min-height: clamp(2rem, 10vh, 6rem);
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    align-items: center;
     margin-block: clamp(1rem, 2.5vh, 2rem);
-  }
-  .hmin__plus {
-    position: relative;
-    width: 14px;
-    height: 14px;
-    opacity: 0.4;
-  }
-  .hmin__plus::before,
-  .hmin__plus::after {
-    content: '';
-    position: absolute;
-    background: rgba(255, 255, 255, 0.6);
-  }
-  .hmin__plus::before {
-    left: 50%;
-    top: 0;
-    width: 1px;
-    height: 100%;
-    transform: translateX(-50%);
-  }
-  .hmin__plus::after {
-    top: 50%;
-    left: 0;
-    height: 1px;
-    width: 100%;
-    transform: translateY(-50%);
   }
 
   /* ── Bottom row ──────────────────────────────────────────────── */
@@ -278,12 +244,6 @@ const year = new Date().getFullYear();
     .hmin__cta {
       width: 100%;
       justify-content: center;
-    }
-    .hmin__field {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .hmin__plus:last-child {
-      display: none;
     }
   }
 </style>
