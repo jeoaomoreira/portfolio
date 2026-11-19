@@ -1,0 +1,544 @@
+---
+// HeroMinimal — oversized-type hero (redesign-minimal branch).
+// Direction: fabrica®-style studio hero — a near-black block, a giant lowercase
+// "raíz" wordmark, the services stacked quietly top-right, a two-tone tagline
+// bottom-left and a single CTA bottom-right. The terracotta earns the only color
+// (the ® mark + the CTA). No scroll choreography — stillness is the point.
+import { whatsappLink } from '@/site';
+
+// The service lines shown top-right of the wordmark (categories, not plan names).
+const services = ['Diseño y desarrollo web', 'Presencia en Google', 'Mantenimiento continuo'];
+
+const year = new Date().getFullYear();
+---
+
+<section class="hmin rhero-min" data-hero aria-label="raız — estudio web en Guanacaste">
+  {/* Liquid Grid — a dot mesh that ripples like liquid under the cursor (canvas,
+      sits behind the content). Ported from the Originkit React component. */}
+  <canvas class="hmin__canvas" aria-hidden="true"></canvas>
+  <div class="hmin__inner">
+    {/* Top row: giant wordmark (left) + services list (right) */}
+    <div class="hmin__top">
+      <h1 class="hmin__mark">
+        <span class="hmin__word">raız<span class="hmin__reg">®</span></span>
+        <span class="hmin__kind">Estudio web</span>
+      </h1>
+      <ul class="hmin__services">
+        {services.map((s) => <li>{s}</li>)}
+      </ul>
+    </div>
+
+    {/* Middle: breathing room with crosshair markers (fabrica's quiet texture) */}
+    <div class="hmin__field" aria-hidden="true">
+      <span class="hmin__plus"></span>
+      <span class="hmin__plus"></span>
+      <span class="hmin__plus"></span>
+      <span class="hmin__plus"></span>
+    </div>
+
+    {/* Bottom row: two-tone tagline (left) + CTA & meta (right) */}
+    <div class="hmin__bottom">
+      <p class="hmin__tagline">
+        <span class="hmin__tagline-strong">Sitios web para negocios de Guanacaste.</span>
+        <span class="hmin__tagline-muted"
+          >Te ponemos en Google y cuidamos tu presencia cada mes.</span
+        >
+      </p>
+      <div class="hmin__cta-group">
+        <a href={whatsappLink} target="_blank" rel="noopener" class="hmin__cta">
+          Hablemos
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+        <p class="hmin__meta">© {year} raız · Guanacaste, Costa Rica</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hmin {
+    position: relative;
+    /* Inset dark card on the white page, like fabrica's hero block. */
+    margin: 0.75rem;
+    border-radius: clamp(20px, 2.5vw, 32px);
+    background: var(--color-ink); /* Deep Black block */
+    color: #fff;
+    /* Fit within the first screen (viewport minus the 64px nav, card margins and a
+       small buffer) so the whole hero shows without scrolling. */
+    min-height: calc(100svh - 64px - 2.5rem);
+    display: flex;
+    overflow: hidden;
+  }
+  /* The reactive canvas fills the card, behind everything, and never eats clicks. */
+  .hmin__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .hmin__inner {
+    position: relative;
+    z-index: 1; /* content rides above the grid */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* The content hugs the card's own padded edges (no centered container). */
+    padding: clamp(1.5rem, 4vw, 3.25rem) clamp(1.5rem, 4vw, 3.5rem)
+      clamp(1.5rem, 3.5vw, 2.75rem);
+  }
+
+  /* ── Top row ─────────────────────────────────────────────────── */
+  .hmin__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .hmin__mark {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 0.82;
+  }
+  .hmin__word {
+    position: relative;
+    font-family: var(--font-display);
+    font-weight: 500; /* lighter than before — less bold, more elegant */
+    letter-spacing: -0.035em;
+    /* The star of the page — as big as the viewport will allow. */
+    font-size: clamp(5rem, 23vw, 20rem);
+  }
+  .hmin__reg {
+    font-size: 0.16em;
+    font-weight: 600;
+    letter-spacing: 0;
+    vertical-align: top;
+    position: relative;
+    top: 0.35em;
+    margin-left: 0.08em;
+    color: var(--color-accent); /* the one spot of color */
+  }
+  .hmin__kind {
+    align-self: flex-end;
+    margin-top: 0.35rem;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-style: italic;
+    font-size: clamp(1rem, 2.4vw, 1.85rem);
+    letter-spacing: -0.01em;
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .hmin__services {
+    list-style: none;
+    margin: clamp(0.75rem, 2vh, 1.4rem) 0 0;
+    padding: 0;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  /* ── Middle field ────────────────────────────────────────────── */
+  .hmin__field {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: clamp(2rem, 10vh, 6rem);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    margin-block: clamp(1rem, 2.5vh, 2rem);
+  }
+  .hmin__plus {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    opacity: 0.4;
+  }
+  .hmin__plus::before,
+  .hmin__plus::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6);
+  }
+  .hmin__plus::before {
+    left: 50%;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    transform: translateX(-50%);
+  }
+  .hmin__plus::after {
+    top: 50%;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    transform: translateY(-50%);
+  }
+
+  /* ── Bottom row ──────────────────────────────────────────────── */
+  .hmin__bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem 3rem;
+    flex-wrap: wrap;
+  }
+  .hmin__tagline {
+    margin: 0;
+    max-width: 30rem;
+    font-size: clamp(1rem, 1.45vw, 1.2rem);
+    line-height: 1.45;
+  }
+  .hmin__tagline-strong {
+    color: #fff;
+    font-weight: 500;
+  }
+  .hmin__tagline-muted {
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .hmin__cta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+  .hmin__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-on-accent);
+    background: var(--color-accent);
+    transition:
+      background-color 180ms ease,
+      transform 160ms var(--ease-out-strong);
+  }
+  .hmin__cta:hover {
+    background: var(--color-accent-strong);
+  }
+  .hmin__cta:active {
+    transform: scale(0.97);
+  }
+  .hmin__cta svg {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+  .hmin__meta {
+    margin: 0;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  /* ── Tablet / phone ──────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .hmin__top {
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .hmin__services {
+      text-align: left;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.1rem;
+      margin-top: 0.25rem;
+    }
+    .hmin__services li {
+      position: relative;
+      padding-left: 1rem;
+    }
+    .hmin__services li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--color-accent);
+    }
+    .hmin__bottom {
+      align-items: flex-start;
+      gap: 1.75rem;
+    }
+    .hmin__cta-group {
+      width: 100%;
+    }
+    .hmin__cta {
+      width: 100%;
+      justify-content: center;
+    }
+    .hmin__field {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .hmin__plus:last-child {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Liquid Grid — vanilla port of the Originkit React component (the "dots"
+  // preset, with collide on). A faint grid of dots behaves like the surface of
+  // a pool: the cursor drops ripples that spread, reflect off the card edges
+  // and fade. Each dot rides its local wave height, brightening toward Kinetic
+  // Orange at the crests. Recoloured for Raíz — white dots on the Deep Black card.
+  const canvas = document.querySelector<HTMLCanvasElement>('.hmin__canvas');
+  const ctx = canvas?.getContext('2d');
+
+  if (canvas && ctx) {
+    // ── Settings (Originkit "dots" preset, recoloured for Raíz) ──
+    const DOT_COLOR = 'rgba(255, 255, 255, 0.28)'; // resting dots
+    const GLOW_COLOR = '#fb5321'; // Kinetic Orange — lights the wave crests
+    const CELL = 15; // dot spacing (px)
+    const DOT_RADIUS = 1; // dot radius (px)
+    const DROP_RADIUS = 57; // size of the ripple the cursor drops
+    const HOVER_STRENGTH = 0.6; // intensity 100% → 0.6
+    const CLICK_RIPPLE = true; // a click drops a bigger ripple
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ── Wave-simulation constants ──
+    const DAMPING = 0.97;
+    const WAVE_HEIGHT = 14;
+    const MAX_CELLS = 150;
+    const PAD = 20;
+    const BUCKETS = 4;
+    const GLOW_FULL = 4;
+    const TAU = Math.PI * 2;
+
+    // Parse "#rgb" / "#rrggbb" / "rgb[a](...)" → [r, g, b].
+    const parseColor = (color: string): [number, number, number] => {
+      const m = color.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+      if (m) return [+m[1]!, +m[2]!, +m[3]!];
+      const h = color.replace('#', '');
+      const f = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
+      const n = parseInt(f, 16) || 0;
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    };
+    const [GR, GG, GB] = parseColor(GLOW_COLOR);
+
+    // The ripple field: a down-sampled wave grid (cur/prev height buffers) with a
+    // PAD border. W/H are the CSS pixel size; rW/rH the sim size; gW/gH padded.
+    const rip = {
+      cur: new Float32Array(0),
+      prev: new Float32Array(0),
+      W: 0,
+      H: 0,
+      rW: 0,
+      rH: 0,
+      gW: 0,
+      gH: 0,
+      live: false,
+    };
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const W = Math.max(1, canvas.clientWidth);
+      const H = Math.max(1, canvas.clientHeight);
+      const pw = Math.round(W * dpr);
+      const ph = Math.round(H * dpr);
+      if (canvas.width !== pw || canvas.height !== ph) {
+        canvas.width = pw;
+        canvas.height = ph;
+      }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (rip.W === W && rip.H === H) return;
+      rip.W = W;
+      rip.H = H;
+      const scale = Math.min(1 / 3, MAX_CELLS / Math.max(W, H));
+      rip.rW = Math.max(4, Math.floor(W * scale));
+      rip.rH = Math.max(4, Math.floor(H * scale));
+      rip.gW = rip.rW + PAD * 2;
+      rip.gH = rip.rH + PAD * 2;
+      rip.cur = new Float32Array(rip.gW * rip.gH);
+      rip.prev = new Float32Array(rip.gW * rip.gH);
+      rip.live = true;
+    };
+    resize();
+
+    const ro = new ResizeObserver(() => resize());
+    ro.observe(canvas);
+
+    // Drop a rounded bump into the wave field at a CSS-pixel position.
+    const addDrop = (cx: number, cy: number, radius: number, strength: number) => {
+      const { W, H, rW, rH, gW, cur } = rip;
+      if (!W || !gW) return;
+      const gx = (cx / W) * rW + PAD;
+      const gy = (cy / H) * rH + PAD;
+      const gr = Math.max(1, radius * (rW / W));
+      const loX = PAD + 1;
+      const loY = PAD + 1;
+      const hiX = PAD + rW - 2;
+      const hiY = PAD + rH - 2;
+      for (let y = Math.max(loY, Math.floor(gy - gr)); y <= Math.min(hiY, Math.ceil(gy + gr)); y++)
+        for (let x = Math.max(loX, Math.floor(gx - gr)); x <= Math.min(hiX, Math.ceil(gx + gr)); x++) {
+          const d = Math.sqrt((x - gx) ** 2 + (y - gy) ** 2);
+          if (d < gr) cur[y * gW + x] += (1 - d / gr) ** 2 * strength;
+        }
+      rip.live = true;
+    };
+
+    // One wave-equation step over the bounded (colliding) interior.
+    const updateRipple = () => {
+      const { gW, rW, rH, cur, prev } = rip;
+      const x0 = PAD + 1;
+      const y0 = PAD + 1;
+      const x1 = PAD + rW - 1;
+      const y1 = PAD + rH - 1;
+      let energy = 0;
+      let n = 0;
+      for (let y = y0; y < y1; y++)
+        for (let x = x0; x < x1; x++) {
+          const i = y * gW + x;
+          const v =
+            ((cur[(y - 1) * gW + x]! +
+              cur[(y + 1) * gW + x]! +
+              cur[y * gW + x - 1]! +
+              cur[y * gW + x + 1]!) *
+              0.5 -
+              prev[i]!) *
+            DAMPING;
+          prev[i] = v;
+          energy += v * v;
+          n++;
+        }
+      // The just-written buffer (prev) becomes current; swap.
+      rip.cur = prev;
+      rip.prev = cur;
+      // Settle to rest once the surface is effectively still.
+      if (energy < n * 2e-6) {
+        rip.live = false;
+        rip.cur.fill(0);
+        rip.prev.fill(0);
+      }
+    };
+
+    // Bilinear sample of the wave height at a CSS-pixel position.
+    const sample = (cx: number, cy: number) => {
+      const { W, H, rW, rH, gW, gH, cur } = rip;
+      if (!rW || !W) return 0;
+      const gx = (cx / W) * rW + PAD;
+      const gy = (cy / H) * rH + PAD;
+      const ix = Math.floor(gx);
+      const iy = Math.floor(gy);
+      if (ix < 0 || ix >= gW - 1 || iy < 0 || iy >= gH - 1) return 0;
+      const fx = gx - ix;
+      const fy = gy - iy;
+      return (
+        cur[iy * gW + ix]! * (1 - fx) * (1 - fy) +
+        cur[iy * gW + ix + 1]! * fx * (1 - fy) +
+        cur[(iy + 1) * gW + ix]! * (1 - fx) * fy +
+        cur[(iy + 1) * gW + ix + 1]! * fx * fy
+      );
+    };
+
+    // Draw the dot mesh, each dot pushed by its local wave height and lit toward
+    // GLOW_COLOR at the crests. Background stays transparent (the card shows).
+    const drawFrame = () => {
+      const { W, H } = rip;
+      if (!W || !H) return;
+      ctx.clearRect(0, 0, W, H);
+
+      const base = new Path2D();
+      const glow: Path2D[] = [];
+      for (let b = 0; b < BUCKETS; b++) glow.push(new Path2D());
+
+      const numH = Math.ceil(H / CELL);
+      const offY = (H - numH * CELL) / 2;
+      const numV = Math.ceil(W / CELL);
+      const offX = (W - numV * CELL) / 2;
+
+      for (let iy = 0; iy <= numH; iy++) {
+        const baseY = offY + iy * CELL;
+        for (let ix = 0; ix <= numV; ix++) {
+          const cx = offX + ix * CELL;
+          const d = sample(cx, baseY) * WAVE_HEIGHT;
+          const cy = baseY + d;
+          base.moveTo(cx + DOT_RADIUS, cy);
+          base.arc(cx, cy, DOT_RADIUS, 0, TAU);
+
+          const k = Math.min(1, Math.abs(d) / GLOW_FULL);
+          if (k < 0.06) continue;
+          const bi = Math.min(BUCKETS - 1, Math.floor(k * BUCKETS));
+          const lit = DOT_RADIUS * (1 + k * 0.6);
+          glow[bi]!.moveTo(cx + lit, cy);
+          glow[bi]!.arc(cx, cy, lit, 0, TAU);
+        }
+      }
+
+      ctx.fillStyle = DOT_COLOR;
+      ctx.fill(base);
+      for (let i = 0; i < BUCKETS; i++) {
+        const t = (i + 1) / BUCKETS;
+        ctx.fillStyle =
+          t >= 1 ? `rgb(${GR},${GG},${GB})` : `rgba(${GR},${GG},${GB},${t.toFixed(2)})`;
+        ctx.fill(glow[i]!);
+      }
+    };
+
+    if (reduce) {
+      // Reduced motion: draw the mesh at rest, no ripples, no loop.
+      resize();
+      drawFrame();
+    } else {
+      let rect = canvas.getBoundingClientRect();
+      const toLocal = (clientX: number, clientY: number) => {
+        if (
+          clientX < rect.left ||
+          clientX > rect.right ||
+          clientY < rect.top ||
+          clientY > rect.bottom
+        )
+          return null;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+      };
+
+      let queued: { x: number; y: number } | null = null;
+      const onMove = (e: MouseEvent) => {
+        queued = toLocal(e.clientX, e.clientY);
+      };
+      const onClick = (e: MouseEvent) => {
+        if (!CLICK_RIPPLE) return;
+        const local = toLocal(e.clientX, e.clientY);
+        if (local) addDrop(local.x, local.y, DROP_RADIUS * 1.6, 2.5);
+      };
+      const onTouch = (e: TouchEvent) => {
+        const t = e.touches[0];
+        if (t) queued = toLocal(t.clientX, t.clientY);
+      };
+      window.addEventListener('mousemove', onMove, { passive: true });
+      window.addEventListener('click', onClick);
+      window.addEventListener('touchmove', onTouch, { passive: true });
+
+      const loop = () => {
+        rect = canvas.getBoundingClientRect();
+        const { W, H } = rip;
+        if (W > 0 && H > 0) {
+          if (queued) {
+            addDrop(queued.x, queued.y, DROP_RADIUS, HOVER_STRENGTH);
+            queued = null;
+          }
+          if (rip.live) {
+            updateRipple();
+            drawFrame();
+          }
+        }
+        requestAnimationFrame(loop);
+      };
+      drawFrame();
+      requestAnimationFrame(loop);
+    }
+  }
+</script>

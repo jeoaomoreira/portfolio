@@ -143,14 +143,9 @@ const story = [
 <style>
   /* ── Hero ──────────────────────────────────────────────────────── */
   .pd-hero {
-    /* A soft warm wash behind the title. Pull the band up under the fixed pill nav
-       (cancelling main's nav clearance) so no bare canvas strip shows behind it; the
-       padding then restores comfortable, viewport-scaled clearance below the pill. */
-    background:
-      radial-gradient(120% 90% at 85% -10%, color-mix(in srgb, var(--color-brand) 10%, transparent), transparent 60%),
-      linear-gradient(180deg, var(--color-sand), var(--color-canvas));
-    margin-top: calc(-1 * var(--nav-h));
-    padding-top: calc(var(--nav-h) + clamp(1.5rem, 4vw, 3rem));
+    /* A soft neutral wash behind the title. */
+    background: linear-gradient(180deg, var(--color-sand), var(--color-canvas));
+    padding-top: clamp(1.75rem, 4vw, 3rem);
     padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
   }
   .pd-back {
@@ -189,8 +184,8 @@ const story = [
   .pd-stage {
     margin-top: 0.5rem;
     border-radius: 24px;
-    background: radial-gradient(130% 120% at 50% 0%, #f5f4f6 0%, #eae8ec 68%, #e3e0e6 100%);
-    box-shadow: inset 0 0 0 1px rgba(31, 26, 23, 0.05);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-raised);
     padding: clamp(1.75rem, 5vw, 3.75rem) clamp(1rem, 4vw, 3rem);
     display: flex;
     flex-wrap: wrap;
@@ -253,8 +248,8 @@ const story = [
   /* ── Mobile panel (dark) ───────────────────────────────────────── */
   .pd-mobile {
     margin-top: 1rem;
-    /* deep bosque-green → near-black, the one dark surface on the site */
-    background: linear-gradient(165deg, #22402f 0%, #1a1613 70%);
+    /* Deep Black dark surface, matching the home hero card. */
+    background: var(--color-ink);
     color: #f3efe8;
     padding-block: 4rem;
     overflow: hidden;
