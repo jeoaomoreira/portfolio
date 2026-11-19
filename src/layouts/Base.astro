@@ -12,12 +12,6 @@ interface Props {
   noindex?: boolean;
   /** Hide the global nav entirely (rare). */
   hideNav?: boolean;
-  /**
-   * The page opens with a full-bleed hero behind the nav (the home page). The
-   * floating pill starts transparent over it and turns solid on scroll. Interior
-   * pages leave this false and get a solid pill with top spacing for the content.
-   */
-  overHero?: boolean;
 }
 
 const {
@@ -26,7 +20,6 @@ const {
   image = site.ogImage,
   noindex = false,
   hideNav = false,
-  overHero = false,
 } = Astro.props;
 
 const pageTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.tagline}`;
@@ -59,13 +52,13 @@ const ogImageUrl = new URL(image, Astro.site).href;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body class:list={[overHero && 'has-fixed-hero']}>
-    {!hideNav && <Nav overHero={overHero} />}
-    <main class:list={[!hideNav && !overHero && 'has-fixed-nav']}>
+  <body>
+    {!hideNav && <Nav />}
+    <main>
       <slot />
     </main>
     <Footer />

@@ -22,44 +22,63 @@
      hero. Near-black (not pure #000) and off-white keep large fills from buzzing.
      All text/UI pairs verified ≥ 4.5:1 (WCAG AA). */
 
-  /* Surfaces */
-  --color-canvas: #ffffff; /* white — page background */
-  --color-surface: #ffffff; /* cards (separated by border, not fill) */
-  --color-sand: #f3f2f0; /* subtle neutral fill */
+  /* ── Kinetic system (v3, 2026-11-19) ──
+     Black · white · neutral grey foundation with one Kinetic Orange accent.
+     Source: the shared design-system board (Color System / Typography System).
+     Deep black carries the dark surfaces (hero), orange carries every call to
+     action. All text/UI pairs verified ≥ 4.5:1 (WCAG AA) except large bold text
+     on orange, which is a deliberate brand choice held to the 3:1 large-text bar. */
+
+  /* Surfaces — soft-UI / neumorphic model: a very light grey canvas with pure
+     white elements lifted by soft shadows instead of borders. */
+  --color-canvas: #eceef2; /* very light grey — page background */
+  --color-surface: #ffffff; /* Pure White — cards & raised elements */
+  --color-sand: #e4e7ec; /* a touch deeper than canvas — recessed/placeholder fills */
+  --color-grey: #8a8d99; /* Neutral Grey — mid slate for secondary marks */
 
   /* Text */
-  --color-ink: #161514; /* near-black — headings & body */
-  --color-muted: #6c6a67; /* neutral gray — secondary text */
+  --color-ink: #0a0a0a; /* Deep Black — headings & body */
+  --color-muted: #6b6e76; /* slate grey — secondary text (AA on white) */
 
-  /* "Brand" now carries the mono weight — repointed from green to ink so every
-     brand-colored element (kickers aside) reads black. Kept as a token so the
-     site can go back to a colored brand without touching every component. */
-  --color-brand: #161514;
+  /* "Brand" carries the mono (deep-black) weight. Kept as a token so a future
+     recolor needs one edit, not a sweep through every component. */
+  --color-brand: #0a0a0a;
   --color-brand-strong: #000000; /* hover/pressed */
   --color-on-brand: #ffffff;
 
-  /* Terracotta accent — the one color on the page (dustier, less red than v1).
-     Primary CTAs, kickers, the docked nav. */
-  --color-accent: #a85c34;
-  --color-accent-strong: #8c4a28; /* hover/pressed */
+  /* Kinetic Orange — the one color on the page. Energy, motion, action.
+     Primary CTAs, kickers, the accent marks. */
+  --color-accent: #fb5321;
+  --color-accent-strong: #e2430f; /* hover/pressed */
   --color-on-accent: #ffffff;
 
-  /* WhatsApp semantic — kept for the token, but the UI renders WhatsApp actions
-     in the accent to hold the monochrome palette (see WhatsAppButton). */
-  --color-whatsapp: #a85c34;
-  --color-whatsapp-strong: #8c4a28;
+  /* WhatsApp semantic — rendered in the accent so the palette stays unified. */
+  --color-whatsapp: #fb5321;
+  --color-whatsapp-strong: #e2430f;
 
   /* Lines */
-  --color-border: #e6e4e1;
+  --color-border: #e4e4e7;
 
   /* Type */
-  /* One typeface across the site: Inter for display and body alike. */
-  --font-display: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  /* One typeface across the site: Geist for display and body alike. */
+  --font-display: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
   /* Shape */
   --radius: 0.875rem;
+
+  /* Neumorphic shadows — white elements raised off the light-grey canvas.
+     The dark tone is a grey tint of the canvas (not black) so it stays soft;
+     a white counter-shadow gives the extruded, borderless feel. */
+  --shadow-raised:
+    7px 7px 18px rgba(176, 182, 194, 0.55), -7px -7px 18px rgba(255, 255, 255, 0.95);
+  --shadow-raised-lg:
+    12px 12px 30px rgba(170, 176, 190, 0.6), -10px -10px 26px rgba(255, 255, 255, 1);
+  --shadow-soft:
+    4px 4px 12px rgba(176, 182, 194, 0.45), -4px -4px 12px rgba(255, 255, 255, 0.9);
+  --shadow-pressed:
+    inset 4px 4px 10px rgba(176, 182, 194, 0.55), inset -4px -4px 10px rgba(255, 255, 255, 0.9);
 
   /* Motion — one strong ease-out shared by CSS and GSAP (JS matches via CustomEase). */
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
@@ -170,17 +189,24 @@ main.has-fixed-nav {
     padding-block: 5rem;
   }
 }
-/* A section that is divided from the one above it by a rule. */
+/* Sections are separated by whitespace now, not rules (borderless system). */
 .section-divided {
-  border-top: 1px solid var(--color-border);
+  /* intentionally no border — kept as a hook for spacing tweaks */
 }
 
 /* Page heading — every top-level page title, one size ladder and one weight.
    (h1 inherits weight 600 from the base layer; no per-page font-extrabold.) */
-.page-title {
-  font-size: clamp(2rem, 6vw, 3rem);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+/* One display scale for every page/section opener — the big, confident title
+   impact (the "Proyectos." treatment) applied consistently across the site. */
+.page-title,
+.display-xl {
+  font-family: var(--font-display);
+  font-weight: 800;
+  /* One header size across the whole site (Proyectos' bento title is the only
+     smaller exception, because it has to fit inside the bento cell). */
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
 }
 /* Section heading inside a page. */
 .section-title {
@@ -222,12 +248,15 @@ main.has-fixed-nav {
   background: var(--color-accent-strong);
 }
 .btn-ghost {
-  background: transparent;
+  background: var(--color-surface);
   color: var(--color-ink);
-  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
 }
 .btn-ghost:hover {
-  background: var(--color-sand);
+  box-shadow: var(--shadow-raised);
+}
+.btn-ghost:active {
+  box-shadow: var(--shadow-pressed);
 }
 .btn-whatsapp {
   background: var(--color-whatsapp);
@@ -242,31 +271,29 @@ main.has-fixed-nav {
   min-height: 0;
 }
 
-/* Surface card — the bordered white panel used for offers, cases and swatches.
-   One class so every page gets the same radius, border and fill. */
+/* Surface card — a white, borderless panel raised off the grey canvas by a soft
+   neumorphic shadow. One class so every page gets the same radius, fill and lift. */
 .card-surface {
   border-radius: var(--radius);
-  border: 1px solid var(--color-border);
   background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
 }
 
 /* Card hover lift — only on real pointers (not touch). */
 .card {
   transition:
     transform 200ms var(--ease-out-strong),
-    border-color 200ms ease,
     box-shadow 200ms ease;
 }
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-brand);
-    box-shadow: 0 10px 28px -14px rgba(31, 26, 23, 0.22);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-raised-lg);
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .card {
-    transition: border-color 200ms ease;
+    transition: box-shadow 200ms ease;
   }
   .card:hover {
     transform: none;

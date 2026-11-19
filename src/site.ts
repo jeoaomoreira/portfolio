@@ -4,13 +4,13 @@
  */
 
 export const site = {
-  name: 'Raíz',
+  name: 'raız',
   tagline: 'Estudio web · Guanacaste',
   description:
-    'Raíz — estudio web para negocios de Guanacaste. Sitios web modernos, presencia en Google y mantenimiento continuo.',
+    'raız — estudio web para negocios de Guanacaste. Sitios web modernos, presencia en Google y mantenimiento continuo.',
   // Full international number, digits only (Costa Rica = 506). PLACEHOLDER:
   whatsappNumber: '50600000000',
-  whatsappMessage: 'Hola Raíz, me gustaría saber más sobre un sitio web para mi negocio.',
+  whatsappMessage: 'Hola raız, me gustaría saber más sobre un sitio web para mi negocio.',
   email: 'hola@raiz.cr', // PLACEHOLDER
   location: 'Tempate, Guanacaste, Costa Rica',
   // Default Open Graph image for link previews. TODO: create public/og.png (1200×630).
@@ -43,7 +43,7 @@ export const offers = [
     desc: 'Rediseño y mejora del sitio que ya tenés.',
   },
   {
-    name: 'Plan Raíz',
+    name: 'Plan raız',
     desc: 'Hospedaje, mantenimiento, cambios, SEO básico y soporte — todos los meses.',
   },
 ] as const;
@@ -67,6 +67,6 @@ export const steps = [
   {
     n: '03',
     title: 'Cuidamos',
-    body: 'Lo mantenemos al día con el Plan Raíz. No desaparecemos.',
+    body: 'Lo mantenemos al día con el Plan raız. No desaparecemos.',
   },
 ] as const;
