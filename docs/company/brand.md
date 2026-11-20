@@ -52,6 +52,27 @@ studio after either place: those names belong to living communities.
 
 **"Rooted locally, modern globally."** The audience is a Guanacaste small-business owner — a soda, hotel, or tour operator — not a design-savvy creative. So the look is **warm, grounded, and trustworthy**, with modern clarity and craft. We explicitly rejected the default "creative studio" aesthetic (dark, monochrome, animation-heavy): it would read as cold and intimidating to the ICP.
 
+## Mark
+
+A lowercase **n** with an exit stroke, followed by a dot — it reads as "n.", the
+wordmark's initial rather than a picture of anything. Drawn as a *stroked* path
+(22 units wide, round caps and joins), not an outline, so the weight stays even at
+every size and the curves keep one continuous thickness. The artwork measures
+130×106; the viewBox is `43 47 146 122`, i.e. **8 units of padding on every side**.
+That padding is load-bearing — drawn to its own tight box the round caps sit exactly
+on the viewport edge and the browser shaves them, so the mark renders with flat,
+chopped ends at small sizes. Keep the padding on any export.
+
+- Source: [public/logo.svg](../../public/logo.svg) · inline: `src/components/Logo.astro` (`<Logo />`)
+- `currentColor` throughout — it reverses to white on the dark hero card with no second file.
+- Favicon: white on `--color-ink`, 22/100 corner radius. Checked legible at 16px.
+
+**Lockup.** Mark left of the wordmark, `0.4em` gap, mark set to `0.82em` and
+vertically centred — the mark is an x-height glyph with no ascender, so at that
+size it reads as the wordmark's peer rather than as another letter. Used in the nav
+and the footer. Note the sizing rules need `:global()`: the `<svg>` is Logo.astro's
+root element and carries *that* component's Astro scope, not the parent's.
+
 ## Color
 
 Earth + growth + warmth — the colors of Guanacaste soil and nature. All text/UI pairs verified **≥ 4.5:1 (WCAG AA)**.
@@ -91,14 +112,11 @@ Earth + growth + warmth — the colors of Guanacaste soil and nature. All text/U
 
 ## Open / next
 
-- **No logo mark — wordmark only.** The old Raíz sprout glyph (`public/logo.svg`,
-  `src/components/Logo.astro`) has been deleted, and an "N" isotype was drawn and then
-  dropped. The identity is the Fraunces "nambuku" wordmark until a mark is chosen.
-- **`public/favicon.svg` is still the Astro starter icon** — purple, unrelated to
-  either brand. It predates the rename and needs replacing once there is a mark.
+- The hero deliberately keeps the wordmark alone — at that size the type *is* the
+  mark, and setting the glyph beside it would compete.
 - **`brand-book.html` and `raiz-brand-book.pdf` are stale.** Both still show the old
   sprout mark and its roots rationale, and still describe the studio as *Estudio web*.
-  Regenerate them once there is a mark; the PDF was never touched by the rename
+  Regenerate them against the mark above; the PDF was never touched by the rename
   and still reads "Raíz" throughout.
 - `public/og.png` social image still to design in these colors.
 - Dark mode: not built yet (tokens make it straightforward later).

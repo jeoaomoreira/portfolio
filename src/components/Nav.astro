@@ -1,5 +1,6 @@
 ---
 import { nav, whatsappLink, site } from '@/site';
+import Logo from './Logo.astro';
 
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
@@ -11,7 +12,8 @@ const isActive = (href: string) =>
 <header class="nav" data-nav>
   <div class="nav__inner container">
     <a href="/" class="nav__brand" aria-label={`${site.name} — inicio`}>
-      nambuku<span class="nav__reg">®</span>
+      <Logo class="nav__logo" />
+      <span>nambuku<span class="nav__reg">®</span></span>
     </a>
 
     <nav class="nav__links" aria-label="Navegación principal">
@@ -79,12 +81,27 @@ const isActive = (href: string) =>
   }
 
   .nav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.4rem;
     letter-spacing: -0.03em;
     color: var(--color-ink);
     line-height: 1;
+  }
+  /* The mark is an x-height glyph (no ascender), so it is set a little taller
+     than the wordmark's x-height to read as its peer rather than as a letter.
+     :global() because the <svg> is Logo.astro's root element and carries that
+     component's scope, not this one's — a plain .nav__logo never matches it.
+     aspect-ratio because the svg has no intrinsic width to derive from height. */
+  .nav__brand :global(.nav__logo) {
+    flex: none;
+    /* 1.09em of box = 0.95em of ink, since the viewBox is 8 units padded. */
+    height: 1.09em;
+    width: auto;
+    aspect-ratio: 146 / 122;
   }
   .nav__reg {
     font-size: 0.5em;

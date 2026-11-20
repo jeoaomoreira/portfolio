@@ -1,5 +1,6 @@
 ---
 import { nav, whatsappLink, site } from '@/site';
+import Logo from './Logo.astro';
 
 interface Props {
   /**
@@ -20,7 +21,8 @@ const year = new Date().getFullYear();
   <div class="container site-footer__grid">
     <div>
       <p class="site-footer__mark">
-        nambuku<span class="site-footer__reg">®</span>
+        <Logo class="site-footer__logo" />
+        <span>nambuku<span class="site-footer__reg">®</span></span>
       </p>
       <p class="site-footer__sub">{site.tagline}</p>
       <p class="site-footer__sub">{site.location}</p>
@@ -63,11 +65,22 @@ const year = new Date().getFullYear();
   }
   .site-footer__mark {
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.5rem;
     letter-spacing: -0.025em;
     color: var(--footer-strong);
+  }
+  /* :global() + aspect-ratio: see the same rule in Nav.astro. */
+  .site-footer__mark :global(.site-footer__logo) {
+    flex: none;
+    /* 1.09em of box = 0.95em of ink, since the viewBox is 8 units padded. */
+    height: 1.09em;
+    width: auto;
+    aspect-ratio: 146 / 122;
   }
   .site-footer__reg {
     font-size: 1rem;

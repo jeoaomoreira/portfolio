@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="43 47 146 122" width="146" height="122" role="img" aria-label="nambuku">
+  <title>nambuku</title>
+  <!-- viewBox carries 8 units of padding on every side. The artwork is unchanged:
+       with the original 51 55 130 106 the round caps and the dot sat exactly ON the
+       viewport edge, so the browser shaved the outer antialiased pixel and the mark
+       rendered with flat, chopped ends at small sizes. -->
+  <path d="M62,150 L62,96 A30,30 0 0 1 122,96 L122,128 A22,22 0 0 0 144,150" fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="170" cy="150" r="11" fill="currentColor"/>
+</svg>
