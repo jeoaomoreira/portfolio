@@ -1,9 +1,9 @@
 {
-  "name": "raiz",
+  "name": "nambuku",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Raíz — modern web studio for Guanacaste businesses",
+  "description": "Nambuku — modern web studio for Guanacaste businesses",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

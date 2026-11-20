@@ -1,17 +1,17 @@
 /**
- * Central site config for Raíz. Edit these values in one place.
+ * Central site config for Nambuku. Edit these values in one place.
  * TODO (before launch): fill in the real WhatsApp number, email, and domain.
  */
 
 export const site = {
-  name: 'raız',
-  tagline: 'Estudio web · Guanacaste',
+  name: 'nambuku',
+  tagline: 'Estudio tecnológico · Guanacaste',
   description:
-    'raız — estudio web para negocios de Guanacaste. Sitios web modernos, presencia en Google y mantenimiento continuo.',
+    'nambuku — estudio tecnológico para negocios de Guanacaste. Sitios web modernos, presencia en Google y mantenimiento continuo.',
   // Full international number, digits only (Costa Rica = 506). PLACEHOLDER:
   whatsappNumber: '50600000000',
-  whatsappMessage: 'Hola raız, me gustaría saber más sobre un sitio web para mi negocio.',
-  email: 'hola@raiz.cr', // PLACEHOLDER
+  whatsappMessage: 'Hola nambuku, me gustaría saber más sobre un sitio web para mi negocio.',
+  email: 'hola@nambuku.com', // PLACEHOLDER
   location: 'Tempate, Guanacaste, Costa Rica',
   // Default Open Graph image for link previews. TODO: create public/og.png (1200×630).
   ogImage: '/og.png',
@@ -43,14 +43,14 @@ export const offers = [
     desc: 'Rediseño y mejora del sitio que ya tenés.',
   },
   {
-    name: 'Plan raız',
+    name: 'Plan nambuku',
     desc: 'Hospedaje, mantenimiento, cambios, SEO básico y soporte — todos los meses.',
   },
 ] as const;
 
 /**
  * How we work. Read by the home page's "Simple, de principio a fin" section.
- * (The hero's right-hand "Plan Raíz" block carries its own shorter copy — it is
+ * (The hero's right-hand "Plan Nambuku" block carries its own shorter copy — it is
  * a teaser for /servicios, not a restatement of these three steps.)
  */
 export const steps = [
@@ -67,6 +67,6 @@ export const steps = [
   {
     n: '03',
     title: 'Cuidamos',
-    body: 'Lo mantenemos al día con el Plan raız. No desaparecemos.',
+    body: 'Lo mantenemos al día con el Plan nambuku. No desaparecemos.',
   },
 ] as const;
