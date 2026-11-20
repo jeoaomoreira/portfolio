@@ -1,12 +1,14 @@
 @import 'tailwindcss';
 
 /*
-  Nambuku design system — v1 (2026-11-07, standardized 2026-11-10).
+  Nambuku design system — v3 "Kinetic" (2026-11-19).
   Rationale + usage: docs/company/brand.md
-  Palette: warm cream canvas · deep "bosque" green (roots/trust) ·
-  terracotta (energy/Guanacaste earth, used for CTAs) · warm near-black ink.
-  All text/UI pairs verified ≥ 4.5:1 (WCAG AA).
-  Type: Inter across the board — display and body/UI.
+  Palette: Pure White · Deep Black · Neutral Grey, with one Kinetic Orange
+  accent. Soft-UI surfaces: a light grey canvas with white elements lifted by
+  shadows instead of borders.
+  All text/UI pairs verified ≥ 4.5:1 (WCAG AA), except large bold text on
+  orange, held to the 3:1 large-text bar as a deliberate brand choice.
+  Type: Geist across the board — display and body/UI; Geist Mono for code.
 
   ── Breakpoints (one ladder for the whole site; matches Tailwind's) ──
     sm   640px   phone → small tablet. Below it: the compact/stacked layouts.

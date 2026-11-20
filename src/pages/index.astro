@@ -113,14 +113,20 @@ const techLayout = [
 // Acompañamiento — bar heights for the "ongoing activity / monitoring" row.
 const monBars = [14, 20, 11, 18, 24, 15, 21, 13, 19, 25, 16, 22];
 
-// Proyectos bento — the first cell is the real featured project; the rest are
-// placeholders for the next 2–3 projects (swap each for a real one as it ships).
+// Proyectos bento — the first cell is the real featured project. Any further
+// real projects fill the two small slots next; whatever is left over falls back
+// to a "coming soon" placeholder (so the grid stays full as projects ship).
 const featured = projects[0];
-const placeholders = [
-  { n: '02', tag: 'En proceso', title: 'Nuevo proyecto en camino' },
-  { n: '03', tag: 'Próximamente', title: 'Sitio en construcción' },
-  { n: '04', tag: 'Próximamente', title: 'Tu negocio aquí' },
+const moreProjects = projects.slice(1);
+const smallPlaceholders = [
+  { tag: 'En proceso', title: 'Nuevo proyecto en camino' },
+  { tag: 'Próximamente', title: 'Sitio en construcción' },
 ];
+const smallSlots = [
+  ...moreProjects.map((project) => ({ kind: 'project' as const, project })),
+  ...smallPlaceholders.map((ph) => ({ kind: 'placeholder' as const, ...ph })),
+].slice(0, 2);
+const widePlaceholder = { n: '04', tag: 'Próximamente', title: 'Tu negocio aquí' };
 ---
 
 <Base footerTone="accent">
@@ -212,28 +218,52 @@ const placeholders = [
           </span>
         </a>
 
-        {/* Placeholder project slots (swap each for a real project as it ships) */}
+        {/* Small slots — real projects first, then "coming soon" placeholders */}
         {
-          placeholders.slice(0, 2).map((p) => (
-            <div class={`bento__cell bento__ph bento__ph--${p.n}`}>
-              <span class="bento__num" aria-hidden="true">{p.n}</span>
-              <div class="bento__ph-foot">
-                <span class="bento__tag bento__tag--ghost">{p.tag}</span>
-                <h3 class="bento__ph-title">{p.title}</h3>
+          smallSlots.map((slot, i) => {
+            const n = String(i + 2).padStart(2, '0'); // 02, 03
+            return slot.kind === 'project' ? (
+              <a href={`/proyectos/${slot.project.slug}`} class={`bento__cell bento__proj bento__ph--${n}`}>
+                <Image
+                  src={slot.project.cover}
+                  alt={slot.project.coverAlt}
+                  widths={[300, 480, 640]}
+                  sizes="(min-width: 900px) 23vw, 92vw"
+                  format="webp"
+                  quality={72}
+                  loading="lazy"
+                  decoding="async"
+                  class="bento__proj-img"
+                />
+                <div class="bento__proj-info">
+                  <span class="bento__tag">{slot.project.sector}</span>
+                  <h3 class="bento__proj-name">{slot.project.name}</h3>
+                </div>
+                <span class="bento__arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+                </span>
+              </a>
+            ) : (
+              <div class={`bento__cell bento__ph bento__ph--${n}`}>
+                <span class="bento__num" aria-hidden="true">{n}</span>
+                <div class="bento__ph-foot">
+                  <span class="bento__tag bento__tag--ghost">{slot.tag}</span>
+                  <h3 class="bento__ph-title">{slot.title}</h3>
+                </div>
+                <span class="bento__arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+                </span>
               </div>
-              <span class="bento__arrow" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
-              </span>
-            </div>
-          ))
+            );
+          })
         }
 
         {/* Wide placeholder */}
         <div class="bento__cell bento__ph bento__ph--wide">
-          <span class="bento__num" aria-hidden="true">{placeholders[2].n}</span>
+          <span class="bento__num" aria-hidden="true">{widePlaceholder.n}</span>
           <div class="bento__ph-foot">
-            <span class="bento__tag bento__tag--ghost">{placeholders[2].tag}</span>
-            <h3 class="bento__ph-title">{placeholders[2].title}</h3>
+            <span class="bento__tag bento__tag--ghost">{widePlaceholder.tag}</span>
+            <h3 class="bento__ph-title">{widePlaceholder.title}</h3>
           </div>
           <span class="bento__arrow" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
@@ -687,6 +717,48 @@ const placeholders = [
     font-size: 0.88rem;
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.72);
+  }
+
+  /* Real project in a small slot — full-bleed cover + overlay, like the
+     featured cell but compact. */
+  .bento__proj {
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .bento__proj-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms var(--ease-out-strong);
+  }
+  .bento__proj::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(8, 9, 11, 0.92) 0%,
+      rgba(8, 9, 11, 0.32) 55%,
+      transparent 82%
+    );
+  }
+  .bento__proj:hover .bento__proj-img {
+    transform: scale(1.04);
+  }
+  .bento__proj-info {
+    position: relative;
+    z-index: 1;
+    padding: clamp(1rem, 1.6vw, 1.35rem);
+  }
+  .bento__proj-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: -0.015em;
+    margin: 0.5rem 0 0;
+    color: #fff;
   }
 
   /* Placeholder project cells. */
