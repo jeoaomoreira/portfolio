@@ -99,6 +99,18 @@
   html:not(.lenis) {
     scroll-behavior: smooth;
   }
+  html {
+    /* iOS inflates text in some layouts after the phone is rotated, which
+       leaves a section looking blown up until the page is reloaded. Pinning
+       the adjustment to 100% keeps our own type scale authoritative without
+       stopping anyone from pinch-zooming.
+       (Do NOT reach for `overflow-x: clip/hidden` on this element to contain a
+       wide child — on the root it propagates to the viewport and the sticky
+       nav stops sticking. Clip the offending child instead; body already
+       carries the horizontal guard.) */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
   body {
     margin: 0;
     background: var(--color-canvas);
