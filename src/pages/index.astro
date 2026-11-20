@@ -1165,30 +1165,50 @@ const placeholders = [
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
+  const mid = document.querySelector<HTMLElement>('.why__item--mid');
   const tiles = gsap.utils.toArray<HTMLElement>('.why__item--mid .tech__inner');
-  if (tiles.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    gsap.set(tiles, { opacity: 0 });
-    ScrollTrigger.create({
-      trigger: '.why__item--mid',
-      start: 'top 82%',
-      once: true,
-      onEnter: () => {
-        tiles.forEach((el, i) => {
-          const r = parseFloat(el.dataset.r || '0');
-          gsap.fromTo(
-            el,
-            { yPercent: -460, rotation: 0, opacity: 0 },
-            {
-              yPercent: 0,
-              rotation: r,
-              opacity: 1,
-              duration: 0.9,
-              ease: 'bounce.out',
-              delay: i * 0.055,
-            },
-          );
-        });
-      },
-    });
+
+  if (mid && tiles.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const START = 0.82; // the trigger line, as a fraction of the viewport
+
+    const drop = () => {
+      tiles.forEach((el, i) => {
+        const r = parseFloat(el.dataset.r || '0');
+        gsap.fromTo(
+          el,
+          { yPercent: -460, rotation: 0, opacity: 0 },
+          {
+            yPercent: 0,
+            rotation: r,
+            opacity: 1,
+            duration: 0.9,
+            ease: 'bounce.out',
+            delay: i * 0.055,
+          },
+        );
+      });
+    };
+
+    // Only hide the tiles if the drop can still be seen. The card used to come
+    // back as an empty white box after the phone slept or was rotated: the
+    // tiles were hidden the moment the script ran, and if the page then came
+    // back already scrolled onto this section, the scroll trigger had no edge
+    // left to cross and never revealed them. Hiding only what is still below
+    // the trigger line makes "visible" the resting state, so a trigger that
+    // never fires costs the animation, not the content.
+    if (mid.getBoundingClientRect().top > window.innerHeight * START) {
+      gsap.set(tiles, { opacity: 0 });
+      ScrollTrigger.create({
+        trigger: mid,
+        start: `top ${START * 100}%`,
+        once: true,
+        onEnter: drop,
+        // Last line of defence: if a refresh (rotation, bfcache restore) ever
+        // leaves the trigger behind us without onEnter having run, show them.
+        onRefresh: (self) => {
+          if (self.progress > 0 && gsap.getProperty(tiles[0]!, 'opacity') === 0) drop();
+        },
+      });
+    }
   }
 </script>

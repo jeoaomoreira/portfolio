@@ -92,6 +92,24 @@ const ogImageUrl = new URL(image, Astro.site).href;
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add((time) => lenis.raf(time * 1000)); // seconds → ms
         gsap.ticker.lagSmoothing(0);
+
+        // Waking the phone or rotating it hands the page back with stale
+        // measurements: a bfcache restore runs no layout pass of its own, and
+        // an orientation change reports the new size before the browser has
+        // settled on it. Both leave Lenis and ScrollTrigger working from the
+        // old numbers, so scroll-driven sections never trigger. Re-measure on
+        // each.
+        const remeasure = () => {
+          lenis.resize();
+          ScrollTrigger.refresh();
+        };
+        window.addEventListener('pageshow', (e) => {
+          if (e.persisted) remeasure();
+        });
+        window.addEventListener('orientationchange', () => {
+          // Give the browser a frame or two to finish rotating first.
+          setTimeout(remeasure, 200);
+        });
       }
     </script>
   </body>
