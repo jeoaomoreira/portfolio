@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import HeroMinimal from '@/components/HeroMinimal.astro';
+import ContactCard from '@/components/ContactCard.astro';
 import Icon from '@/components/Icon.astro';
 import { whatsappLink } from '@/site';
 import { projects } from '@/projects';
@@ -122,7 +123,7 @@ const placeholders = [
 ];
 ---
 
-<Base>
+<Base footerTone="accent">
   <HeroMinimal />
 
   {/* Everything below the hero rides in one opaque layer that scrolls up over the
@@ -393,18 +394,26 @@ const placeholders = [
       </div>
     </section>
 
-    {/* 8. CTA FINAL */}
-    <section class="container pb-24">
-      <div class="rounded-[var(--radius)] bg-brand text-on-brand px-6 py-14 sm:px-12 sm:py-20 text-center">
-        <h2 class="section-title max-w-2xl mx-auto text-white">
-          ¿Listo para que te encuentren y te elijan?
-        </h2>
-        <p class="mt-4 text-white/80 max-w-lg mx-auto">
-          Conversemos sin compromiso sobre la presencia digital de tu negocio.
-        </p>
-        <a href={whatsappLink} target="_blank" rel="noopener" class="btn btn-accent mt-8">
-          Hablemos por WhatsApp
-        </a>
+    {/* 8. CTA FINAL — full-bleed Kinetic Orange band that runs into the footer.
+         Same edge-to-edge treatment as the Proyectos section, inverted: orange
+         field, white display type, white button, white contact card. */}
+    <section class="section cta-band">
+      <div class="container">
+        <h2 class="cta-band__title">¿Listo para que te encuentren y te elijan?</h2>
+
+        <div class="cta-band__foot">
+          <div class="cta-band__copy">
+            <p class="cta-band__lead">
+              Conversemos sin compromiso sobre la presencia digital de tu negocio.
+            </p>
+            <a href={whatsappLink} target="_blank" rel="noopener" class="cta-band__btn">
+              Hablemos por WhatsApp
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+            </a>
+          </div>
+
+          <ContactCard class="cta-band__card" />
+        </div>
       </div>
     </section>
   </div>
@@ -1045,6 +1054,107 @@ const placeholders = [
   @media (max-width: 759px) {
     .why__bar {
       align-self: flex-start;
+    }
+  }
+
+  /* ── CTA final — full-bleed Kinetic Orange band ───────────────────────
+     Edge to edge like the Proyectos panel, but orange, and it runs straight
+     into the footer (Base renders the footer in the same tone, so there is no
+     seam). Type is deep black on the orange — 6.1:1, well clear of AA at every
+     size, unlike white's 3.2:1. The one white element is the button. */
+  .cta-band {
+    background: var(--color-accent);
+    /* No gap between the band and the footer — they read as one orange field. */
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .cta-band__title {
+    margin: 0;
+    max-width: 16ch;
+    font-family: var(--font-display);
+    font-weight: 800;
+    /* Standard header size — same ladder as "Proyectos" and "Por qué raız". */
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    color: var(--color-ink);
+  }
+  .cta-band__foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(2rem, 5vw, 4rem);
+    flex-wrap: wrap;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .cta-band__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.75rem;
+    max-width: 30rem;
+  }
+  .cta-band__lead {
+    margin: 0;
+    font-size: clamp(1.2rem, 1.7vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  /* White pill on the orange — ink label, maximum contrast. */
+  .cta-band__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.75rem;
+    min-height: 48px;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--color-ink);
+    font-weight: 600;
+    font-size: 1rem;
+    transition:
+      background-color 180ms ease,
+      transform 160ms var(--ease-out-strong);
+  }
+  .cta-band__btn:hover {
+    background: var(--color-ink);
+    color: #fff;
+  }
+  .cta-band__btn:active {
+    transform: scale(0.97);
+  }
+  .cta-band__btn svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    transition: transform 200ms var(--ease-out-strong);
+  }
+  .cta-band__btn:hover svg {
+    transform: translateX(3px);
+  }
+  .cta-band__card {
+    flex: 0 1 26rem;
+  }
+
+  @media (max-width: 900px) {
+    .cta-band__foot {
+      align-items: flex-start;
+    }
+    .cta-band__card {
+      flex: 1 1 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-band__btn,
+    .cta-band__btn svg {
+      transition: background-color 180ms ease;
+    }
+    .cta-band__btn:active {
+      transform: none;
+    }
+    .cta-band__btn:hover svg {
+      transform: none;
     }
   }
 </style>

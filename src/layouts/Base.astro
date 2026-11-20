@@ -12,6 +12,8 @@ interface Props {
   noindex?: boolean;
   /** Hide the global nav entirely (rare). */
   hideNav?: boolean;
+  /** Footer colour tone — "accent" lets a page's orange run into the footer. */
+  footerTone?: 'default' | 'accent';
 }
 
 const {
@@ -20,6 +22,7 @@ const {
   image = site.ogImage,
   noindex = false,
   hideNav = false,
+  footerTone = 'default',
 } = Astro.props;
 
 const pageTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.tagline}`;
@@ -61,7 +64,7 @@ const ogImageUrl = new URL(image, Astro.site).href;
     <main>
       <slot />
     </main>
-    <Footer />
+    <Footer tone={footerTone} />
     {/* WhatsApp floating button hidden for now. */}
     {/* <WhatsAppButton /> */}
 
