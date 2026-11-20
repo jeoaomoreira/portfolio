@@ -1,0 +1,35 @@
+---
+/**
+ * Nambuku mark — a lowercase "n" with an exit stroke, followed by a dot.
+ * Drawn as a stroked path (not an outline), so weight stays even at any size.
+ * The viewBox carries 8 units of padding: with the artwork's own tight box the
+ * round caps sat on the viewport edge and rendered chopped at small sizes.
+ * Source of truth: public/logo.svg. Inlined here so it inherits `currentColor`
+ * and can be animated/recolored via CSS. Pass a class for sizing/color.
+ */
+interface Props {
+  class?: string;
+  title?: string;
+}
+const { class: className, title } = Astro.props;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="43 47 146 122"
+  fill="none"
+  role={title ? 'img' : undefined}
+  aria-hidden={title ? undefined : 'true'}
+  class={className}
+>
+  {title && <title>{title}</title>}
+  <path
+    d="M62,150 L62,96 A30,30 0 0 1 122,96 L122,128 A22,22 0 0 0 144,150"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="22"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="170" cy="150" r="11" fill="currentColor" />
+</svg>
