@@ -1,7 +1,7 @@
 ---
 // HeroMinimal — oversized-type hero (redesign-minimal branch).
 // Direction: fabrica®-style studio hero — a near-black block, a giant lowercase
-// "raíz" wordmark, the services stacked quietly top-right, a two-tone tagline
+// "nambuku" wordmark, the services stacked quietly top-right, a two-tone tagline
 // bottom-left and a single CTA bottom-right. The terracotta earns the only color
 // (the ® mark + the CTA). No scroll choreography — stillness is the point.
 import { whatsappLink } from '@/site';
@@ -10,7 +10,7 @@ import { whatsappLink } from '@/site';
 const services = ['Diseño y desarrollo web', 'Presencia en Google', 'Mantenimiento continuo'];
 ---
 
-<section class="hmin rhero-min" data-hero aria-label="raız — estudio web en Guanacaste">
+<section class="hmin rhero-min" data-hero aria-label="nambuku — estudio tecnológico en Guanacaste">
   {/* Liquid Grid — a dot mesh that ripples like liquid under the cursor (canvas,
       sits behind the content). Ported from the Originkit React component. */}
   <canvas class="hmin__canvas" aria-hidden="true"></canvas>
@@ -18,8 +18,10 @@ const services = ['Diseño y desarrollo web', 'Presencia en Google', 'Mantenimie
     {/* Top row: giant wordmark (left) + services list (right) */}
     <div class="hmin__top">
       <h1 class="hmin__mark">
-        <span class="hmin__word">raız<span class="hmin__reg">®</span></span>
-        <span class="hmin__kind">Estudio web</span>
+        <span class="hmin__lockup">
+          <span class="hmin__word">nambuku<span class="hmin__reg">®</span></span>
+          <span class="hmin__kind">Estudio tecnológico</span>
+        </span>
       </h1>
       <ul class="hmin__services">
         {services.map((s) => <li>{s}</li>)}
@@ -86,25 +88,44 @@ const services = ['Diseño y desarrollo web', 'Presencia en Google', 'Mantenimie
 
   /* ── Top row ─────────────────────────────────────────────────── */
   .hmin__top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    /* Grid, not flex-wrap: the services column keeps its natural width and the
+       wordmark takes whatever is left, so the mark can never push or wrap it. */
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
     gap: 2rem;
-    flex-wrap: wrap;
   }
   .hmin__mark {
     margin: 0;
     display: flex;
-    flex-direction: column;
+    align-items: flex-start;
     line-height: 0.82;
+    min-width: 0;
+    /* The wordmark sizes against THIS column, not the viewport. */
+    container-type: inline-size;
+    /* One source of truth for the wordmark size — .hmin__kind derives its
+       optical alignment from it, so the two can never drift apart. */
+    --word-size: min(22cqw, 20rem);
+  }
+  /* Shrink-wraps to the wordmark, so the kind can align to the word's own
+     right edge instead of the (wider) grid column's. */
+  .hmin__lockup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: max-content;
+    max-width: 100%;
   }
   .hmin__word {
     position: relative;
     font-family: var(--font-display);
     font-weight: 500; /* lighter than before — less bold, more elegant */
     letter-spacing: -0.035em;
-    /* The star of the page — as big as the viewport will allow. */
-    font-size: clamp(5rem, 23vw, 20rem);
+    /* The star of the page — as big as its column will allow. "nambuku"
+       renders about 4.2× its font-size wide, so 22cqw of the mark column fills
+       it with a hair to spare, at every width, with no overflow. Viewport units
+       could not do this: they ignore the services column beside the mark. */
+    font-size: var(--word-size);
   }
   .hmin__reg {
     font-size: 0.16em;
@@ -117,7 +138,10 @@ const services = ['Diseño y desarrollo web', 'Presencia en Google', 'Mantenimie
     color: var(--color-accent); /* the one spot of color */
   }
   .hmin__kind {
-    align-self: flex-end;
+    /* Flush with the last "u" of the wordmark. The lockup aligns it to the
+       word's right edge, which includes the ®; this pulls it back by the ®'s
+       advance (0.116× the wordmark's size) so it lands on the letter instead. */
+    margin-right: calc(var(--word-size) * 0.116);
     margin-top: 0.35rem;
     font-family: var(--font-display);
     font-weight: 500;
@@ -201,7 +225,7 @@ const services = ['Diseño y desarrollo web', 'Presencia en Google', 'Mantenimie
   /* ── Tablet / phone ──────────────────────────────────────────── */
   @media (max-width: 768px) {
     .hmin__top {
-      flex-direction: column;
+      grid-template-columns: 1fr;
       gap: 1.25rem;
     }
     .hmin__services {
@@ -244,12 +268,12 @@ const services = ['Diseño y desarrollo web', 'Presencia en Google', 'Mantenimie
   // preset, with collide on). A faint grid of dots behaves like the surface of
   // a pool: the cursor drops ripples that spread, reflect off the card edges
   // and fade. Each dot rides its local wave height, brightening toward Kinetic
-  // Orange at the crests. Recoloured for Raíz — white dots on the Deep Black card.
+  // Orange at the crests. Recoloured for Nambuku — white dots on the Deep Black card.
   const canvas = document.querySelector<HTMLCanvasElement>('.hmin__canvas');
   const ctx = canvas?.getContext('2d');
 
   if (canvas && ctx) {
-    // ── Settings (Originkit "dots" preset, recoloured for Raíz) ──
+    // ── Settings (Originkit "dots" preset, recoloured for Nambuku) ──
     const DOT_COLOR = 'rgba(255, 255, 255, 0.28)'; // resting dots
     const GLOW_COLOR = '#fb5321'; // Kinetic Orange — lights the wave crests
     const CELL = 15; // dot spacing (px)

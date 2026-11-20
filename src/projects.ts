@@ -8,7 +8,7 @@ import geMobileCatalogo from '@/assets/work/good-energy/mobile-catalogo.jpg';
 import geMobileProducto from '@/assets/work/good-energy/mobile-producto.jpg';
 
 /**
- * Proyectos reales de Raíz. Fuente única: la home (sección "Casos destacados"),
+ * Proyectos reales de Nambuku. Fuente única: la home (sección "Casos destacados"),
  * /proyectos (la grilla) y /proyectos/[slug] (la página de detalle) leen de aquí,
  * así que un proyecto se agrega una sola vez.
  *

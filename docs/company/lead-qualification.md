@@ -1,11 +1,11 @@
-# Raíz — Lead Qualification
+# Nambuku — Lead Qualification
 
 > Who counts as a lead worth our time, and who doesn't. Feeds the "land first clients" goal.
 > _Last updated: 2026-11-12 · See also: [foundations.md](./foundations.md), [website-architecture.md](./website-architecture.md), [brand.md](./brand.md)_
 
 ## 1. Purpose
 
-The website does **two jobs**: it's our **marketing** and our **portfolio / presentation base**. A lead should discover Raíz through the site *before or during* the conversation — not only through a cold proposal. The site is where proof lives; the proposal just points to it.
+The website does **two jobs**: it's our **marketing** and our **portfolio / presentation base**. A lead should discover Nambuku through the site *before or during* the conversation — not only through a cold proposal. The site is where proof lives; the proposal just points to it.
 
 What's missing is the fundamental piece: **lead generation.** We have the offer (foundations §7) and the showcase (website-architecture §1). We don't yet have a reliable way to find the right people and start the conversation.
 
@@ -35,7 +35,7 @@ A lead is **qualified only if it passes all 4.** Missing one = not qualified for
 
 | # | Test | Passes when… |
 |---|------|--------------|
-| 1 | **Fit** | Owner-run local business in the Raíz area — **Tempate, Huacas, Flamingo, Tamarindo, Hacienda Pinilla** — in a category where people find businesses on Google: **food, lodging, tours/transport, health, beauty, trades/maintenance.** |
+| 1 | **Fit** | Owner-run local business in the Nambuku area — **Tempate, Huacas, Flamingo, Tamarindo, Hacienda Pinilla** — in a category where people find businesses on Google: **food, lodging, tours/transport, health, beauty, trades/maintenance.** |
 | 2 | **Pain** | A visible problem: no website · outdated or broken site · only Instagram/Facebook · weak or missing Google Business Profile · depends on agencies/third parties for bookings. |
 | 3 | **Can pay** | Clearly an active business — recent reviews, posts, or activity. Not a hobby. |
 | 4 | **Access** | We can reach the decision-maker directly — in person or on WhatsApp. |
@@ -53,11 +53,11 @@ Among qualified leads, work them in this order:
 - **Chains or franchises** — not owner-run; decisions are made elsewhere.
 - **Already has a good site + an agency** — no visible pain, no opening.
 - **Looks like it's barely surviving** — can't pay for the build, let alone a care plan.
-- **Price shoppers** — only want a cheap page and will never take Plan Raíz.
+- **Price shoppers** — only want a cheap page and will never take Plan Nambuku.
 
 ## 6. Why this standard
 
-**Plan Raíz (monthly) is the core business** (foundations §7–8). The north-star metric is recurring care-plan clients, not one-off builds.
+**Plan Nambuku (monthly) is the core business** (foundations §7–8). The north-star metric is recurring care-plan clients, not one-off builds.
 
 So a qualified lead must be able to **pay for the build _and_ see value in ongoing care.** A client who pays once and vanishes doesn't move the business forward — the standard is built to filter for the ones who stay.
 

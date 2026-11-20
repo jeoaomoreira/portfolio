@@ -1,13 +1,13 @@
-# Raíz — Website Architecture
+# Nambuku — Website Architecture
 
-> The architecture of **raiz** (the studio's own site). Its one job: turn completed work into the next client's confidence.
+> The architecture of **nambuku** (the studio's own site). Its one job: turn completed work into the next client's confidence.
 > _Last updated: 2026-11-07 · See also: [foundations.md](./foundations.md)_
 
 ## 1. What this site is for
 
-This is a **lead-generation showcase**, not a brochure. One visitor matters: a Guanacaste small-business owner deciding whether to trust Raíz. Everything serves one conversion:
+This is a **lead-generation showcase**, not a brochure. One visitor matters: a Guanacaste small-business owner deciding whether to trust Nambuku. Everything serves one conversion:
 
-> **Owner sees proof → messages Raíz on WhatsApp → books a free consult.**
+> **Owner sees proof → messages Nambuku on WhatsApp → books a free consult.**
 
 Design implications:
 - **Spanish-first.** The buyer is a local owner, not a tourist. (English is a future toggle, not a launch requirement.)
@@ -31,7 +31,7 @@ Success metric for the site = **consults booked** (feeds the "land first clients
 /                       Inicio        — pitch + proof, the whole story in one scroll
 /proyectos              Proyectos     — all case studies (the showcase hub)
 /proyectos/:slug        Caso          — single case study (the core sales asset)
-/servicios              Servicios     — offer ladder + Plan Raíz, pricing
+/servicios              Servicios     — offer ladder + Plan Nambuku, pricing
 /nosotros               Nosotros      — the local story (trust moat)
 /contacto               Contacto      — WhatsApp, form, location, Google profile
 ```
@@ -48,9 +48,9 @@ The order is the sales argument. Each section answers the owner's next unspoken 
 2. **Social proof strip** — "¿Alguien confía en ellos?" → names/logos of businesses worked with.
 3. **El problema** — "¿Me entienden?" → empathy: invisible on Google, outdated page, competitors winning. (foundations §6)
 4. **Casos destacados (2–3)** — "¿Saben hacerlo?" → the proof. Each links to its detail page. **This is the most important section on the site.**
-5. **Qué hacemos** — "¿Qué me darían?" → the offer, simplified: sitio moderno + Google + cuidado continuo (Plan Raíz). Link to /servicios.
+5. **Qué hacemos** — "¿Qué me darían?" → the offer, simplified: sitio moderno + Google + cuidado continuo (Plan Nambuku). Link to /servicios.
 6. **Cómo trabajamos** — "¿Es complicado?" → 3 plain steps (claridad value). Removes friction/fear.
-7. **Por qué Raíz** — "¿Por qué ellos?" → the local wedge: rooted in Guanacaste, in person, long-term. (foundations §4)
+7. **Por qué Nambuku** — "¿Por qué ellos?" → the local wedge: rooted in Guanacaste, in person, long-term. (foundations §4)
 8. **CTA final + contacto** — "Listo." → WhatsApp + form.
 
 ## 5. Case study detail (`/proyectos/:slug`) — the template
@@ -59,7 +59,7 @@ The single highest-leverage template on the site. Every completed project become
 
 1. **Header** — client name · sector · Tempate/Guanacaste location · year
 2. **El reto** — where they started (the "before", honestly)
-3. **Lo que hicimos** — services delivered (chips: Lanzamiento / Google / Plan Raíz)
+3. **Lo que hicimos** — services delivered (chips: Lanzamiento / Google / Plan Nambuku)
 4. **El resultado** — before→after visual, any metrics (more llamadas, reservas, visibilidad), + **testimonial** if available
 5. **Visit link** — live site
 6. **CTA** — "¿Querés algo así para tu negocio? Hablemos."
@@ -76,7 +76,7 @@ type CaseStudy = {
   location: string;        // "Tempate, Guanacaste"
   year: number;
   featured: boolean;       // show on home page
-  services: ("lanzamiento" | "renovacion" | "plan-raiz")[];
+  services: ("lanzamiento" | "renovacion" | "plan-nambuku")[];
   problem: string;         // "El reto"
   solution: string;        // "Lo que hicimos"
   result: string;          // "El resultado"
@@ -93,7 +93,7 @@ This maps 1:1 to the components to build, and lets the first 3 case studies (fou
 
 > **Decision (2026-11-07): Astro.** Static HTML per route, strong SEO, good social/link previews, reuses React components as islands. Replaces the Vite SPA scaffold.
 
-**The flag from Point 2.** Raíz sells *"get found on Google."* A studio whose own site can't rank has a credibility problem. The current stack (Vite + React SPA) ships an empty HTML shell — weak for SEO and social link previews (the Facebook/WhatsApp cards owners will share).
+**The flag from Point 2.** Nambuku sells *"get found on Google."* A studio whose own site can't rank has a credibility problem. The current stack (Vite + React SPA) ships an empty HTML shell — weak for SEO and social link previews (the Facebook/WhatsApp cards owners will share).
 
 Three options:
 

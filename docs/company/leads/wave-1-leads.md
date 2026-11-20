@@ -1,4 +1,4 @@
-# Raíz — Wave 1 Leads (revised)
+# Nambuku — Wave 1 Leads (revised)
 
 _Public Google Maps / Business Profile data, checked 2026-11-13. 18 active leads, sorted by priority, then review count. No one has been contacted._
 
@@ -25,7 +25,7 @@ _Public Google Maps / Business Profile data, checked 2026-11-13. 18 active leads
 
 ## Parked — small food businesses
 
-_Parked because they likely can't pay for a build plus Plan Raíz. Full detail in wave-1-parked-food.csv._
+_Parked because they likely can't pay for a build plus Plan Nambuku. Full detail in wave-1-parked-food.csv._
 
 | # | Pri | Segment | Business | Category | Town | Rating | Reviews | Last review | Phone | Social / website field | Maps | Pain / opportunity |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -54,7 +54,7 @@ _Parked because they likely can't pay for a build plus Plan Raíz. Full detail i
 
 ## Method & caveats
 
-- Revised 2026-11-13 after review: small restaurants and sodas are parked because they likely can't pay for a build plus Plan Raíz. Patagonia del Mar stays as the exception (2,300+ reviews). The parked leads are on the 'Parked – food' tab / wave-1-parked-food.csv.
+- Revised 2026-11-13 after review: small restaurants and sodas are parked because they likely can't pay for a build plus Plan Nambuku. Patagonia del Mar stays as the exception (2,300+ reviews). The parked leads are on the 'Parked – food' tab / wave-1-parked-food.csv.
 - Priority: A = 100+ reviews and no real website · B = tourism/transport that depends on third parties · C = the rest. Facebook, Instagram, WhatsApp, Viator, taxi-platform and free builder pages all count as no real website.
 - Activity check: each profile's newest review (sorted by Newest) plus its current hours. Dropped anything with no reviews in roughly the last 6 months.
 - Dentists: almost every dentist in Tamarindo, Huacas, Flamingo and Potrero already has a real website (Tamarindo Dentist, Dental Solutions, Pacific Smile, SolSide, Costa Dental, America Dental, Coast Dental, Flamingo Dental, Cabo Velas Health, Guanacaste Dental). Huacas Dental Care is the only one without a site, and it's included through Centro Médico Huacas.
