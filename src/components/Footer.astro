@@ -1,36 +1,121 @@
 ---
 import { nav, whatsappLink, site } from '@/site';
+
+interface Props {
+  /**
+   * Colour tone. "default" is the usual grey canvas footer; "accent" continues
+   * the home page's orange CTA band to the bottom of the page — the orange runs
+   * unbroken from the band into the footer, so the two read as one field.
+   * On the orange, every small text runs in ink (6.1:1) rather than white
+   * (3.2:1), which only clears the bar at display sizes.
+   */
+  tone?: 'default' | 'accent';
+}
+
+const { tone = 'default' } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-24">
-  <div class="container py-12 grid gap-8 sm:grid-cols-2">
+<footer class:list={['site-footer', tone === 'accent' && 'site-footer--accent']}>
+  <div class="container site-footer__grid">
     <div>
-      <p class="font-display font-bold text-2xl tracking-tight">
-        raız<span class="text-accent align-super text-base">®</span>
+      <p class="site-footer__mark">
+        raız<span class="site-footer__reg">®</span>
       </p>
-      <p class="text-muted text-sm mt-2">{site.tagline}</p>
-      <p class="text-muted text-sm mt-3">{site.location}</p>
+      <p class="site-footer__sub">{site.tagline}</p>
+      <p class="site-footer__sub">{site.location}</p>
     </div>
 
-    <div class="flex flex-col gap-2 sm:items-end text-sm">
+    <nav class="site-footer__links" aria-label="Pie de página">
       {nav.map((item) => (
-        <a href={item.href} class="text-muted hover:text-ink transition-colors">
-          {item.label}
-        </a>
+        <a href={item.href}>{item.label}</a>
       ))}
-      <a
-        href={whatsappLink}
-        target="_blank"
-        rel="noopener"
-        class="text-muted hover:text-ink transition-colors"
-      >
-        WhatsApp
-      </a>
-    </div>
+      <a href={whatsappLink} target="_blank" rel="noopener">WhatsApp</a>
+    </nav>
   </div>
 
-  <div class="container pb-8 text-xs text-muted">
+  <div class="container site-footer__legal">
     © {year} {site.name}. Hecho en Guanacaste.
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    margin-top: 6rem;
+    /* Tone variables — the accent footer only has to swap these. */
+    --footer-bg: transparent;
+    --footer-strong: var(--color-ink);
+    --footer-quiet: var(--color-muted);
+    --footer-hover: var(--color-ink);
+    --footer-reg: var(--color-accent);
+    background: var(--footer-bg);
+    color: var(--footer-strong);
+  }
+  .site-footer__grid {
+    display: grid;
+    gap: 2rem;
+    padding-block: 3rem;
+  }
+  @media (min-width: 640px) {
+    .site-footer__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .site-footer__mark {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.025em;
+    color: var(--footer-strong);
+  }
+  .site-footer__reg {
+    font-size: 1rem;
+    vertical-align: super;
+    color: var(--footer-reg);
+  }
+  .site-footer__sub {
+    margin: 0.5rem 0 0;
+    font-size: 0.875rem;
+    color: var(--footer-quiet);
+  }
+  .site-footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+  .site-footer__links a {
+    color: var(--footer-quiet);
+    transition: color 160ms ease;
+  }
+  .site-footer__links a:hover {
+    color: var(--footer-hover);
+  }
+  @media (min-width: 640px) {
+    .site-footer__links {
+      align-items: flex-end;
+    }
+  }
+  .site-footer__legal {
+    padding-bottom: 2rem;
+    font-size: 0.75rem;
+    color: var(--footer-quiet);
+  }
+
+  /* ── Accent tone — the tail of the home page's orange band ─────────── */
+  .site-footer--accent {
+    margin-top: 0; /* no seam: the band's colour simply carries on */
+    --footer-bg: var(--color-accent);
+    /* Ink, not white: at 14px white-on-orange is 3.2:1 and fails AA, while
+       ink-on-orange is 6.1:1. */
+    --footer-strong: var(--color-ink);
+    --footer-quiet: rgba(10, 10, 10, 0.78);
+    --footer-hover: var(--color-ink);
+    --footer-reg: #ffffff;
+  }
+  /* No rule across the top: the band and the footer are one unbroken field. */
+  .site-footer--accent .site-footer__grid {
+    padding-block: clamp(2.5rem, 5vw, 3.5rem);
+  }
+</style>

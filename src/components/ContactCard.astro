@@ -1,0 +1,199 @@
+---
+// ContactCard — the "person you'll actually talk to" card: ONE white rounded
+// container holding a portrait nested inside it (a few px of white all around)
+// on the left, and the role, the name set big and a black pill CTA with a dot
+// on the right. Built to sit on a coloured field (the orange CTA band), so the
+// card is pure white and the type inside it is ink.
+import { Image } from 'astro:assets';
+import { whatsappLink } from '@/site';
+import portrait from '@/assets/gerardo.webp';
+
+interface Props {
+  /** Job title, set bold on the first line. */
+  role?: string;
+  /** The quieter second line under the role ("en raız®"). */
+  at?: string;
+  /** Full name — each word gets its own line, like the reference card. */
+  name?: string;
+  /** Button label. */
+  cta?: string;
+  /** Button target. Defaults to WhatsApp. */
+  href?: string;
+  class?: string;
+}
+
+const {
+  role = 'Fundador',
+  at = 'en raız®',
+  name = 'Gerardo Moreira',
+  cta = 'Hablemos',
+  href = whatsappLink,
+  class: className,
+} = Astro.props;
+
+const nameLines = name.trim().split(/\s+/);
+const external = href.startsWith('http');
+---
+
+<div class:list={['ccard', className]}>
+  <div class="ccard__photo">
+    <Image
+      src={portrait}
+      alt={`${name}, ${role} ${at}`}
+      widths={[240, 480, 720]}
+      sizes="(min-width: 640px) 260px, 42vw"
+      format="webp"
+      quality={82}
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+
+  <div class="ccard__panel">
+    <div class="ccard__who">
+      <p class="ccard__role">{role}</p>
+      <p class="ccard__at">{at}</p>
+    </div>
+
+    <h3 class="ccard__name">
+      {nameLines.map((word, i) => (
+        <>
+          {i > 0 && <br />}
+          {word}
+        </>
+      ))}
+    </h3>
+
+    <a
+      class="ccard__btn"
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener' : undefined}
+    >
+      <span>{cta}</span>
+      <span class="ccard__dot" aria-hidden="true"></span>
+    </a>
+  </div>
+</div>
+
+<style>
+  /* One white container. The portrait is nested inside it with `--inset` of
+     white showing all the way around, so the two halves read as a single card. */
+  .ccard {
+    --inset: 6px;
+    --radius-outer: clamp(20px, 2.2vw, 30px);
+    display: flex;
+    width: 100%;
+    max-width: 30rem;
+    padding: var(--inset);
+    border-radius: var(--radius-outer);
+    background: var(--color-surface);
+    color: var(--color-ink);
+  }
+
+  /* ── Portrait ─────────────────────────────────────────────────── */
+  .ccard__photo {
+    flex: 0 0 38%;
+    /* Concentric with the card: the outer radius less the white inset. */
+    border-radius: calc(var(--radius-outer) - var(--inset));
+    overflow: hidden;
+    background: var(--color-sand);
+  }
+  .ccard__photo :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 22%; /* keep the face centred as the card squashes */
+  }
+
+  /* ── White panel ──────────────────────────────────────────────── */
+  .ccard__panel {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    /* Sits on the shared white; only its own padding separates it from the
+       portrait and the card edge. */
+    padding: clamp(0.9rem, 1.8vw, 1.25rem) clamp(1rem, 2vw, 1.4rem) clamp(0.9rem, 1.8vw, 1.25rem)
+      clamp(1.05rem, 2.4vw, 1.65rem);
+  }
+  .ccard__who {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .ccard__role {
+    margin: 0;
+    font-size: clamp(0.9rem, 1.1vw, 1rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .ccard__at {
+    margin: 0;
+    font-size: clamp(0.9rem, 1.1vw, 1rem);
+    color: var(--color-muted);
+  }
+  .ccard__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3.2vw, 2.15rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  /* Black pill with the little dot on its right, as in the reference. */
+  .ccard__btn {
+    margin-top: auto;
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.5rem 0.55rem 0.5rem 1.1rem;
+    border-radius: 999px;
+    background: var(--color-ink);
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition:
+      background-color 180ms ease,
+      transform 160ms var(--ease-out-strong);
+  }
+  .ccard__btn:hover {
+    background: var(--color-accent);
+  }
+  .ccard__btn:active {
+    transform: scale(0.97);
+  }
+  .ccard__dot {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    background: #fff;
+    transition: background-color 180ms ease;
+  }
+
+  /* ── Very narrow phones — stack the portrait above the panel ──── */
+  /* The side-by-side layout still works at 375px (≈127px photo, ≈198px panel),
+     so only the smallest screens get the stacked fallback. */
+  @media (max-width: 335px) {
+    .ccard {
+      flex-direction: column;
+    }
+    .ccard__photo {
+      flex: 0 0 auto;
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ccard__btn {
+      transition: background-color 180ms ease;
+    }
+    .ccard__btn:active {
+      transform: none;
+    }
+  }
+</style>

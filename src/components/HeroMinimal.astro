@@ -8,8 +8,6 @@ import { whatsappLink } from '@/site';
 
 // The service lines shown top-right of the wordmark (categories, not plan names).
 const services = ['Diseño y desarrollo web', 'Presencia en Google', 'Mantenimiento continuo'];
-
-const year = new Date().getFullYear();
 ---
 
 <section class="hmin rhero-min" data-hero aria-label="raız — estudio web en Guanacaste">
@@ -47,7 +45,6 @@ const year = new Date().getFullYear();
             <path d="m12 5 7 7-7 7" />
           </svg>
         </a>
-        <p class="hmin__meta">© {year} raız · Guanacaste, Costa Rica</p>
       </div>
     </div>
   </div>
@@ -201,12 +198,6 @@ const year = new Date().getFullYear();
     width: 1.05rem;
     height: 1.05rem;
   }
-  .hmin__meta {
-    margin: 0;
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.45);
-  }
-
   /* ── Tablet / phone ──────────────────────────────────────────── */
   @media (max-width: 768px) {
     .hmin__top {
