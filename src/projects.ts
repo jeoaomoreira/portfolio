@@ -37,6 +37,14 @@ export type Project = {
   name: string;
   /** Rubro corto, se muestra como kicker sobre el título. */
   sector: string;
+  /** Tipo de proyecto — qué clase de sitio es: "E-commerce", "Sitio
+   *  corporativo", "Catálogo", "Reservaciones", etc. (industria ≠ tipo). */
+  type: string;
+  /** Logo del negocio (opcional). Si no hay, la tarjeta usa el nombre como
+   *  firma tipográfica. Guardar en src/assets/work/<slug>/logo.(svg|png). */
+  logo?: ImageMetadata;
+  /** Texto alternativo del logo. */
+  logoAlt?: string;
   /** Una línea de resultado o descripción — tarjetas de la grilla y la home. */
   summary: string;
   /** Sitio en vivo. */
@@ -74,6 +82,7 @@ export const projects: Project[] = [
     slug: 'good-energy',
     name: 'Good Energy',
     sector: 'Tienda de suplementos',
+    type: 'E-commerce',
     summary:
       'Tienda en línea de bienestar y suplementos: catálogo, compra por objetivo y envío local.',
     url: 'https://good-energy-drab.vercel.app/',
@@ -131,6 +140,7 @@ export const projects: Project[] = [
     slug: 'moso-solutions',
     name: 'MoSo Solutions',
     sector: 'Cuidado de propiedades',
+    type: 'Sitio corporativo',
     summary:
       'Sitio bilingüe para un equipo familiar de cuidado de propiedades: seis servicios bajo un mismo techo y contacto directo.',
     url: 'https://moso-solutions.vercel.app/',

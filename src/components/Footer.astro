@@ -9,15 +9,23 @@ interface Props {
    * unbroken from the band into the footer, so the two read as one field.
    * On the orange, every small text runs in ink (6.1:1) rather than white
    * (3.2:1), which only clears the bar at display sizes.
+   * "dark" is a deep-black slab — it anchors the all-orange pages (Proyectos),
+   * where the orange field above hands off to a black footer at the very bottom.
    */
-  tone?: 'default' | 'accent';
+  tone?: 'default' | 'accent' | 'dark';
 }
 
 const { tone = 'default' } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
-<footer class:list={['site-footer', tone === 'accent' && 'site-footer--accent']}>
+<footer
+  class:list={[
+    'site-footer',
+    tone === 'accent' && 'site-footer--accent',
+    tone === 'dark' && 'site-footer--dark',
+  ]}
+>
   <div class="container site-footer__grid">
     <div>
       <p class="site-footer__mark">
@@ -130,5 +138,19 @@ const year = new Date().getFullYear();
   /* No rule across the top: the band and the footer are one unbroken field. */
   .site-footer--accent .site-footer__grid {
     padding-block: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  /* ── Dark tone — the deep-black slab that anchors the all-orange pages ───
+     The orange field runs down to the footer, which lands as a full-bleed
+     deep-black block. White text on black is 18:1+, so everything reverses to
+     white (quiet text at 60%), and the ® keeps its Kinetic Orange. */
+  .site-footer--dark {
+    margin-top: clamp(4rem, 8vw, 7rem);
+    --footer-bg: var(--color-ink);
+    --footer-strong: #ffffff;
+    --footer-quiet: rgba(255, 255, 255, 0.6);
+    --footer-hover: #ffffff;
+    --footer-reg: var(--color-accent);
+    padding-top: clamp(2.5rem, 5vw, 3.5rem);
   }
 </style>

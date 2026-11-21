@@ -155,6 +155,18 @@ main.has-fixed-nav {
   padding-top: var(--nav-h);
 }
 
+/* ── Accent chrome — the radical all-orange page (Proyectos) ──────────────
+   Base stamps `chrome-accent` on <body> when a page asks for it. The whole
+   field turns Kinetic Orange: the page background, and (via their own scoped
+   overrides) the sticky nav and the mobile menu. The footer is handled
+   separately with footerTone="dark" so a deep-black slab anchors the page.
+   Body copy on the orange runs in deep black (ink) — 6.1:1, well clear of AA,
+   unlike white's 3.2:1. */
+body.chrome-accent {
+  background: var(--color-accent);
+  color: var(--color-ink);
+}
+
 /* Fixed-hero reveal (home): the hero stage is pinned to the viewport, and this
    opaque layer holds every section below the hero so it scrolls up over the
    image and fully covers it. */

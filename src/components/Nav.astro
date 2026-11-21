@@ -280,6 +280,48 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
         transform 200ms ease;
     }
   }
+
+  /* ── Accent chrome — the all-orange page (Proyectos) ──────────────────
+     Body carries `chrome-accent`. The bar turns Kinetic Orange so the sticky
+     nav melts into the orange field; links run in deep black (ink, 6.1:1) for
+     legibility, and the Contacto CTA inverts to a deep-black pill (tying to the
+     page's black footer) that sweeps to white on hover. */
+  :global(body.chrome-accent) .nav {
+    background: var(--color-accent);
+  }
+  :global(body.chrome-accent) .nav__brand {
+    color: var(--color-ink);
+  }
+  :global(body.chrome-accent) .nav__reg {
+    color: #ffffff;
+  }
+  :global(body.chrome-accent) .nav__link {
+    color: rgba(10, 10, 10, 0.68);
+  }
+  :global(body.chrome-accent) .nav__link:hover,
+  :global(body.chrome-accent) .nav__link.is-active {
+    color: var(--color-ink);
+  }
+  :global(body.chrome-accent) .nav__burger {
+    color: var(--color-ink);
+  }
+  :global(body.chrome-accent) .nav__cta,
+  :global(body.chrome-accent) .site-menu__cta {
+    background: var(--color-ink);
+    color: #ffffff;
+    --btn-sweep: #ffffff; /* white sweeps in … */
+    --btn-sweep-ink: var(--color-ink); /* … label flips to deep black */
+  }
+  /* Mobile overlay turns orange too, with ink links and a white active mark. */
+  :global(body.chrome-accent) .site-menu {
+    background: color-mix(in srgb, var(--color-accent) 94%, transparent);
+  }
+  :global(body.chrome-accent) .site-menu__link {
+    color: var(--color-ink);
+  }
+  :global(body.chrome-accent) .site-menu__link.is-active {
+    color: #ffffff;
+  }
 </style>
 
 <script>
