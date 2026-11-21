@@ -20,6 +20,10 @@ import {
   siSupabase,
   siPostgresql,
   siFigma,
+  siAngular,
+  siNodedotjs,
+  siFirebase,
+  siGoogleanalytics,
 } from 'simple-icons';
 
 // Home page — section order per docs/company/website-architecture.md §4.
@@ -87,27 +91,36 @@ const techTiles = [
     siHtml5,
     siCss,
     siReact,
+    siAngular,
     siNextdotjs,
     siAstro,
     siTailwindcss,
     siVite,
+    siNodedotjs,
     siVercel,
     siSupabase,
+    siFirebase,
     siPostgresql,
+    siGoogleanalytics,
     siFigma,
   ].map((s) => ({ kind: 'icon', title: s.title, path: s.path, hex: s.hex })),
   { kind: 'mono', title: 'AWS', text: 'AWS', hex: 'FF9900' },
+  { kind: 'mono', title: 'Microsoft Azure', text: 'Azure', hex: '0078D4' },
   { kind: 'mono', title: 'Adobe Illustrator', text: 'Ai', hex: 'FF7C00' },
 ];
 // Resting position (centre %) + rotation of each tile — a heap resting on the
 // floor of the card (pile container is inset 2px), filling it edge to edge.
 const techLayout = [
   // bottom row (on the floor)
-  { x: 7, y: 91, r: -10 }, { x: 21, y: 90, r: 8 }, { x: 35.5, y: 91, r: -6 }, { x: 50, y: 90, r: 11 }, { x: 64.5, y: 91, r: -7 }, { x: 79, y: 90, r: 9 }, { x: 93, y: 91, r: -12 },
-  // middle row
-  { x: 13, y: 78, r: 9 }, { x: 28, y: 77, r: -11 }, { x: 43, y: 78, r: 7 }, { x: 58, y: 77, r: -9 }, { x: 73, y: 78, r: 12 }, { x: 88, y: 77, r: -8 },
+  { x: 9, y: 89, r: -11 }, { x: 30, y: 88, r: 8 }, { x: 50, y: 89, r: -6 }, { x: 70, y: 88, r: 12 }, { x: 91, y: 89, r: -9 },
+  // 2nd row (offset)
+  { x: 19, y: 70, r: 10 }, { x: 40, y: 69, r: -12 }, { x: 60, y: 70, r: 7 }, { x: 81, y: 69, r: -9 },
+  // 3rd row
+  { x: 9, y: 50, r: -8 }, { x: 30, y: 49, r: 11 }, { x: 50, y: 50, r: -6 }, { x: 70, y: 49, r: 9 }, { x: 91, y: 50, r: -13 },
+  // 4th row (offset)
+  { x: 19, y: 31, r: 8 }, { x: 40, y: 30, r: -10 }, { x: 60, y: 31, r: 7 }, { x: 81, y: 30, r: -11 },
   // top of the heap
-  { x: 36, y: 62, r: -7 }, { x: 64, y: 61, r: 10 },
+  { x: 36, y: 12, r: -7 }, { x: 64, y: 11, r: 10 },
 ];
 
 // Acompañamiento — bar heights for the "ongoing activity / monitoring" row.
@@ -1070,9 +1083,9 @@ const faqs = [
   .tech__inner {
     display: grid;
     place-items: center;
-    width: clamp(2rem, 5.2vw, 2.5rem);
-    height: clamp(2rem, 5.2vw, 2.5rem);
-    border-radius: 12px;
+    width: clamp(2.4rem, 6.8vw, 3.1rem);
+    height: clamp(2.4rem, 6.8vw, 3.1rem);
+    border-radius: 13px;
     background: #ffffff;
     box-shadow:
       0 7px 16px -7px rgba(10, 10, 10, 0.32),
@@ -1087,8 +1100,8 @@ const faqs = [
   .tech__mono {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: 0.72rem;
-    letter-spacing: -0.03em;
+    font-size: 0.8rem;
+    letter-spacing: -0.04em;
     line-height: 1;
   }
 
