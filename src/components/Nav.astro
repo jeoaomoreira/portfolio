@@ -12,9 +12,6 @@ const isActive = (href: string) =>
 const centerLinks = nav.filter(
   (item) => !['/', '/contacto'].includes(item.href),
 );
-// Mobile overlay: the same reach, plus Inicio (there is no logo link to tap in
-// the overlay). Contacto is still rendered separately as the CTA.
-const menuLinks = nav.filter((item) => item.href !== '/contacto');
 ---
 
 {/* Flat, fabrica-style top bar: wordmark left, links right, burger on mobile.
@@ -45,26 +42,34 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
         <a href="/contacto" class="btn btn-accent btn-sm nav__cta">Contacto</a>
       </div>
 
-      <button
-        class="nav__burger"
-        type="button"
-        aria-label="Abrir menú"
-        aria-expanded="false"
-        aria-controls="site-menu"
-      >
+      {/* Burger ↔ X toggle (mobile). A checkbox drives the pure-CSS animation;
+          the script below listens to its change to open/close the overlay.
+          It lives in the bar (z-index above the overlay) so it stays the single
+          control that both opens and closes the menu. */}
+      <label class="nav__burger" for="site-burger">
+        <input
+          id="site-burger"
+          type="checkbox"
+          aria-label="Abrir menú"
+          aria-controls="site-menu"
+          aria-expanded="false"
+        />
         <span></span>
         <span></span>
-      </button>
+        <span></span>
+      </label>
     </div>
   </div>
 </header>
 
-{/* Mobile menu overlay — opened by the burger. */}
+{/* Mobile menu — a full-screen panel: the links left-aligned on hairline rules,
+    the nambuku wordmark anchored at the very bottom (the bar's brand + burger
+    stay on top, so the panel reads as one surface with them). */}
 <div class="site-menu" id="site-menu" aria-hidden="true">
-  <div class="site-menu__panel" data-menu-panel>
+  <div class="site-menu__inner container">
     <nav class="site-menu__links" aria-label="Menú">
       {
-        menuLinks.map((item) => (
+        nav.map((item) => (
           <a
             href={item.href}
             class:list={['site-menu__link', isActive(item.href) && 'is-active']}
@@ -74,8 +79,12 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
         ))
       }
     </nav>
-    <LanguageDropdown />
-    <a href="/contacto" class="btn btn-accent site-menu__cta">Contacto</a>
+
+    <div class="site-menu__foot">
+      <LanguageDropdown />
+      <a class="site-menu__email" href={`mailto:${site.email}`}>{site.email}</a>
+      <span class="site-menu__wordmark">nambuku<span class="site-menu__reg">®</span></span>
+    </div>
   </div>
 </div>
 
@@ -83,8 +92,19 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
   .nav {
     position: sticky;
     top: 0;
-    z-index: 50;
+    /* Above the mobile overlay (z-60) so the brand + burger float on top of the
+       open panel — the burger becomes the X that closes it. */
+    z-index: 70;
     background: var(--color-canvas); /* completely solid, no border */
+  }
+  /* While the menu is open the scroll is locked (overflow:hidden on <html>),
+     which breaks `position: sticky` and lets the bar scroll away. Pin it to the
+     viewport so the brand + burger stay on top of the panel at any scroll pos. */
+  .nav.is-menu-open {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
   }
   /* Three tracks: brand pinned left, links in the true centre, actions right.
      The 1fr side tracks keep the centre column optically centred in the bar. */
@@ -102,6 +122,9 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
     justify-self: center;
   }
   .nav__end {
+    /* Pin to the third track: when the centre links are hidden on mobile, grid
+       auto-placement would otherwise drop this into the middle `auto` column. */
+    grid-column: 3;
     justify-self: end;
     display: flex;
     align-items: center;
@@ -112,16 +135,11 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
     align-items: center;
     gap: 0.75rem;
   }
-  /* The Contacto CTA (both the bar pill and the overlay button) overrides the
-     accent variant's sweep: instead of turning white on hover it darkens to
-     deep black, keeping the white label — the original Uiverse look. */
-  .nav__cta,
-  .site-menu__cta {
+  /* The Contacto CTA overrides the accent variant's sweep: instead of turning
+     white on hover it darkens to deep black, keeping the white label. */
+  .nav__cta {
     --btn-sweep: var(--color-ink); /* deep black sweeps in … */
     --btn-sweep-ink: var(--color-on-accent); /* … label stays white */
-  }
-  .nav__cta {
-    /* Compact pill for the bar; sweep hover comes from the shared .btn. */
     font-weight: 600;
   }
 
@@ -175,85 +193,167 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
     font-weight: 600;
   }
 
-  /* ── Burger (mobile only) ─────────────────────────────────────── */
+  /* ── Burger ↔ X (mobile only) ─────────────────────────────────────
+     Three evenly-spaced bars. On open, the outer two slide to the vertical
+     centre and rotate ±45° about their own centre — so the strokes cross dead
+     centre and the X is symmetric — while the middle bar fades. No full spin.
+     Bars use currentColor (ink, also on the accent page). */
   .nav__burger {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    width: 44px;
-    height: 44px;
-    margin-right: -0.5rem;
-    padding: 0;
-    border: 0;
+    position: relative;
+    display: none; /* shown on mobile */
+    width: 30px;
+    height: 20px;
+    margin-right: -2px;
     background: transparent;
-    color: var(--color-ink);
     cursor: pointer;
+    color: var(--color-ink);
+  }
+  /* The real control: transparent, on top (with a bigger hit area), so it stays
+     focusable & clickable. */
+  .nav__burger input {
+    position: absolute;
+    inset: -10px;
+    margin: 0;
+    width: calc(100% + 20px);
+    height: calc(100% + 20px);
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
   }
   .nav__burger span {
     display: block;
-    width: 22px;
-    height: 2px;
-    border-radius: 2px;
+    position: absolute;
+    left: 0;
+    top: calc(50% - 1.5px); /* a 3px bar, centred on the midline */
+    height: 3px;
+    width: 100%;
     background: currentColor;
+    border-radius: 9px;
+    transform-origin: center;
     transition:
-      transform 220ms var(--ease-out-strong),
-      opacity 160ms ease;
+      transform 0.28s var(--ease-out-strong),
+      opacity 0.18s ease;
   }
-  .nav__burger.is-open span:first-child {
-    transform: translateY(3.5px) rotate(45deg);
+  .nav__burger span:nth-of-type(1) {
+    transform: translateY(-7px);
   }
-  .nav__burger.is-open span:last-child {
-    transform: translateY(-3.5px) rotate(-45deg);
+  .nav__burger span:nth-of-type(2) {
+    transform: translateY(0);
+  }
+  .nav__burger span:nth-of-type(3) {
+    transform: translateY(7px);
+  }
+  .nav__burger input:checked ~ span:nth-of-type(1) {
+    transform: translateY(0) rotate(45deg);
+  }
+  .nav__burger input:checked ~ span:nth-of-type(2) {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  .nav__burger input:checked ~ span:nth-of-type(3) {
+    transform: translateY(0) rotate(-45deg);
+  }
+  .nav__burger input:focus-visible ~ span {
+    background: var(--color-accent);
   }
 
-  /* ── Mobile overlay menu ──────────────────────────────────────── */
+  /* ── Mobile overlay menu — full-screen MAINS-style list ───────────── */
   .site-menu {
     position: fixed;
     inset: 0;
     z-index: 60;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: color-mix(in srgb, var(--color-canvas) 92%, transparent);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--color-canvas);
     visibility: hidden;
-    opacity: 0;
+    /* A drawer: it slides in from the left on open, and back out to the left on
+       close. The bar (brand + X) is pinned above it and does not move. */
+    transform: translateX(-100%);
     transition:
-      opacity 240ms var(--ease-out-strong),
-      visibility 0s linear 240ms;
+      transform 340ms var(--ease-out-strong),
+      visibility 0s linear 340ms;
   }
   .site-menu.is-open {
     visibility: visible;
-    opacity: 1;
-    transition: opacity 240ms var(--ease-out-strong);
+    transform: translateX(0);
+    transition: transform 340ms var(--ease-out-strong);
   }
-  .site-menu__panel {
+  .site-menu__inner {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1.25rem;
+    justify-content: space-between;
+    /* Clear the sticky bar so the brand + burger read as the panel's header. */
+    padding-top: calc(64px + clamp(1.25rem, 5vh, 2.75rem));
+    padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
   }
   .site-menu__links {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1.1rem;
+    align-items: stretch;
   }
   .site-menu__link {
     font-family: var(--font-display);
-    font-size: 2rem;
     font-weight: 700;
-    letter-spacing: -0.025em;
+    font-size: clamp(1.9rem, 9vw, 2.75rem);
+    letter-spacing: -0.03em;
+    line-height: 1.12;
     color: var(--color-ink);
+    padding-block: clamp(0.55rem, 2.2vw, 0.95rem);
+    border-top: 1px solid rgba(10, 10, 10, 0.14);
+  }
+  .site-menu__link:last-of-type {
+    border-bottom: 1px solid rgba(10, 10, 10, 0.14);
   }
   .site-menu__link.is-active {
     color: var(--color-accent);
   }
-  .site-menu__cta {
-    margin-top: 0.75rem;
+
+  .site-menu__foot {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(0.75rem, 3vh, 1.4rem);
+  }
+  .site-menu__email {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    color: var(--color-muted);
+    transition: color 160ms ease;
+  }
+  .site-menu__email:hover {
+    color: var(--color-ink);
+  }
+  .site-menu__wordmark {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 800;
+    /* "nambuku" is 7 glyphs — sized to fill the column edge-to-edge without
+       spilling past the gutter (the reference wordmark is a shorter word). */
+    font-size: clamp(3rem, 18vw, 7rem);
+    line-height: 0.85;
+    letter-spacing: -0.055em;
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+  .site-menu__reg {
+    font-size: 0.16em;
+    font-weight: 600;
+    vertical-align: super;
+    color: var(--color-accent);
+  }
+
+  /* The language control sits low in the footer, so open its popover UPWARD and
+     left-aligned — it stays fully on-screen (the top-bar instance still opens
+     downward to the right). Scoped to the menu via :global() on the child. */
+  .site-menu :global(.lang__menu) {
+    top: auto;
+    bottom: calc(100% + 0.5rem);
+    left: 0;
+    right: auto;
+    transform: translateY(6px);
+  }
+  .site-menu :global(.lang.is-open .lang__menu) {
+    transform: translateY(0);
   }
 
   /* ── Breakpoint ───────────────────────────────────────────────── */
@@ -263,7 +363,7 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
       display: none;
     }
     .nav__burger {
-      display: inline-flex;
+      display: block;
     }
   }
   @media (min-width: 769px) {
@@ -273,11 +373,13 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .nav__burger span,
-    .site-menu {
-      transition:
-        opacity 200ms ease,
-        transform 200ms ease;
+    .nav__burger span {
+      transition: opacity 160ms ease;
+    }
+    /* No slide — the drawer simply appears/disappears. */
+    .site-menu,
+    .site-menu.is-open {
+      transition: visibility 0s;
     }
   }
 
@@ -285,7 +387,7 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
      Body carries `chrome-accent`. The bar turns Kinetic Orange so the sticky
      nav melts into the orange field; links run in deep black (ink, 6.1:1) for
      legibility, and the Contacto CTA inverts to a deep-black pill (tying to the
-     page's black footer) that sweeps to white on hover. */
+     page's black footer) that sweeps to white on hover with a deep-black label. */
   :global(body.chrome-accent) .nav {
     background: var(--color-accent);
   }
@@ -305,35 +407,54 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
   :global(body.chrome-accent) .nav__burger {
     color: var(--color-ink);
   }
-  :global(body.chrome-accent) .nav__cta,
-  :global(body.chrome-accent) .site-menu__cta {
+  :global(body.chrome-accent) .nav__cta {
     background: var(--color-ink);
     color: #ffffff;
     --btn-sweep: #ffffff; /* white sweeps in … */
     --btn-sweep-ink: var(--color-ink); /* … label flips to deep black */
   }
-  /* Mobile overlay turns orange too, with ink links and a white active mark. */
+  /* The accent-chrome rule above outweighs the shared `.btn:hover` colour, so
+     the label would otherwise stay white on the white sweep (illegible). Pin the
+     hover label to deep black at a higher specificity so it reads. */
+  :global(body.chrome-accent) .nav__cta:hover {
+    color: var(--color-ink);
+  }
+  /* Overlay goes orange too, with ink links/wordmark and a white active mark. */
   :global(body.chrome-accent) .site-menu {
-    background: color-mix(in srgb, var(--color-accent) 94%, transparent);
+    background: var(--color-accent);
   }
   :global(body.chrome-accent) .site-menu__link {
     color: var(--color-ink);
+    border-top-color: rgba(10, 10, 10, 0.2);
+  }
+  :global(body.chrome-accent) .site-menu__link:last-of-type {
+    border-bottom-color: rgba(10, 10, 10, 0.2);
   }
   :global(body.chrome-accent) .site-menu__link.is-active {
+    color: #ffffff;
+  }
+  :global(body.chrome-accent) .site-menu__email {
+    color: rgba(10, 10, 10, 0.72);
+  }
+  :global(body.chrome-accent) .site-menu__wordmark {
+    color: var(--color-ink);
+  }
+  :global(body.chrome-accent) .site-menu__reg {
     color: #ffffff;
   }
 </style>
 
 <script>
-  const burger = document.querySelector<HTMLButtonElement>('.nav__burger');
+  const burger = document.getElementById('site-burger') as HTMLInputElement | null;
   const menu = document.getElementById('site-menu');
   const header = document.querySelector<HTMLElement>('[data-nav]');
 
   if (burger && menu) {
-    const lenis = () => (window as unknown as { lenis?: { stop(): void; start(): void } }).lenis;
+    const lenis = () =>
+      (window as unknown as { lenis?: { stop(): void; start(): void } }).lenis;
     const setOpen = (open: boolean) => {
       header?.classList.toggle('is-menu-open', open);
-      burger.classList.toggle('is-open', open);
+      if (burger.checked !== open) burger.checked = open;
       burger.setAttribute('aria-expanded', String(open));
       burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
       menu.classList.toggle('is-open', open);
@@ -368,27 +489,24 @@ const menuLinks = nav.filter((item) => item.href !== '/contacto');
       }
     });
 
-    burger.addEventListener('click', () => {
-      const opening = !menu.classList.contains('is-open');
+    burger.addEventListener('change', () => {
+      const opening = burger.checked;
       if (opening) lastFocused = document.activeElement as HTMLElement;
       setOpen(opening);
       if (opening) focusables()[0]?.focus();
       else lastFocused?.focus();
     });
+
     menu
       .querySelectorAll('a')
       .forEach((a) => a.addEventListener('click', () => setOpen(false)));
-    menu.addEventListener('click', (e) => {
-      if (!(e.target as HTMLElement).closest('[data-menu-panel]')) {
-        setOpen(false);
-        burger.focus();
-      }
-    });
+
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape' || !menu.classList.contains('is-open')) return;
       setOpen(false);
       burger.focus();
     });
+
     window.matchMedia('(min-width: 769px)').addEventListener('change', (e) => {
       if (e.matches) setOpen(false);
     });

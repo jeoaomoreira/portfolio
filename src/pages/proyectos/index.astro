@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import { projects } from '@/projects';
 
@@ -50,21 +49,18 @@ const placeholders = [
         projects.map((p) => (
           <a href={`/proyectos/${p.slug}`} class="pz-row">
             <span class="pz-row__cliente">
-              {p.logo ? (
-                <Image
-                  src={p.logo}
-                  alt={p.logoAlt ?? `Logo de ${p.name}`}
-                  widths={[160, 320]}
-                  sizes="200px"
-                  format="webp"
-                  quality={82}
+              {p.logo && (
+                <img
+                  src={p.logo.src}
+                  width={p.logo.width}
+                  height={p.logo.height}
+                  alt=""
                   loading="lazy"
                   decoding="async"
-                  class="pz-row__logo"
+                  class:list={['pz-row__logo', `pz-row__logo--${p.slug}`]}
                 />
-              ) : (
-                <span class="pz-row__wordmark">{p.name}</span>
               )}
+              <span class="pz-row__wordmark">{p.name}</span>
             </span>
             <div class="pz-row__meta">
               <span class="pz-row__industria">{p.sector}</span>
@@ -171,14 +167,29 @@ const placeholders = [
   .pz-row__cliente {
     display: flex;
     align-items: center;
+    gap: clamp(0.8rem, 1.5vw, 1.35rem); /* space between the logo and the name */
     min-width: 0;
   }
   .pz-row__logo {
-    max-height: clamp(1.75rem, 2.6vw, 2.4rem);
+    max-height: clamp(3.5rem, 6vw, 4.75rem); /* detailed badge — needs size to read */
     width: auto;
     max-width: 100%;
     object-fit: contain;
     object-position: left center;
+    /* The supplied logos are black artwork; flatten to a pure white silhouette
+       so they read on the orange field (brightness(0) → black, invert → white).
+       The Good Energy mark is a raster badge (no vector strokes to weight), so we
+       fatten it optically: four 0-blur white drop-shadows nudge the silhouette
+       half a pixel in each direction, thickening every stroke without a glow. */
+    filter: brightness(0) invert(1)
+      drop-shadow(0.5px 0 0 #fff) drop-shadow(-0.5px 0 0 #fff)
+      drop-shadow(0 0.5px 0 #fff) drop-shadow(0 -0.5px 0 #fff);
+  }
+  /* MoSo's mark is a finer line drawing — keep its native stroke weight (no
+     dilation) and show it a touch smaller than the heavier Good Energy badge. */
+  .pz-row__logo--moso-solutions {
+    max-height: clamp(2.6rem, 4.2vw, 3.4rem);
+    filter: brightness(0) invert(1);
   }
   .pz-row__wordmark {
     font-family: var(--font-display);
@@ -186,7 +197,7 @@ const placeholders = [
     font-size: clamp(1.25rem, 2vw, 1.75rem);
     letter-spacing: -0.02em;
     line-height: 1.05;
-    color: var(--color-ink);
+    color: #ffffff; /* white — large display text clears the 3:1 bar on orange */
   }
 
   .pz-row__industria,
@@ -235,7 +246,7 @@ const placeholders = [
   }
   .pz-row--ph .pz-row__wordmark {
     font-weight: 600;
-    color: rgba(10, 10, 10, 0.5);
+    color: rgba(255, 255, 255, 0.55); /* a faded white, below the real client names */
   }
   .pz-row--ph .pz-row__industria,
   .pz-row--ph .pz-row__tipo {

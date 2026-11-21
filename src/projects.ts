@@ -1,4 +1,6 @@
 import type { ImageMetadata } from 'astro';
+import goodEnergyLogo from '@/assets/work/good-energy/logo.svg';
+import mosoLogo from '@/assets/work/moso-solutions/logo.svg';
 import goodEnergyCover from '@/assets/work/good-energy.jpg';
 import geDesktopCatalogo from '@/assets/work/good-energy/desktop-catalogo.jpg';
 import geDesktopProducto from '@/assets/work/good-energy/desktop-producto.jpg';
@@ -83,6 +85,8 @@ export const projects: Project[] = [
     name: 'Good Energy',
     sector: 'Tienda de suplementos',
     type: 'E-commerce',
+    logo: goodEnergyLogo,
+    logoAlt: 'Good Energy',
     summary:
       'Tienda en línea de bienestar y suplementos: catálogo, compra por objetivo y envío local.',
     url: 'https://good-energy-drab.vercel.app/',
@@ -141,6 +145,8 @@ export const projects: Project[] = [
     name: 'MoSo Solutions',
     sector: 'Cuidado de propiedades',
     type: 'Sitio corporativo',
+    logo: mosoLogo,
+    logoAlt: 'MoSo Solutions',
     summary:
       'Sitio bilingüe para un equipo familiar de cuidado de propiedades: seis servicios bajo un mismo techo y contacto directo.',
     url: 'https://moso-solutions.vercel.app/',
