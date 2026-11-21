@@ -20,6 +20,10 @@ import {
   siSupabase,
   siPostgresql,
   siFigma,
+  siAngular,
+  siNodedotjs,
+  siFirebase,
+  siGoogleanalytics,
 } from 'simple-icons';
 
 // Home page — section order per docs/company/website-architecture.md §4.
@@ -87,39 +91,101 @@ const techTiles = [
     siHtml5,
     siCss,
     siReact,
+    siAngular,
     siNextdotjs,
     siAstro,
     siTailwindcss,
     siVite,
+    siNodedotjs,
     siVercel,
     siSupabase,
+    siFirebase,
     siPostgresql,
+    siGoogleanalytics,
     siFigma,
   ].map((s) => ({ kind: 'icon', title: s.title, path: s.path, hex: s.hex })),
   { kind: 'mono', title: 'AWS', text: 'AWS', hex: 'FF9900' },
+  { kind: 'mono', title: 'Microsoft Azure', text: 'Azure', hex: '0078D4' },
   { kind: 'mono', title: 'Adobe Illustrator', text: 'Ai', hex: 'FF7C00' },
 ];
 // Resting position (centre %) + rotation of each tile — a heap resting on the
 // floor of the card (pile container is inset 2px), filling it edge to edge.
 const techLayout = [
   // bottom row (on the floor)
-  { x: 7, y: 91, r: -10 }, { x: 21, y: 90, r: 8 }, { x: 35.5, y: 91, r: -6 }, { x: 50, y: 90, r: 11 }, { x: 64.5, y: 91, r: -7 }, { x: 79, y: 90, r: 9 }, { x: 93, y: 91, r: -12 },
-  // middle row
-  { x: 13, y: 78, r: 9 }, { x: 28, y: 77, r: -11 }, { x: 43, y: 78, r: 7 }, { x: 58, y: 77, r: -9 }, { x: 73, y: 78, r: 12 }, { x: 88, y: 77, r: -8 },
+  { x: 9, y: 89, r: -11 }, { x: 30, y: 88, r: 8 }, { x: 50, y: 89, r: -6 }, { x: 70, y: 88, r: 12 }, { x: 91, y: 89, r: -9 },
+  // 2nd row (offset)
+  { x: 19, y: 70, r: 10 }, { x: 40, y: 69, r: -12 }, { x: 60, y: 70, r: 7 }, { x: 81, y: 69, r: -9 },
+  // 3rd row
+  { x: 9, y: 50, r: -8 }, { x: 30, y: 49, r: 11 }, { x: 50, y: 50, r: -6 }, { x: 70, y: 49, r: 9 }, { x: 91, y: 50, r: -13 },
+  // 4th row (offset)
+  { x: 19, y: 31, r: 8 }, { x: 40, y: 30, r: -10 }, { x: 60, y: 31, r: 7 }, { x: 81, y: 30, r: -11 },
   // top of the heap
-  { x: 36, y: 62, r: -7 }, { x: 64, y: 61, r: 10 },
+  { x: 36, y: 12, r: -7 }, { x: 64, y: 11, r: 10 },
 ];
 
 // Acompañamiento — bar heights for the "ongoing activity / monitoring" row.
 const monBars = [14, 20, 11, 18, 24, 15, 21, 13, 19, 25, 16, 22];
 
-// Proyectos bento — the first cell is the real featured project; the rest are
-// placeholders for the next 2–3 projects (swap each for a real one as it ships).
+// Proyectos bento — the first cell is the real featured project. Any further
+// real projects fill the two small slots next; whatever is left over falls back
+// to a "coming soon" placeholder (so the grid stays full as projects ship).
 const featured = projects[0];
-const placeholders = [
-  { n: '02', tag: 'En proceso', title: 'Nuevo proyecto en camino' },
-  { n: '03', tag: 'Próximamente', title: 'Sitio en construcción' },
-  { n: '04', tag: 'Próximamente', title: 'Tu negocio aquí' },
+const moreProjects = projects.slice(1);
+const smallPlaceholders = [
+  { tag: 'En proceso', title: 'Nuevo proyecto en camino' },
+  { tag: 'Próximamente', title: 'Sitio en construcción' },
+];
+const smallSlots = [
+  ...moreProjects.map((project) => ({ kind: 'project' as const, project })),
+  ...smallPlaceholders.map((ph) => ({ kind: 'placeholder' as const, ...ph })),
+].slice(0, 2);
+const widePlaceholder = { n: '04', tag: 'Próximamente', title: 'Tu negocio aquí' };
+
+// 7.5 Preguntas frecuentes — the objections that stand between an owner and the
+// WhatsApp message, in the owner's own order (need → money → time → content →
+// fear → care → Google → ownership → renovación). Grounded in the business logic
+// in docs/company/foundations.md; wording approved with Gerardo.
+const faqs = [
+  {
+    q: '¿Necesito una página web si ya tengo Facebook e Instagram?',
+    a: 'Las redes son prestadas: no controlás el alcance y mañana cambian las reglas. Tu sitio es tuyo, aparece en Google cuando alguien busca tu tipo de negocio en tu zona y trabaja 24/7 dándole credibilidad a tu marca. No reemplazan tu Facebook — lo potencian. Por eso conectamos las dos cosas.',
+  },
+  {
+    q: '¿Cuánto cuesta?',
+    a: 'Depende de lo que tu negocio necesite: un sitio nuevo (Lanzamiento) no es lo mismo que renovar uno que ya existe. Siempre son dos partes claras: un pago único por el sitio y, si querés, el Plan nambuku mensual para mantenerlo cuidado. Te damos el precio exacto antes de empezar — sin sorpresas ni letra chica.',
+  },
+  {
+    q: '¿Cómo es el esquema de pago?',
+    a: 'El esquema lo definimos en la primera conversación, según el alcance y lo que les sirva a ambas partes. Lo más común es un 30/70 — un adelanto para arrancar y el resto a la entrega — o pagos por etapas. Nos adaptamos a vos, no al revés.',
+  },
+  {
+    q: '¿Cuánto tiempo tarda?',
+    a: 'La mayoría de los sitios de negocios locales están listos en pocas semanas, una vez que tenemos tus fotos y textos. Te decimos el plazo desde el primer día y te mantenemos al tanto en cada paso.',
+  },
+  {
+    q: '¿Quién hace los textos y las imágenes de la página?',
+    a: 'Si ya tenés textos y fotos, los usamos. Si no, nosotros los creamos: escribimos los textos a partir de una conversación con vos, y conseguimos o generamos las imágenes acordes al diseño. El contenido es parte del proyecto y lo definimos desde el inicio — no lo dejamos para el final.',
+  },
+  {
+    q: '¿Y si no entiendo nada de tecnología?',
+    a: 'No necesitás entenderla — para eso estamos nosotros. Te explicamos todo en palabras simples y nos encargamos de la parte técnica. Vos te enfocás en tu negocio.',
+  },
+  {
+    q: '¿Puedo pedir cambios después de que esté en línea?',
+    a: 'Claro. Con el Plan nambuku nos encargamos de las actualizaciones, el hosting, la seguridad y los respaldos. ¿Necesitás cambiar un precio, una foto o un horario? Nos mandás un WhatsApp y lo hacemos.',
+  },
+  {
+    q: '¿Van a hacer que mi negocio aparezca en Google?',
+    a: 'Es parte central de lo que hacemos: configuramos tu perfil de Google y construimos el sitio para que te encuentren. Con honestidad: posicionarse toma tiempo, no hay magia de la noche a la mañana — pero dejamos la base lista y el Plan nambuku la sigue mejorando.',
+  },
+  {
+    q: '¿Quién es el dueño del sitio y del dominio?',
+    a: 'Vos. El dominio y el sitio quedan a nombre de tu negocio, no del nuestro. No te amarramos a nada: si algún día querés seguir por tu cuenta, todo es tuyo.',
+  },
+  {
+    q: 'Ya tengo una página, pero está vieja. ¿Empiezan de cero?',
+    a: 'No necesariamente. Eso es una Renovación: tomamos lo que ya tenés y lo modernizamos para que se vea y funcione como tu negocio merece hoy.',
+  },
 ];
 ---
 
@@ -212,28 +278,52 @@ const placeholders = [
           </span>
         </a>
 
-        {/* Placeholder project slots (swap each for a real project as it ships) */}
+        {/* Small slots — real projects first, then "coming soon" placeholders */}
         {
-          placeholders.slice(0, 2).map((p) => (
-            <div class={`bento__cell bento__ph bento__ph--${p.n}`}>
-              <span class="bento__num" aria-hidden="true">{p.n}</span>
-              <div class="bento__ph-foot">
-                <span class="bento__tag bento__tag--ghost">{p.tag}</span>
-                <h3 class="bento__ph-title">{p.title}</h3>
+          smallSlots.map((slot, i) => {
+            const n = String(i + 2).padStart(2, '0'); // 02, 03
+            return slot.kind === 'project' ? (
+              <a href={`/proyectos/${slot.project.slug}`} class={`bento__cell bento__proj bento__ph--${n}`}>
+                <Image
+                  src={slot.project.cover}
+                  alt={slot.project.coverAlt}
+                  widths={[300, 480, 640]}
+                  sizes="(min-width: 900px) 23vw, 92vw"
+                  format="webp"
+                  quality={72}
+                  loading="lazy"
+                  decoding="async"
+                  class="bento__proj-img"
+                />
+                <div class="bento__proj-info">
+                  <span class="bento__tag">{slot.project.sector}</span>
+                  <h3 class="bento__proj-name">{slot.project.name}</h3>
+                </div>
+                <span class="bento__arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+                </span>
+              </a>
+            ) : (
+              <div class={`bento__cell bento__ph bento__ph--${n}`}>
+                <span class="bento__num" aria-hidden="true">{n}</span>
+                <div class="bento__ph-foot">
+                  <span class="bento__tag bento__tag--ghost">{slot.tag}</span>
+                  <h3 class="bento__ph-title">{slot.title}</h3>
+                </div>
+                <span class="bento__arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+                </span>
               </div>
-              <span class="bento__arrow" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
-              </span>
-            </div>
-          ))
+            );
+          })
         }
 
         {/* Wide placeholder */}
         <div class="bento__cell bento__ph bento__ph--wide">
-          <span class="bento__num" aria-hidden="true">{placeholders[2].n}</span>
+          <span class="bento__num" aria-hidden="true">{widePlaceholder.n}</span>
           <div class="bento__ph-foot">
-            <span class="bento__tag bento__tag--ghost">{placeholders[2].tag}</span>
-            <h3 class="bento__ph-title">{placeholders[2].title}</h3>
+            <span class="bento__tag bento__tag--ghost">{widePlaceholder.tag}</span>
+            <h3 class="bento__ph-title">{widePlaceholder.title}</h3>
           </div>
           <span class="bento__arrow" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
@@ -390,6 +480,40 @@ const placeholders = [
               ))
             }
           </div>
+        </div>
+      </div>
+    </section>
+
+    {/* 7.5 PREGUNTAS FRECUENTES — native <details> accordion on the light canvas,
+         a breather between the deep-black "Por qué" section and the orange CTA
+         band. No-JS and keyboard-accessible by construction; the +/− is the only
+         motion and it respects reduced-motion. */}
+    <section class="section faq-section">
+      <div class="container">
+        <div class="faq__head">
+          <p class="kicker">Preguntas frecuentes</p>
+          <h2 class="faq__title">Hablemos claro<span class="text-accent">.</span></h2>
+        </div>
+
+        <div class="faq__list">
+          {
+            faqs.map((f) => (
+              <details class="faq__item">
+                <summary class="faq__q">
+                  <span>{f.q}</span>
+                  <span class="faq__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                      <path d="M5 12h14" />
+                      <path class="faq__icon-v" d="M12 5v14" />
+                    </svg>
+                  </span>
+                </summary>
+                <div class="faq__a">
+                  <p>{f.a}</p>
+                </div>
+              </details>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -689,6 +813,48 @@ const placeholders = [
     color: rgba(255, 255, 255, 0.72);
   }
 
+  /* Real project in a small slot — full-bleed cover + overlay, like the
+     featured cell but compact. */
+  .bento__proj {
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .bento__proj-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms var(--ease-out-strong);
+  }
+  .bento__proj::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(8, 9, 11, 0.92) 0%,
+      rgba(8, 9, 11, 0.32) 55%,
+      transparent 82%
+    );
+  }
+  .bento__proj:hover .bento__proj-img {
+    transform: scale(1.04);
+  }
+  .bento__proj-info {
+    position: relative;
+    z-index: 1;
+    padding: clamp(1rem, 1.6vw, 1.35rem);
+  }
+  .bento__proj-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: -0.015em;
+    margin: 0.5rem 0 0;
+    color: #fff;
+  }
+
   /* Placeholder project cells. */
   .bento__ph {
     flex-direction: column;
@@ -917,9 +1083,9 @@ const placeholders = [
   .tech__inner {
     display: grid;
     place-items: center;
-    width: clamp(2rem, 5.2vw, 2.5rem);
-    height: clamp(2rem, 5.2vw, 2.5rem);
-    border-radius: 12px;
+    width: clamp(2.4rem, 6.8vw, 3.1rem);
+    height: clamp(2.4rem, 6.8vw, 3.1rem);
+    border-radius: 13px;
     background: #ffffff;
     box-shadow:
       0 7px 16px -7px rgba(10, 10, 10, 0.32),
@@ -934,8 +1100,8 @@ const placeholders = [
   .tech__mono {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: 0.72rem;
-    letter-spacing: -0.03em;
+    font-size: 0.8rem;
+    letter-spacing: -0.04em;
     line-height: 1;
   }
 
@@ -1102,7 +1268,13 @@ const placeholders = [
     color: var(--color-ink);
   }
   /* White pill on the orange — ink label, maximum contrast. */
+  /* Same colour-aware skew sweep as the .btn primitives (see global.css):
+     this button is white with ink text, so an ink panel sweeps in and the
+     label flips to white. ::before at z-index -1 covers the fill, not the label. */
   .cta-band__btn {
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
@@ -1114,11 +1286,25 @@ const placeholders = [
     font-weight: 600;
     font-size: 1rem;
     transition:
-      background-color 180ms ease,
+      color 400ms ease,
       transform 160ms var(--ease-out-strong);
   }
-  .cta-band__btn:hover {
+  .cta-band__btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -20%;
+    width: 140%;
+    height: 100%;
+    z-index: -1;
     background: var(--color-ink);
+    transform: skew(-20deg) translate3d(-130%, 0, 0);
+    transition: transform 400ms cubic-bezier(0.3, 1, 0.8, 1);
+  }
+  .cta-band__btn:hover::before {
+    transform: skew(-20deg) translate3d(0, 0, 0);
+  }
+  .cta-band__btn:hover {
     color: #fff;
   }
   .cta-band__btn:active {
@@ -1146,15 +1332,139 @@ const placeholders = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cta-band__btn,
-    .cta-band__btn svg {
-      transition: background-color 180ms ease;
+    .cta-band__btn {
+      transition: color 180ms ease;
+    }
+    .cta-band__btn::before,
+    .cta-band__btn:hover::before {
+      transition: none;
     }
     .cta-band__btn:active {
       transform: none;
     }
+    .cta-band__btn svg,
     .cta-band__btn:hover svg {
+      transition: none;
       transform: none;
+    }
+  }
+
+  /* ── Preguntas frecuentes — <details> accordion on the canvas ─────────────
+     Soft-UI cards (the lighter --shadow-soft, since there are ten of them);
+     an open item lifts to --shadow-raised. The marker is a +/− that collapses
+     its vertical stroke on open — the only animation, reduced-motion aside. */
+  .faq__head {
+    max-width: 60rem;
+  }
+  .faq__title {
+    margin: 0.4rem 0 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    /* Same header ladder as "Por qué nambuku" and the CTA band. */
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    color: var(--color-ink);
+  }
+  .faq__list {
+    margin-top: clamp(2.25rem, 5vw, 3.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .faq__item {
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    transition: box-shadow 300ms var(--ease-out-strong);
+  }
+  .faq__item[open] {
+    box-shadow: var(--shadow-raised);
+  }
+  .faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: clamp(1.1rem, 2.4vw, 1.5rem) clamp(1.25rem, 3vw, 1.75rem);
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  .faq__q::-webkit-details-marker {
+    display: none;
+  }
+  .faq__q:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: var(--radius);
+  }
+  .faq__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    background: var(--color-canvas);
+    color: var(--color-accent);
+    transition:
+      background 300ms var(--ease-out-strong),
+      color 300ms var(--ease-out-strong);
+  }
+  .faq__icon svg {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+  .faq__icon-v {
+    transform-origin: center;
+    transition: transform 300ms var(--ease-out-strong);
+  }
+  .faq__item[open] .faq__icon {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .faq__item[open] .faq__icon-v {
+    transform: scaleY(0);
+  }
+  .faq__a {
+    padding: 0 clamp(1.25rem, 3vw, 1.75rem);
+  }
+  .faq__a p {
+    margin: 0;
+    padding-bottom: clamp(1.1rem, 2.4vw, 1.5rem);
+    max-width: 62ch;
+    font-size: 0.975rem;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+  .faq__item[open] .faq__a {
+    animation: faqReveal 320ms var(--ease-out-strong);
+  }
+  @keyframes faqReveal {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq__item,
+    .faq__icon,
+    .faq__icon-v {
+      transition: none;
+    }
+    .faq__item[open] .faq__a {
+      animation: none;
     }
   }
 </style>

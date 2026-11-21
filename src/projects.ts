@@ -1,4 +1,6 @@
 import type { ImageMetadata } from 'astro';
+import goodEnergyLogo from '@/assets/work/good-energy/logo.svg';
+import mosoLogo from '@/assets/work/moso-solutions/logo.svg';
 import goodEnergyCover from '@/assets/work/good-energy.jpg';
 import geDesktopCatalogo from '@/assets/work/good-energy/desktop-catalogo.jpg';
 import geDesktopProducto from '@/assets/work/good-energy/desktop-producto.jpg';
@@ -6,6 +8,13 @@ import geDesktopNosotros from '@/assets/work/good-energy/desktop-nosotros.jpg';
 import geMobileHome from '@/assets/work/good-energy/mobile-home.jpg';
 import geMobileCatalogo from '@/assets/work/good-energy/mobile-catalogo.jpg';
 import geMobileProducto from '@/assets/work/good-energy/mobile-producto.jpg';
+import mosoCover from '@/assets/work/moso-solutions.jpg';
+import mosoDesktopServicios from '@/assets/work/moso-solutions/desktop-servicios.jpg';
+import mosoDesktopNosotros from '@/assets/work/moso-solutions/desktop-nosotros.jpg';
+import mosoDesktopContacto from '@/assets/work/moso-solutions/desktop-contacto.jpg';
+import mosoMobileHome from '@/assets/work/moso-solutions/mobile-home.jpg';
+import mosoMobileServicios from '@/assets/work/moso-solutions/mobile-servicios.jpg';
+import mosoMobileContacto from '@/assets/work/moso-solutions/mobile-contacto.jpg';
 
 /**
  * Proyectos reales de Nambuku. Fuente única: la home (sección "Casos destacados"),
@@ -30,6 +39,14 @@ export type Project = {
   name: string;
   /** Rubro corto, se muestra como kicker sobre el título. */
   sector: string;
+  /** Tipo de proyecto — qué clase de sitio es: "E-commerce", "Sitio
+   *  corporativo", "Catálogo", "Reservaciones", etc. (industria ≠ tipo). */
+  type: string;
+  /** Logo del negocio (opcional). Si no hay, la tarjeta usa el nombre como
+   *  firma tipográfica. Guardar en src/assets/work/<slug>/logo.(svg|png). */
+  logo?: ImageMetadata;
+  /** Texto alternativo del logo. */
+  logoAlt?: string;
   /** Una línea de resultado o descripción — tarjetas de la grilla y la home. */
   summary: string;
   /** Sitio en vivo. */
@@ -67,6 +84,9 @@ export const projects: Project[] = [
     slug: 'good-energy',
     name: 'Good Energy',
     sector: 'Tienda de suplementos',
+    type: 'E-commerce',
+    logo: goodEnergyLogo,
+    logoAlt: 'Good Energy',
     summary:
       'Tienda en línea de bienestar y suplementos: catálogo, compra por objetivo y envío local.',
     url: 'https://good-energy-drab.vercel.app/',
@@ -117,6 +137,67 @@ export const projects: Project[] = [
         src: geMobileProducto,
         alt: 'Ficha de producto de Good Energy en celular.',
         caption: 'Producto',
+      },
+    ],
+  },
+  {
+    slug: 'moso-solutions',
+    name: 'MoSo Solutions',
+    sector: 'Cuidado de propiedades',
+    type: 'Sitio corporativo',
+    logo: mosoLogo,
+    logoAlt: 'MoSo Solutions',
+    summary:
+      'Sitio bilingüe para un equipo familiar de cuidado de propiedades: seis servicios bajo un mismo techo y contacto directo.',
+    url: 'https://moso-solutions.vercel.app/',
+    location: 'Hacienda Pinilla & Avellanas, Guanacaste',
+    year: 2026,
+    services: ['Lanzamiento', 'Sitio de una página', 'Bilingüe (EN/ES)', 'Mobile-first'],
+    cover: mosoCover,
+    coverAlt:
+      'Página de inicio de MoSo Solutions, equipo de cuidado de propiedades en la costa de Guanacaste.',
+
+    intro:
+      'Un sitio bilingüe para un equipo familiar que cuida propiedades en la costa del Pacífico — seis servicios bajo un mismo techo, presentados con claridad y pensados para el teléfono.',
+    challenge:
+      'MoSo ya atendía casas de la zona de Tamarindo, Avellanas y Hacienda Pinilla con pintura, piscinas, plomería, electricidad, madera y jardines — pero, como pasa con la mayoría de las cuadrillas locales, todo se movía de boca en boca y por WhatsApp. No tenían un sitio que mostrara el alcance completo ni que diera la confianza que buscan los dueños de casa, muchos de ellos extranjeros.',
+    solution:
+      'Diseñamos y lanzamos un sitio de una página, bilingüe (inglés y español), que reúne los seis servicios con fotos reales de cada trabajo, explica quiénes son y cómo trabajan, y deja el teléfono, el correo y la ubicación a un solo toque. Todo mobile-first, porque es desde el celular que los contactan.',
+    result:
+      'MoSo pasó del boca en boca a una vitrina que trabaja a toda hora: los clientes entienden de un vistazo todo lo que ofrecen y escriben directo, en inglés o en español, desde el mismo lugar donde los encontraron.',
+
+    desktopShots: [
+      {
+        src: mosoDesktopServicios,
+        alt: 'Sección de servicios de MoSo Solutions en escritorio.',
+        caption: 'Los seis servicios, con una foto real de cada trabajo.',
+      },
+      {
+        src: mosoDesktopNosotros,
+        alt: 'Sección "Quiénes somos" de MoSo Solutions en escritorio.',
+        caption: 'Quiénes son y cómo trabajan, en pocas líneas.',
+      },
+      {
+        src: mosoDesktopContacto,
+        alt: 'Sección de contacto de MoSo Solutions en escritorio.',
+        caption: 'Teléfono, correo y ubicación a un toque.',
+      },
+    ],
+    mobileShots: [
+      {
+        src: mosoMobileHome,
+        alt: 'Inicio de MoSo Solutions en celular.',
+        caption: 'Inicio',
+      },
+      {
+        src: mosoMobileServicios,
+        alt: 'Servicios de MoSo Solutions en celular.',
+        caption: 'Servicios',
+      },
+      {
+        src: mosoMobileContacto,
+        alt: 'Contacto de MoSo Solutions en celular.',
+        caption: 'Contacto',
       },
     ],
   },

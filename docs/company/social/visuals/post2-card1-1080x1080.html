@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--canvas:#ECEEF2;--surface:#FFFFFF;--grey:#8A8D99;--ink:#0A0A0A;--muted:#6B6E76;--accent:#FB5321;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:1080px;height:1080px;overflow:hidden;font-family:'Geist',sans-serif;}
+  .canvas{width:1080px;height:1080px;background:var(--canvas);display:flex;align-items:center;justify-content:center;}
+  .card{width:952px;height:952px;background:var(--surface);border-radius:44px;
+    box-shadow:48px 48px 96px rgba(138,141,153,.40),-28px -28px 64px rgba(255,255,255,.85);
+    padding:96px;display:flex;flex-direction:column;justify-content:space-between;}
+  .top{display:flex;align-items:center;justify-content:space-between;}
+  .index{font-family:'Geist Mono',monospace;font-size:22px;font-weight:500;letter-spacing:.14em;color:var(--grey);}
+  .mark{font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+  .mark .dot{color:var(--accent);}
+  .stmt{font-weight:600;font-size:84px;line-height:1.06;letter-spacing:-.025em;color:var(--ink);}
+  .stmt .accent{color:var(--accent);font-weight:700;}
+  .foot{font-family:'Geist Mono',monospace;font-size:22px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+</style>
+</head>
+<body>
+  <div class="canvas"><div class="card">
+    <div class="top"><span class="index">01 — 04</span><span class="mark">nambuku<span class="dot">.</span></span></div>
+    <div class="stmt">Su mejor cliente lo está buscando en Google.<br><span class="accent">Y no lo encuentra.</span></div>
+    <div class="foot">Deslice →</div>
+  </div></div>
+</body>
+</html>

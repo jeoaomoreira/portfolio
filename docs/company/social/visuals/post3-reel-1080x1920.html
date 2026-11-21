@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--canvas:#ECEEF2;--surface:#FFFFFF;--grey:#8A8D99;--ink:#0A0A0A;--muted:#6B6E76;--accent:#FB5321;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:1080px;height:1920px;overflow:hidden;font-family:'Geist',sans-serif;}
+  .canvas{width:1080px;height:1920px;background:var(--canvas);display:flex;align-items:center;justify-content:center;}
+  .card{width:968px;height:1808px;background:var(--surface);border-radius:48px;
+    box-shadow:48px 48px 110px rgba(138,141,153,.42),-30px -30px 72px rgba(255,255,255,.85);
+    padding:104px 88px;display:flex;flex-direction:column;justify-content:space-between;}
+  .kicker{font-family:'Geist Mono',monospace;font-size:24px;font-weight:500;letter-spacing:.20em;text-transform:uppercase;color:var(--muted);}
+  .hero .lead{font-size:58px;font-weight:600;line-height:1.1;letter-spacing:-.02em;color:var(--ink);}
+  .hero .big{font-size:188px;font-weight:800;line-height:.92;letter-spacing:-.05em;color:var(--ink);margin-top:18px;}
+  .hero .big .accent{color:var(--accent);}
+  .list{display:flex;flex-direction:column;gap:40px;}
+  .q{display:flex;align-items:flex-start;gap:28px;}
+  .q .n{font-family:'Geist Mono',monospace;font-size:28px;font-weight:500;color:var(--accent);padding-top:10px;min-width:54px;}
+  .q .t{font-size:46px;font-weight:500;line-height:1.14;letter-spacing:-.015em;color:var(--ink);}
+  .foot{display:flex;flex-direction:column;gap:26px;}
+  .foot .win{font-size:40px;font-weight:600;color:var(--ink);letter-spacing:-.015em;}
+  .foot .row{display:flex;align-items:center;justify-content:space-between;}
+  .foot .mark{font-size:36px;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+  .foot .mark .dot{color:var(--accent);}
+  .foot .dm{font-family:'Geist Mono',monospace;font-size:24px;font-weight:500;letter-spacing:.10em;color:var(--muted);text-transform:uppercase;}
+  .foot .dm b{color:var(--accent);}
+</style>
+</head>
+<body>
+  <div class="canvas"><div class="card">
+    <div class="kicker">Antes de llamar, lo buscan</div>
+    <div class="hero">
+      <div class="lead">Un cliente decide si confía en usted en</div>
+      <div class="big"><span class="accent">5</span> segundos</div>
+    </div>
+    <div class="list">
+      <div class="q"><span class="n">01</span><span class="t">¿Se ve actual, o abandonado?</span></div>
+      <div class="q"><span class="n">02</span><span class="t">¿Hay fotos reales y reseñas?</span></div>
+      <div class="q"><span class="n">03</span><span class="t">¿Puedo reservar sin pelear con la página?</span></div>
+    </div>
+    <div class="foot">
+      <div class="win">Si las tres dan que sí, ya ganó.</div>
+      <div class="row">
+        <span class="mark">nambuku<span class="dot">.</span></span>
+        <span class="dm">Escríbanos <b>REVISIÓN</b></span>
+      </div>
+    </div>
+  </div></div>
+</body>
+</html>

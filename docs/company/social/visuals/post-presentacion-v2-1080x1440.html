@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0A0A0A;--white:#FFFFFF;--grey:#8A8D99;--muted:#6B6E76;--accent:#FB5321;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:1080px;height:1440px;overflow:hidden;font-family:'Geist',sans-serif;background:var(--ink);}
+  .poster{position:relative;width:1080px;height:1440px;background:var(--ink);overflow:hidden;}
+  .bg{position:absolute;inset:0;width:1080px;height:1440px;}
+  .content{position:absolute;inset:0;padding:76px;display:flex;flex-direction:column;justify-content:space-between;z-index:2;}
+  /* top bar */
+  .top{display:flex;align-items:flex-start;justify-content:space-between;}
+  .wordmark{font-size:34px;font-weight:800;color:var(--white);letter-spacing:-.03em;}
+  .wordmark .dot{color:var(--accent);}
+  .label{font-family:'Geist Mono',monospace;font-size:19px;font-weight:500;letter-spacing:.17em;
+    text-transform:uppercase;color:var(--grey);display:flex;align-items:center;gap:16px;}
+  .spark{width:26px;height:26px;}
+  /* hero */
+  .hero{margin:0;}
+  h1{font-size:150px;font-weight:800;line-height:.92;letter-spacing:-.05em;color:var(--white);}
+  h1 .l{display:block;}
+  h1 .accent{color:var(--accent);}
+  .sub{margin-top:46px;font-size:33px;font-weight:400;line-height:1.3;color:var(--grey);max-width:650px;letter-spacing:-.005em;}
+  .sub b{color:var(--white);font-weight:500;}
+  /* footer */
+  .foot{display:flex;align-items:flex-end;justify-content:space-between;}
+  .water{font-family:'Geist Mono',monospace;font-size:20px;font-weight:400;letter-spacing:.08em;color:var(--muted);}
+  .water b{color:var(--grey);font-weight:500;}
+  .follow{display:inline-flex;align-items:center;gap:14px;background:var(--white);color:var(--ink);
+    font-size:24px;font-weight:600;padding:16px 30px;letter-spacing:-.01em;}
+  .follow .arw{color:var(--accent);font-weight:700;}
+</style>
+</head>
+<body>
+  <div class="poster">
+    <svg class="bg" viewBox="0 0 1080 1440" xmlns="http://www.w3.org/2000/svg">
+      <!-- water ripples, seeded at the mark's dot (912,1260) -->
+      <g fill="none">
+        <circle cx="912" cy="1310" r="1080" stroke="#1D1D23" stroke-width="3"/>
+        <circle cx="912" cy="1310" r="860"  stroke="#212128" stroke-width="3"/>
+        <circle cx="912" cy="1310" r="650"  stroke="#26262E" stroke-width="3"/>
+        <circle cx="912" cy="1310" r="468"  stroke="#FB5321" stroke-width="9" opacity="0.92"/>
+        <circle cx="912" cy="1310" r="300"  stroke="#2A2B33" stroke-width="3"/>
+        <circle cx="912" cy="1310" r="150"  stroke="#FB5321" stroke-width="5" opacity="0.6"/>
+      </g>
+      <!-- giant ghost mark (n.) — generative form from the brand svg -->
+      <g transform="translate(300,770) scale(3.6)">
+        <path d="M62,150 L62,96 A30,30 0 0 1 122,96 L122,128 A22,22 0 0 0 144,150"
+          fill="none" stroke="#24252E" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <!-- the dot: the stone that seeds the ripples -->
+      <circle cx="912" cy="1310" r="40" fill="#FB5321"/>
+    </svg>
+
+    <div class="content">
+      <div class="top">
+        <span class="wordmark">nambuku<span class="dot">.</span></span>
+        <span class="label">Estudio · Guanacaste
+          <svg class="spark" viewBox="0 0 24 24"><path d="M12 0 C13 7 17 11 24 12 C17 13 13 17 12 24 C11 17 7 13 0 12 C7 11 11 7 12 0 Z" fill="#FB5321"/></svg>
+        </span>
+      </div>
+
+      <div class="hero">
+        <h1>
+          <span class="l">Que lo</span>
+          <span class="l">encuentren.</span>
+          <span class="l accent">Que confíen.</span>
+        </h1>
+      </div>
+
+      <div class="foot">
+        <span class="water">del chorotega <b>nambu</b> — agua</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# Nambuku — Brand & Design System (v1)
+# Nambuku — Brand & Design System (v2)
 
 > Visual identity for the Nambuku website. Live reference page: `/estilo` (dev only, noindex).
 > Encoded as tokens in [src/styles/global.css](../../src/styles/global.css).
@@ -75,48 +75,79 @@ root element and carries *that* component's Astro scope, not the parent's.
 
 ## Color
 
-Earth + growth + warmth — the colors of Guanacaste soil and nature. All text/UI pairs verified **≥ 4.5:1 (WCAG AA)**.
+**Pure White · Deep Black · Neutral Grey, with one Kinetic Orange accent.** The
+page carries no color of its own, so the orange earns all the attention. Surfaces
+follow a soft-UI model: a light grey canvas with white elements lifted by shadows
+rather than borders. Encoded in [src/styles/global.css](../../src/styles/global.css).
 
 | Role | Token | Hex | Use |
 |------|-------|-----|-----|
-| Canvas | `--color-canvas` | `#FAF6F0` | Warm paper page background |
-| Surface | `--color-surface` | `#FFFFFF` | Cards |
-| Sand | `--color-sand` | `#F1E9DD` | Subtle warm fills |
-| Ink | `--color-ink` | `#1F1A17` | Headings & body text |
-| Muted | `--color-muted` | `#6B6259` | Secondary text |
-| **Brand** (green) | `--color-brand` | `#2F5D45` | Marca, enlaces, trust accents — growth, calm |
-| Brand strong | `--color-brand-strong` | `#244A37` | Hover/pressed |
-| **Accent** (terracotta) | `--color-accent` | `#B8502E` | Primary CTAs — energy, Guanacaste earth |
-| Accent strong | `--color-accent-strong` | `#9C3F22` | Hover/pressed |
-| Border | `--color-border` | `#E7DED2` | Lines |
+| Canvas | `--color-canvas` | `#ECEEF2` | Light grey page background |
+| **Pure White** | `--color-surface` | `#FFFFFF` | Cards and raised elements |
+| Sand | `--color-sand` | `#E4E7EC` | Recessed / placeholder fills |
+| **Neutral Grey** | `--color-grey` | `#8A8D99` | Mid slate for secondary marks |
+| **Deep Black** | `--color-ink` | `#0A0A0A` | Headings and body text |
+| Muted | `--color-muted` | `#6B6E76` | Secondary text |
+| Brand | `--color-brand` | `#0A0A0A` | Carries the mono weight |
+| Brand strong | `--color-brand-strong` | `#000000` | Hover / pressed |
+| **Kinetic Orange** | `--color-accent` | `#FB5321` | Primary CTAs, kickers, accent marks |
+| Accent strong | `--color-accent-strong` | `#E2430F` | Hover / pressed |
+| Border | `--color-border` | `#E4E4E7` | Lines |
 
-**Color logic:** green = growth, trust, calm (brand identity, links). Terracotta = warmth, action (every CTA). Cream keeps it soft and inviting. WhatsApp green (`#25D366`) is reserved **only** for the floating WhatsApp button and WhatsApp links — it's a platform signal, not a brand color.
+**What each one is for**
+
+- **Pure White** — clarity, simplicity, minimalism. It creates the breathing space
+  in the layout and is what makes the accent register.
+- **Deep Black** — strength, confidence, contrast. It carries the dark surfaces
+  (the hero card) and gives the work a premium, deliberate feel.
+- **Neutral Grey** — balance and stability. A soft ground that raises contrast and
+  pushes the accents forward.
+- **Kinetic Orange** — energy, motion, action. Every primary CTA, and nothing else.
+
+Contrast: all text/UI pairs are verified **≥ 4.5:1 (WCAG AA)**, with one deliberate
+exception — large bold text on orange, held to the 3:1 large-text bar.
+
+WhatsApp is rendered in the accent rather than WhatsApp green, so the palette
+stays unified; `--color-whatsapp` exists only so that choice is revertible in one
+edit.
 
 ## Typography
 
-- **Display — Fraunces** (variable serif, optical sizing). Warm, modern, a little editorial → craft + establishment + trust. Used for all headings.
-- **Body/UI — Inter.** Clean, neutral, excellent legibility for Spanish accents. Used for everything else.
+**Geist, for everything.** One typeface across display and body — a modern
+grotesque that reads as technical and current, which is what *Estudio tecnológico*
+should look like. `Geist Mono` for code and small technical labels.
 
-> We overrode the design-skill's font suggestions (too playful — Fredoka/Amatic — or too generic — Poppins/Open Sans). Fraunces + Inter is distinctive without being quirky.
+- `--font-display` and `--font-sans` both resolve to **Geist**; there is no
+  display/body pairing to keep in sync.
+- `--font-mono` is **Geist Mono**.
+- Display scale: **64 / 48 / 32 / 24 / 20 / 18 px**.
+- Geist covers Spanish diacritics and punctuation (á é í ó ú ñ ¿ ¡) at every weight.
 
 ## Shape & motion
 
 - Radius token `--radius: 0.875rem` (pills for buttons).
+- **Soft-UI elevation.** White elements sit on the grey canvas lifted by paired
+  shadows — a grey tint below-right and a white counter-shadow above-left
+  (`--shadow-raised`, `--shadow-raised-lg`, `--shadow-soft`, `--shadow-pressed`).
+  Borders are the exception, not the default.
+- Shared easing: `--ease-out-strong` (`cubic-bezier(0.23, 1, 0.32, 1)`), matched
+  in GSAP via CustomEase so CSS and JS motion agree.
 - Buttons: `scale(0.97)` on press, strong ease-out — responsive feel (per emil-design-eng). Respect `prefers-reduced-motion`.
 - Rules kept from `ui-ux-pro-max`: SVG icons only (no emoji), visible focus, 4.5:1 contrast, 44px touch targets, test at 375/768/1024/1440.
 
 ## Component conventions
 
-- `.btn` + `.btn-accent` (terracotta CTA) / `.btn-ghost` (outline) / `.btn-sm` — defined in `global.css`.
-- Headings auto-use Fraunces via a base rule; no per-heading font class needed.
+- `.btn` + `.btn-accent` (Kinetic Orange CTA) / `.btn-ghost` (outline) / `.btn-sm` — defined in `global.css`.
+- Headings auto-use `--font-display` (Geist) via a base rule; no per-heading font class needed.
 
 ## Open / next
 
 - The hero deliberately keeps the wordmark alone — at that size the type *is* the
   mark, and setting the glyph beside it would compete.
-- **`brand-book.html` and `raiz-brand-book.pdf` are stale.** Both still show the old
-  sprout mark and its roots rationale, and still describe the studio as *Estudio web*.
-  Regenerate them against the mark above; the PDF was never touched by the rename
-  and still reads "Raíz" throughout.
+- **`raiz-brand-book.pdf` is stale and cannot be regenerated from the toolchain.**
+  [brand-book.html](./brand-book.html) is current (v2: new name page, new mark, new
+  copy), but the PDF export predates the rename and still reads "Raíz" throughout
+  with the old sprout. To refresh it: open `brand-book.html` in a browser,
+  Print → Save as PDF, and replace the file under a `nambuku-` name.
 - `public/og.png` social image still to design in these colors.
 - Dark mode: not built yet (tokens make it straightforward later).

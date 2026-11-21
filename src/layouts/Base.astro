@@ -12,8 +12,13 @@ interface Props {
   noindex?: boolean;
   /** Hide the global nav entirely (rare). */
   hideNav?: boolean;
-  /** Footer colour tone — "accent" lets a page's orange run into the footer. */
-  footerTone?: 'default' | 'accent';
+  /** Footer colour tone — "accent" lets a page's orange run into the footer;
+   *  "dark" drops a deep-black footer (used to anchor the all-orange pages). */
+  footerTone?: 'default' | 'accent' | 'dark';
+  /** Page chrome theme. "accent" floods the whole page — nav included — in
+   *  Kinetic Orange (the radical Proyectos treatment). Stamps a body class the
+   *  global nav, footer and page background all respond to. */
+  chrome?: 'default' | 'accent';
 }
 
 const {
@@ -23,6 +28,7 @@ const {
   noindex = false,
   hideNav = false,
   footerTone = 'default',
+  chrome = 'default',
 } = Astro.props;
 
 const pageTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.tagline}`;
@@ -59,7 +65,7 @@ const ogImageUrl = new URL(image, Astro.site).href;
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body class:list={[chrome === 'accent' && 'chrome-accent']}>
     {!hideNav && <Nav />}
     <main>
       <slot />

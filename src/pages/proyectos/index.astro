@@ -1,52 +1,333 @@
 ---
-import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import { projects } from '@/projects';
+
+// Proyectos — the showcase hub (website-architecture.md §3). Radical "Kinetic"
+// treatment: the whole page floods Kinetic Orange — navbar included (Base
+// chrome="accent") — and hands off to a deep-black footer (footerTone="dark").
+// Body copy on the orange runs in deep black (ink, 6.1:1 — clear of AA).
+//
+// The showcase is a CLIENT LIST (reference board): one row per project —
+// logo · industria · tipo de proyecto · arrow — separated by hairline rules,
+// all inside the content margin. The Cliente column shows the business LOGO
+// (drop one at src/assets/work/<slug>/logo.svg and set `logo:` in projects.ts);
+// until then it falls back to the business name set as a wordmark.
+const placeholders = [
+  { cliente: 'Próximamente', industria: 'En proceso', tipo: 'Nuevo proyecto en camino' },
+  { cliente: 'Próximamente', industria: '—', tipo: 'Tu negocio aquí' },
+];
 ---
 
 <Base
   title="Proyectos"
   description="Proyectos de nambuku para negocios de Guanacaste — sitios web, Google y presencia digital."
+  chrome="accent"
+  footerTone="dark"
 >
-  <section class="container section">
-    <h1 class="page-title">Proyectos<span class="text-accent">.</span></h1>
-    <p class="text-muted mt-5 max-w-xl text-lg">
+  {/* ── Hero ─────────────────────────────────────────────────────── */}
+  <section class="container pz-hero">
+    <h1 class="pz-title">Proyectos<span class="pz-dot">.</span></h1>
+    <p class="pz-intro">
       Los negocios de Guanacaste con los que hemos trabajado. Cada proyecto es
       una historia de cómo pasaron a verse — y a venderse — mejor.
     </p>
+  </section>
 
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-12">
+  {/* ── Client list ──────────────────────────────────────────────── */}
+  <section class="container pz-section">
+    <div class="pz-list">
+      {/* Column header */}
+      <div class="pz-head" aria-hidden="true">
+        <span>Cliente</span>
+        <span>Industria</span>
+        <span>Tipo de proyecto</span>
+        <span></span>
+      </div>
+
+      {/* Real projects */}
       {
         projects.map((p) => (
-          <a
-            href={`/proyectos/${p.slug}`}
-            class="card card-surface block overflow-hidden group"
-          >
-            <div class="aspect-[4/3] bg-sand overflow-hidden">
-              <Image
-                src={p.cover}
-                alt={p.coverAlt}
-                widths={[400, 600, 800]}
-                sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 90vw"
-                format="webp"
-                quality={72}
-                loading="lazy"
-                decoding="async"
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-              />
+          <a href={`/proyectos/${p.slug}`} class="pz-row">
+            <span class="pz-row__cliente">
+              {p.logo && (
+                <img
+                  src={p.logo.src}
+                  width={p.logo.width}
+                  height={p.logo.height}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  class:list={['pz-row__logo', `pz-row__logo--${p.slug}`]}
+                />
+              )}
+              <span class="pz-row__wordmark">{p.name}</span>
+            </span>
+            <div class="pz-row__meta">
+              <span class="pz-row__industria">{p.sector}</span>
+              <span class="pz-row__tipo">{p.type}</span>
             </div>
-            <div class="p-5">
-              <p class="text-xs uppercase tracking-wide text-brand font-medium">{p.sector}</p>
-              <h2 class="text-lg mt-1">{p.name}</h2>
-              <p class="text-muted text-sm mt-1">{p.summary}</p>
-              <p class="text-muted text-xs mt-3 font-mono">{p.location}</p>
-              <span class="inline-block mt-4 text-brand font-medium group-hover:text-brand-strong transition-colors">
-                Ver proyecto →
-              </span>
-            </div>
+            <span class="pz-row__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+            </span>
           </a>
+        ))
+      }
+
+      {/* Coming-soon rows */}
+      {
+        placeholders.map((ph) => (
+          <div class="pz-row pz-row--ph">
+            <span class="pz-row__cliente">
+              <span class="pz-row__wordmark">{ph.cliente}</span>
+            </span>
+            <div class="pz-row__meta">
+              <span class="pz-row__industria">{ph.industria}</span>
+              <span class="pz-row__tipo">{ph.tipo}</span>
+            </div>
+            <span class="pz-row__arrow" aria-hidden="true"></span>
+          </div>
         ))
       }
     </div>
   </section>
 </Base>
+
+<style>
+  /* ── Hero — oversized deep-black type on the orange field ──────────── */
+  .pz-hero {
+    padding-top: clamp(2.5rem, 6vw, 5rem);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .pz-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3.25rem, 17vw, 12rem);
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+    color: var(--color-ink);
+  }
+  .pz-dot {
+    color: #ffffff; /* the white spark on the orange title */
+  }
+  .pz-intro {
+    margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
+    max-width: 36ch;
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    line-height: 1.5;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  .pz-section {
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  /* ── List ─────────────────────────────────────────────────────────── */
+  /* Hairline rules in ink, low alpha — visible on the orange without buzzing. */
+  .pz-list {
+    border-bottom: 1px solid rgba(10, 10, 10, 0.18);
+  }
+
+  /* Shared column geometry for the header and every row. */
+  .pz-head,
+  .pz-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1.4fr 2.25rem;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .pz-head {
+    padding-block: 0.9rem;
+    border-bottom: 1px solid rgba(10, 10, 10, 0.18);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(10, 10, 10, 0.55);
+  }
+
+  .pz-row {
+    position: relative;
+    padding-block: clamp(1.2rem, 2.2vw, 1.85rem);
+    border-top: 1px solid rgba(10, 10, 10, 0.18);
+    color: var(--color-ink);
+  }
+  .pz-row:first-of-type {
+    border-top: 0; /* the header already draws the first line */
+  }
+  /* The meta wrapper is invisible on desktop so industria + tipo sit directly
+     in the grid; on phones it becomes a real flex box under the client name. */
+  .pz-row__meta {
+    display: contents;
+  }
+
+  /* Cliente — the logo, or the name as a wordmark. */
+  .pz-row__cliente {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.8rem, 1.5vw, 1.35rem); /* space between the logo and the name */
+    min-width: 0;
+  }
+  .pz-row__logo {
+    max-height: clamp(3.5rem, 6vw, 4.75rem); /* detailed badge — needs size to read */
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: left center;
+    /* The supplied logos are black artwork; flatten to a pure white silhouette
+       so they read on the orange field (brightness(0) → black, invert → white).
+       The Good Energy mark is a raster badge (no vector strokes to weight), so we
+       fatten it optically: four 0-blur white drop-shadows nudge the silhouette
+       half a pixel in each direction, thickening every stroke without a glow. */
+    filter: brightness(0) invert(1)
+      drop-shadow(0.5px 0 0 #fff) drop-shadow(-0.5px 0 0 #fff)
+      drop-shadow(0 0.5px 0 #fff) drop-shadow(0 -0.5px 0 #fff);
+  }
+  /* MoSo's mark is a finer line drawing — keep its native stroke weight (no
+     dilation) and show it a touch smaller than the heavier Good Energy badge. */
+  .pz-row__logo--moso-solutions {
+    max-height: clamp(2.6rem, 4.2vw, 3.4rem);
+    filter: brightness(0) invert(1);
+  }
+  .pz-row__wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: #ffffff; /* white — large display text clears the 3:1 bar on orange */
+  }
+
+  .pz-row__industria,
+  .pz-row__tipo {
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    color: rgba(10, 10, 10, 0.78);
+  }
+
+  /* Arrow — ink, nudges on hover. */
+  .pz-row__arrow {
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-ink);
+    transition: transform 200ms var(--ease-out-strong);
+  }
+  .pz-row__arrow svg {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  /* Hover — a faint ink wash across the row + the arrow nudging out. */
+  @media (hover: hover) and (pointer: fine) {
+    a.pz-row::before {
+      content: '';
+      position: absolute;
+      inset: 0 -1rem; /* bleed a touch past the text, still inside the margin */
+      border-radius: 10px;
+      background: rgba(10, 10, 10, 0.05);
+      opacity: 0;
+      transition: opacity 180ms ease;
+      z-index: -1;
+    }
+    a.pz-row:hover::before {
+      opacity: 1;
+    }
+    a.pz-row:hover .pz-row__arrow {
+      transform: translate(3px, -3px);
+    }
+  }
+
+  /* Coming-soon rows — muted, non-interactive. */
+  .pz-row--ph {
+    color: rgba(10, 10, 10, 0.5);
+  }
+  .pz-row--ph .pz-row__wordmark {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.55); /* a faded white, below the real client names */
+  }
+  .pz-row--ph .pz-row__industria,
+  .pz-row--ph .pz-row__tipo {
+    color: rgba(10, 10, 10, 0.45);
+  }
+
+  /* ── Phone — stack each row: name + arrow, then industria · tipo ─────── */
+  @media (max-width: 700px) {
+    .pz-head {
+      display: none; /* the rows read fine without the column header */
+    }
+    .pz-row {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        'cliente arrow'
+        'meta    meta';
+      row-gap: 0.6rem;
+      align-items: start;
+    }
+    .pz-row__cliente {
+      grid-area: cliente;
+    }
+    .pz-row__arrow {
+      grid-area: arrow;
+      align-self: center;
+    }
+    .pz-row__meta {
+      grid-area: meta;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem 0.75rem;
+    }
+    /* A dot between industria and tipo on the stacked line. */
+    .pz-row__tipo {
+      position: relative;
+      padding-left: 1rem;
+    }
+    .pz-row__tipo::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.5;
+      transform: translateY(-50%);
+    }
+  }
+
+  /* ── Scroll reveal — progressive enhancement, reduced-motion safe ──── */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js) .pz-row {
+      opacity: 0;
+      transform: translateY(26px);
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  // Mark that JS is live so the CSS above can hide the rows before paint
+  // (no flash of visible-then-hidden). Added as early as the module runs.
+  document.documentElement.classList.add('js');
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray<HTMLElement>('.pz-row').forEach((row, i) => {
+      gsap.to(row, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+        delay: i * 0.05,
+        scrollTrigger: { trigger: row, start: 'top 92%' },
+      });
+    });
+  }
+</script>
