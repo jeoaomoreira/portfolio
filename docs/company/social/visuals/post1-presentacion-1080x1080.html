@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#ECEEF2; --surface:#FFFFFF; --grey:#8A8D99; --ink:#0A0A0A;
+    --muted:#6B6E76; --accent:#FB5321; --border:#E4E4E7;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:1080px;height:1080px;overflow:hidden;font-family:'Geist',sans-serif;}
+  .canvas{width:1080px;height:1080px;background:var(--canvas);display:flex;align-items:center;justify-content:center;}
+  .card{
+    width:952px;height:952px;background:var(--surface);border-radius:44px;
+    box-shadow:48px 48px 96px rgba(138,141,153,.40), -28px -28px 64px rgba(255,255,255,.85);
+    padding:96px;display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .kicker{font-family:'Geist Mono',monospace;font-size:21px;font-weight:500;
+    letter-spacing:.20em;text-transform:uppercase;color:var(--muted);}
+  .center{display:flex;flex-direction:column;gap:30px;}
+  .wordmark{font-size:150px;font-weight:800;color:var(--ink);letter-spacing:-.04em;line-height:.9;}
+  .wordmark .dot{color:var(--accent);}
+  .subline{font-family:'Geist Mono',monospace;font-size:30px;font-weight:400;color:var(--muted);letter-spacing:.01em;}
+  .subline b{color:var(--ink);font-weight:500;}
+  .foot{display:flex;align-items:center;justify-content:space-between;}
+  .foot .essence{font-size:30px;font-weight:500;color:var(--ink);}
+  .foot .tag{width:18px;height:18px;border-radius:50%;background:var(--accent);}
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="card">
+      <div class="kicker">Estudio de tecnología — Guanacaste</div>
+      <div class="center">
+        <div class="wordmark">nambuku<span class="dot">.</span></div>
+        <div class="subline">del chorotega <b>nambu</b> — agua</div>
+      </div>
+      <div class="foot">
+        <div class="essence">De aquí, con el estándar de afuera.</div>
+        <div class="tag"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
