@@ -1,6 +1,6 @@
 ---
 import Base from '@/layouts/Base.astro';
-import { whatsappLink, site } from '@/site';
+import { whatsappLink, site, social } from '@/site';
 ---
 
 <Base
@@ -26,6 +26,24 @@ import { whatsappLink, site } from '@/site';
     <div class="mt-10 text-sm text-muted space-y-1">
       <p>Correo: <a href={`mailto:${site.email}`} class="underline hover:text-ink">{site.email}</a></p>
       <p>{site.location}</p>
+    </div>
+
+    <div class="mt-8">
+      <p class="text-sm text-muted">Seguinos</p>
+      <ul class="mt-2 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+        {social.map((profile) => (
+          <li>
+            <a
+              href={profile.href}
+              target="_blank"
+              rel="noopener me"
+              class="text-muted underline hover:text-ink"
+            >
+              {profile.name} · {profile.handle}
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
 
     <p class="text-muted mt-10 text-sm font-mono">[Formulario de contacto · mapa · perfil de Google]</p>

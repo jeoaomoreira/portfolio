@@ -17,6 +17,25 @@ export const site = {
   ogImage: '/og.png',
 } as const;
 
+/**
+ * Social profiles. Single source — the footer and /contacto both read this, so
+ * a handle only ever changes in one place.
+ * The Facebook URL is the page's share link; swap it for the vanity URL
+ * (facebook.com/nambukucr) once the page has one.
+ */
+export const social = [
+  {
+    name: 'Instagram',
+    handle: '@nambukucr',
+    href: 'https://www.instagram.com/nambukucr/',
+  },
+  {
+    name: 'Facebook',
+    handle: 'nambuku',
+    href: 'https://www.facebook.com/share/1RhD1iPgGf/',
+  },
+] as const;
+
 export const whatsappLink = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(
   site.whatsappMessage,
 )}`;

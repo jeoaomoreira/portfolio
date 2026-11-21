@@ -1,5 +1,5 @@
 ---
-import { nav, whatsappLink, site } from '@/site';
+import { nav, whatsappLink, site, social } from '@/site';
 import Logo from './Logo.astro';
 
 interface Props {
@@ -41,6 +41,9 @@ const year = new Date().getFullYear();
         <a href={item.href}>{item.label}</a>
       ))}
       <a href={whatsappLink} target="_blank" rel="noopener">WhatsApp</a>
+      {social.map((profile) => (
+        <a href={profile.href} target="_blank" rel="noopener me">{profile.name}</a>
+      ))}
     </nav>
   </div>
 
