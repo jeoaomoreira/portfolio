@@ -191,6 +191,12 @@ const placeholders = [
     max-height: clamp(2.6rem, 4.2vw, 3.4rem);
     filter: brightness(0) invert(1);
   }
+  /* MOBA's mark is a bold, wide vector — already crisp, so no dilation; kept
+     compact so the wide shape sits beside the name without crowding it. */
+  .pz-row__logo--moba {
+    max-height: clamp(2.2rem, 3.6vw, 2.9rem);
+    filter: brightness(0) invert(1);
+  }
   .pz-row__wordmark {
     font-family: var(--font-display);
     font-weight: 700;

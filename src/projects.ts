@@ -15,6 +15,11 @@ import mosoDesktopContacto from '@/assets/work/moso-solutions/desktop-contacto.j
 import mosoMobileHome from '@/assets/work/moso-solutions/mobile-home.jpg';
 import mosoMobileServicios from '@/assets/work/moso-solutions/mobile-servicios.jpg';
 import mosoMobileContacto from '@/assets/work/moso-solutions/mobile-contacto.jpg';
+import mobaLogo from '@/assets/work/moba/logo.svg';
+import mobaCover from '@/assets/work/moba.jpg';
+import mobaMobileHome from '@/assets/work/moba/mobile-home.jpg';
+import mobaMobileFlota from '@/assets/work/moba/mobile-flota.jpg';
+import mobaMobileGarantias from '@/assets/work/moba/mobile-garantias.jpg';
 
 /**
  * Proyectos reales de Nambuku. Fuente única: la home (sección "Casos destacados"),
@@ -198,6 +203,56 @@ export const projects: Project[] = [
         src: mosoMobileContacto,
         alt: 'Contacto de MoSo Solutions en celular.',
         caption: 'Contacto',
+      },
+    ],
+  },
+  {
+    slug: 'moba',
+    name: 'MOBA',
+    sector: 'Transporte turístico',
+    type: 'Reservaciones',
+    logo: mobaLogo,
+    logoAlt: 'MOBA',
+    summary:
+      'Traslados privados por Guanacaste: solicitud por WhatsApp a precio fijo y seguimiento de vuelos, pensado para el viajero.',
+    url: 'https://moba-lake.vercel.app/',
+    location: 'Tamarindo & Aeropuerto de Liberia, Guanacaste',
+    year: 2026,
+    services: [
+      'Lanzamiento',
+      'Cotizador por WhatsApp',
+      'Seguimiento de vuelos',
+      'Catálogo de flota',
+      'Mobile-first',
+    ],
+    cover: mobaCover,
+    coverAlt: 'Página de inicio de MOBA, traslados privados en Guanacaste.',
+
+    intro:
+      'Un sitio para un servicio de traslados privados en Guanacaste — del aeropuerto de Liberia hasta la playa. El viajero arma la solicitud y la envía por WhatsApp, con un precio fijo confirmado antes de viajar, todo pensado para el teléfono.',
+    challenge:
+      'MOBA nació en Tamarindo porque demasiados visitantes aterrizaban de noche en Liberia y descubrían que el transporte que habían cotizado quería cobrar otro precio. Necesitaban una vitrina que diera confianza desde el primer clic — precio claro, vehículos reales y permisos a la vista — para turistas que reservan desde el extranjero.',
+    solution:
+      'Diseñamos y lanzamos el sitio con un cotizador que arma un mensaje de WhatsApp (el cliente lo revisa y lo envía, sin pedir datos de tarjeta), una flota explicada por tipo de vehículo y tamaño de grupo, y las garantías que de verdad importan: seguimiento del vuelo, el nombre del chofer, permisos y seguro al día. Todo mobile-first, porque llegan desde el celular.',
+    result:
+      'MOBA pasó a tener una vitrina que trabaja a toda hora: el viajero arma su traslado, recibe un precio fijo por WhatsApp y sabe quién lo espera a la salida de aduanas — con la confianza resuelta antes de aterrizar.',
+
+    desktopShots: [],
+    mobileShots: [
+      {
+        src: mobaMobileHome,
+        alt: 'Inicio de MOBA en celular.',
+        caption: 'Inicio',
+      },
+      {
+        src: mobaMobileFlota,
+        alt: 'Flota de vehículos de MOBA en celular.',
+        caption: 'Flota',
+      },
+      {
+        src: mobaMobileGarantias,
+        alt: 'Garantías de MOBA en celular.',
+        caption: 'Garantías',
       },
     ],
   },
