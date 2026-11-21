@@ -1174,7 +1174,13 @@ const widePlaceholder = { n: '04', tag: 'Pr√≥ximamente', title: 'Tu negocio aqu√
     color: var(--color-ink);
   }
   /* White pill on the orange ‚Äî ink label, maximum contrast. */
+  /* Same colour-aware skew sweep as the .btn primitives (see global.css):
+     this button is white with ink text, so an ink panel sweeps in and the
+     label flips to white. ::before at z-index -1 covers the fill, not the label. */
   .cta-band__btn {
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
@@ -1186,11 +1192,25 @@ const widePlaceholder = { n: '04', tag: 'Pr√≥ximamente', title: 'Tu negocio aqu√
     font-weight: 600;
     font-size: 1rem;
     transition:
-      background-color 180ms ease,
+      color 400ms ease,
       transform 160ms var(--ease-out-strong);
   }
-  .cta-band__btn:hover {
+  .cta-band__btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -20%;
+    width: 140%;
+    height: 100%;
+    z-index: -1;
     background: var(--color-ink);
+    transform: skew(-20deg) translate3d(-130%, 0, 0);
+    transition: transform 400ms cubic-bezier(0.3, 1, 0.8, 1);
+  }
+  .cta-band__btn:hover::before {
+    transform: skew(-20deg) translate3d(0, 0, 0);
+  }
+  .cta-band__btn:hover {
     color: #fff;
   }
   .cta-band__btn:active {
@@ -1218,14 +1238,19 @@ const widePlaceholder = { n: '04', tag: 'Pr√≥ximamente', title: 'Tu negocio aqu√
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cta-band__btn,
-    .cta-band__btn svg {
-      transition: background-color 180ms ease;
+    .cta-band__btn {
+      transition: color 180ms ease;
+    }
+    .cta-band__btn::before,
+    .cta-band__btn:hover::before {
+      transition: none;
     }
     .cta-band__btn:active {
       transform: none;
     }
+    .cta-band__btn svg,
     .cta-band__btn:hover svg {
+      transition: none;
       transform: none;
     }
   }

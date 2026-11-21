@@ -1,10 +1,20 @@
 ---
-import { nav, whatsappLink, site } from '@/site';
+import { nav, site } from '@/site';
 import Logo from './Logo.astro';
+import LanguageDropdown from './LanguageDropdown.astro';
 
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
   href === '/' ? path === '/' : path.startsWith(href);
+
+// Desktop top bar: the main links sit in the centre. Inicio is the logo and
+// Contacto is the CTA on the right, so both drop out of the centred set.
+const centerLinks = nav.filter(
+  (item) => !['/', '/contacto'].includes(item.href),
+);
+// Mobile overlay: the same reach, plus Inicio (there is no logo link to tap in
+// the overlay). Contacto is still rendered separately as the CTA.
+const menuLinks = nav.filter((item) => item.href !== '/contacto');
 ---
 
 {/* Flat, fabrica-style top bar: wordmark left, links right, burger on mobile.
@@ -18,29 +28,34 @@ const isActive = (href: string) =>
 
     <nav class="nav__links" aria-label="Navegación principal">
       {
-        nav
-          .filter((item) => item.href !== '/')
-          .map((item) => (
-            <a
-              href={item.href}
-              class:list={['nav__link', isActive(item.href) && 'is-active']}
-            >
-              {item.label}
-            </a>
-          ))
+        centerLinks.map((item) => (
+          <a
+            href={item.href}
+            class:list={['nav__link', isActive(item.href) && 'is-active']}
+          >
+            {item.label}
+          </a>
+        ))
       }
     </nav>
 
-    <button
-      class="nav__burger"
-      type="button"
-      aria-label="Abrir menú"
-      aria-expanded="false"
-      aria-controls="site-menu"
-    >
-      <span></span>
-      <span></span>
-    </button>
+    <div class="nav__end">
+      <div class="nav__actions">
+        <LanguageDropdown />
+        <a href="/contacto" class="btn btn-accent btn-sm nav__cta">Contacto</a>
+      </div>
+
+      <button
+        class="nav__burger"
+        type="button"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="site-menu"
+      >
+        <span></span>
+        <span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -49,7 +64,7 @@ const isActive = (href: string) =>
   <div class="site-menu__panel" data-menu-panel>
     <nav class="site-menu__links" aria-label="Menú">
       {
-        nav.map((item) => (
+        menuLinks.map((item) => (
           <a
             href={item.href}
             class:list={['site-menu__link', isActive(item.href) && 'is-active']}
@@ -59,9 +74,8 @@ const isActive = (href: string) =>
         ))
       }
     </nav>
-    <a href={whatsappLink} target="_blank" rel="noopener" class="btn btn-accent site-menu__cta">
-      Hablemos
-    </a>
+    <LanguageDropdown />
+    <a href="/contacto" class="btn btn-accent site-menu__cta">Contacto</a>
   </div>
 </div>
 
@@ -72,12 +86,43 @@ const isActive = (href: string) =>
     z-index: 50;
     background: var(--color-canvas); /* completely solid, no border */
   }
+  /* Three tracks: brand pinned left, links in the true centre, actions right.
+     The 1fr side tracks keep the centre column optically centred in the bar. */
   .nav__inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     gap: 1.5rem;
     height: 64px;
+  }
+  .nav__brand {
+    justify-self: start;
+  }
+  .nav__links {
+    justify-self: center;
+  }
+  .nav__end {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  /* The Contacto CTA (both the bar pill and the overlay button) overrides the
+     accent variant's sweep: instead of turning white on hover it darkens to
+     deep black, keeping the white label — the original Uiverse look. */
+  .nav__cta,
+  .site-menu__cta {
+    --btn-sweep: var(--color-ink); /* deep black sweeps in … */
+    --btn-sweep-ink: var(--color-on-accent); /* … label stays white */
+  }
+  .nav__cta {
+    /* Compact pill for the bar; sweep hover comes from the shared .btn. */
+    font-weight: 600;
   }
 
   .nav__brand {
@@ -213,7 +258,8 @@ const isActive = (href: string) =>
 
   /* ── Breakpoint ───────────────────────────────────────────────── */
   @media (max-width: 768px) {
-    .nav__links {
+    .nav__links,
+    .nav__actions {
       display: none;
     }
     .nav__burger {
@@ -261,7 +307,7 @@ const isActive = (href: string) =>
 
     let lastFocused: HTMLElement | null = null;
     const focusables = () =>
-      Array.from(menu.querySelectorAll<HTMLElement>('a[href]')).filter(
+      Array.from(menu.querySelectorAll<HTMLElement>('a[href], button')).filter(
         (el) => el.offsetParent !== null,
       );
 

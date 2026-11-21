@@ -1,0 +1,279 @@
+---
+/*
+  LanguageDropdown — ES/EN language control for the navbar.
+
+  Control only (2026-11-20): it records the viewer's choice in localStorage and
+  reflects it in the UI, but it does NOT translate the pages yet — the site is
+  Spanish-only. Wiring real i18n (English content + routing) is a separate task.
+  The <html lang> is deliberately left as-is so assistive tech still reads the
+  Spanish content correctly.
+
+  Safe to drop in more than once (desktop bar + mobile menu): one bundled script
+  wires every instance and keeps them in sync.
+*/
+const languages = [
+  { code: 'es', label: 'Español', short: 'ES' },
+  { code: 'en', label: 'English', short: 'EN' },
+];
+---
+
+<div class="lang" data-lang>
+  <button
+    class="lang__toggle"
+    type="button"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-label="Cambiar idioma"
+  >
+    <svg
+      class="lang__globe"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M3 12h18"></path>
+      <path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18"></path>
+    </svg>
+    <span class="lang__current" data-lang-current>ES</span>
+    <svg
+      class="lang__chev"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.9"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </button>
+
+  <ul class="lang__menu" role="menu" aria-label="Idioma">
+    {
+      languages.map((l) => (
+        <li role="none">
+          <button
+            type="button"
+            role="menuitemradio"
+            class="lang__item"
+            data-lang-code={l.code}
+            aria-checked={l.code === 'es' ? 'true' : 'false'}
+          >
+            <span>{l.label}</span>
+            <svg
+              class="lang__check"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .lang {
+    position: relative;
+  }
+  .lang__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.6rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-muted);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+    border-radius: 999px;
+    cursor: pointer;
+    transition:
+      color 160ms ease,
+      background-color 160ms ease;
+  }
+  .lang__toggle:hover,
+  .lang.is-open .lang__toggle {
+    color: var(--color-ink);
+  }
+  .lang__globe {
+    width: 1.05rem;
+    height: 1.05rem;
+    flex: none;
+  }
+  .lang__chev {
+    width: 0.8rem;
+    height: 0.8rem;
+    flex: none;
+    transition: transform 220ms var(--ease-out-strong);
+  }
+  .lang.is-open .lang__chev {
+    transform: rotate(180deg);
+  }
+
+  .lang__menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 10.5rem;
+    margin: 0;
+    padding: 0.35rem;
+    list-style: none;
+    background: var(--color-surface);
+    border-radius: 0.85rem;
+    /* Background-agnostic elevation (NOT the neumorphic --shadow-raised): the
+       menu floats over the grey canvas, the dark hero and anything else, so it
+       uses a neutral drop shadow plus a hairline border instead of the
+       canvas-tuned double shadow. */
+    border: 1px solid var(--color-border);
+    box-shadow:
+      0 12px 30px -10px rgba(0, 0, 0, 0.32),
+      0 4px 10px -4px rgba(0, 0, 0, 0.16);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition:
+      opacity 180ms ease,
+      transform 200ms var(--ease-out-strong),
+      visibility 0s linear 200ms;
+    z-index: 70;
+  }
+  .lang.is-open .lang__menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition:
+      opacity 180ms ease,
+      transform 200ms var(--ease-out-strong);
+  }
+  .lang__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-ink);
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    border-radius: 0.55rem;
+    cursor: pointer;
+    transition: background-color 140ms ease;
+  }
+  .lang__item:hover {
+    background: var(--color-canvas);
+  }
+  .lang__item[aria-checked='true'] {
+    font-weight: 600;
+  }
+  .lang__check {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+    color: var(--color-accent);
+    opacity: 0;
+  }
+  .lang__item[aria-checked='true'] .lang__check {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lang__chev,
+    .lang__menu {
+      transition:
+        opacity 160ms ease,
+        visibility 0s;
+    }
+  }
+</style>
+
+<script>
+  const groups = Array.from(document.querySelectorAll<HTMLElement>('[data-lang]'));
+
+  if (groups.length) {
+    const STORAGE_KEY = 'nambuku:lang';
+
+    const read = (): string => {
+      try {
+        return localStorage.getItem(STORAGE_KEY) || 'es';
+      } catch {
+        return 'es';
+      }
+    };
+    const write = (code: string) => {
+      try {
+        localStorage.setItem(STORAGE_KEY, code);
+      } catch {
+        /* private mode / blocked storage — the control still works for the session */
+      }
+    };
+
+    // Reflect the chosen language across every instance (label + checked state).
+    const apply = (code: string) => {
+      groups.forEach((group) => {
+        const current = group.querySelector<HTMLElement>('[data-lang-current]');
+        group.querySelectorAll<HTMLElement>('[data-lang-code]').forEach((item) => {
+          const on = item.getAttribute('data-lang-code') === code;
+          item.setAttribute('aria-checked', String(on));
+          if (on && current) current.textContent = code.toUpperCase();
+        });
+      });
+    };
+
+    const closeAll = () => {
+      groups.forEach((g) => {
+        g.classList.remove('is-open');
+        g.querySelector('.lang__toggle')?.setAttribute('aria-expanded', 'false');
+      });
+    };
+
+    groups.forEach((group) => {
+      const toggle = group.querySelector<HTMLButtonElement>('.lang__toggle');
+      toggle?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wasOpen = group.classList.contains('is-open');
+        closeAll();
+        if (!wasOpen) {
+          group.classList.add('is-open');
+          toggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      group.querySelectorAll<HTMLButtonElement>('[data-lang-code]').forEach((item) => {
+        item.addEventListener('click', () => {
+          const code = item.getAttribute('data-lang-code') || 'es';
+          write(code);
+          apply(code);
+          closeAll();
+        });
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('[data-lang]')) closeAll();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAll();
+    });
+
+    apply(read());
+  }
+</script>
