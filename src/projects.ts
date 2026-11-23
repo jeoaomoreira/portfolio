@@ -18,8 +18,8 @@ import mosoMobileContacto from '@/assets/work/moso-solutions/mobile-contacto.jpg
 import mobaLogo from '@/assets/work/moba/logo.svg';
 import mobaCover from '@/assets/work/moba.jpg';
 import mobaMobileHome from '@/assets/work/moba/mobile-home.jpg';
-import mobaMobileFlota from '@/assets/work/moba/mobile-flota.jpg';
 import mobaMobileGarantias from '@/assets/work/moba/mobile-garantias.jpg';
+import mobaMobilePreguntas from '@/assets/work/moba/mobile-preguntas.jpg';
 
 /**
  * Proyectos reales de Nambuku. Fuente única: la home (sección "Casos destacados"),
@@ -245,14 +245,14 @@ export const projects: Project[] = [
         caption: 'Inicio',
       },
       {
-        src: mobaMobileFlota,
-        alt: 'Flota de vehículos de MOBA en celular.',
-        caption: 'Flota',
-      },
-      {
         src: mobaMobileGarantias,
         alt: 'Garantías de MOBA en celular.',
         caption: 'Garantías',
+      },
+      {
+        src: mobaMobilePreguntas,
+        alt: 'Preguntas frecuentes de MOBA en celular.',
+        caption: 'Preguntas',
       },
     ],
   },

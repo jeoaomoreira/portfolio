@@ -27,39 +27,48 @@ const {
 } = Astro.props;
 ---
 
-<div class:list={['phone', className]}>
-  <div class="phone__screen">
-    <div class="phone__status" aria-hidden="true">
-      <span class="phone__island"></span>
-    </div>
-    <div class="phone__bar">
-      {url && <span class="phone__url">{url}</span>}
-    </div>
-    <div class="phone__view">
-      <Image
-        class="phone__img"
-        src={src}
-        alt={alt}
-        widths={widths}
-        sizes={sizes}
-        format="webp"
-        quality={80}
-        loading={loading}
-        decoding="async"
-      />
+<div class:list={['phone-fit', className]}>
+  <div class="phone">
+    <div class="phone__screen">
+      <div class="phone__status" aria-hidden="true">
+        <span class="phone__island"></span>
+      </div>
+      <div class="phone__bar">
+        {url && <span class="phone__url">{url}</span>}
+      </div>
+      <div class="phone__view">
+        <Image
+          class="phone__img"
+          src={src}
+          alt={alt}
+          widths={widths}
+          sizes={sizes}
+          format="webp"
+          quality={80}
+          loading={loading}
+          decoding="async"
+        />
+      </div>
     </div>
   </div>
 </div>
 
 <style>
-  .phone {
-    position: relative;
-    /* fills its (page-owned) sizing wrapper — callers set the width there */
+  /* Sizing wrapper: callers set the width here. It's the container-query context,
+     so every dimension below (in cqw = % of the phone's own width) scales as one
+     unit — the frame keeps identical proportions, corner radius and chrome at any
+     size, whether it's the big hero phone or a tiny one in the cluster. */
+  .phone-fit {
     width: 100%;
     max-width: 100%;
+    container-type: inline-size;
+  }
+  .phone {
+    position: relative;
+    width: 100%;
     aspect-ratio: 9 / 19.5;
-    padding: 4px;
-    border-radius: 2.3rem;
+    padding: 2.2cqw;
+    border-radius: 13cqw;
     background: linear-gradient(145deg, #4a4b50 0%, #27282b 45%, #35363a 70%, #202023 100%);
     box-shadow:
       0 0 0 1px rgba(0, 0, 0, 0.35),
@@ -70,17 +79,17 @@ const {
   .phone::after {
     content: '';
     position: absolute;
-    width: 3px;
-    border-radius: 2px;
+    width: 1.7cqw;
+    border-radius: 1cqw;
     background: linear-gradient(180deg, #2a2b2e, #17181a);
   }
   .phone::before {
-    right: -2px;
+    right: -1cqw;
     top: 30%;
     height: 11%;
   }
   .phone::after {
-    left: -2px;
+    left: -1cqw;
     top: 24%;
     height: 17%;
   }
@@ -88,7 +97,7 @@ const {
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 2rem;
+    border-radius: 11cqw;
     overflow: hidden;
     background: #0c0c0d;
     display: flex;
@@ -100,7 +109,6 @@ const {
     flex: none;
     position: relative;
     height: 5.4%;
-    min-height: 15px;
     background: #0c0c0d;
     display: flex;
     align-items: center;
@@ -109,7 +117,6 @@ const {
   .phone__island {
     width: 32%;
     height: 62%;
-    min-height: 11px;
     background: #000;
     border-radius: 999px;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -120,17 +127,18 @@ const {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.16rem 0.5rem 0.3rem;
+    padding: 1.4cqw 4.4cqw 2.6cqw;
     background: #1c1c1f;
   }
   .phone__url {
     max-width: 88%;
     font-family: var(--font-mono);
-    font-size: 0.52rem;
+    font-size: 4.6cqw;
+    line-height: 1.2;
     color: #c9c7c4;
     background: #303033;
     border-radius: 999px;
-    padding: 0.16rem 0.6rem;
+    padding: 1.4cqw 3.3cqw;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
