@@ -167,6 +167,18 @@ body.chrome-accent {
   color: var(--color-ink);
 }
 
+/* ── Dark chrome — the all-deep-black page (Servicios) ────────────────────
+   The mirror of accent chrome: the whole field turns Deep Black — the page
+   background, and (via their own scoped overrides) the sticky nav and the
+   mobile menu. The footer continues the black unbroken with footerTone="dark".
+   White on deep black is 18:1+, so body copy reverses to white (quiet text at
+   a lowered alpha) and the Kinetic Orange accent stays as the one spot of
+   colour. */
+body.chrome-dark {
+  background: var(--color-ink);
+  color: #ffffff;
+}
+
 /* Fixed-hero reveal (home): the hero stage is pinned to the viewport, and this
    opaque layer holds every section below the hero so it scrolls up over the
    image and fully covers it. */

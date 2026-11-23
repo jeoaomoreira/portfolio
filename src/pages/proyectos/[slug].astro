@@ -126,18 +126,6 @@ const story = [
     )
   }
 
-  {/* ── CTA final ────────────────────────────────────────────────── */}
-  <section class="container section">
-    <div class="pd-final">
-      <h2 class="section-title pd-final__title">¿Querés algo así para tu negocio?</h2>
-      <p class="pd-final__text">
-        Conversemos sin compromiso sobre la presencia digital de tu negocio.
-      </p>
-      <a href={whatsappLink} target="_blank" rel="noopener" class="btn btn-accent mt-6">
-        Hablemos por WhatsApp
-      </a>
-    </div>
-  </section>
 </Base>
 
 <style>
@@ -183,10 +171,6 @@ const story = [
   /* ── Showcase: studio device composition (MacBook + iPhone) ────── */
   .pd-stage {
     margin-top: 0.5rem;
-    border-radius: 24px;
-    background: var(--color-surface);
-    box-shadow: var(--shadow-raised);
-    padding: clamp(1.75rem, 5vw, 3.75rem) clamp(1rem, 4vw, 3rem);
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
@@ -202,14 +186,30 @@ const story = [
     width: clamp(136px, 17vw, 196px);
     flex: none;
   }
-  /* Stacked: laptop on top, phone tucked up over its base. */
+  /* Mobile: one composed device shot. The laptop scales down to sit in the view
+     (shifted right); the phone is a fixed proportion of it — ~26% of its width —
+     tucked into the bottom-left and overhanging, so it stays proportional at any
+     size. No backing panel. */
   @media (max-width: 680px) {
     .pd-stage {
+      display: block;
+      position: relative;
       gap: 0;
+      /* room for the phone to overhang below the laptop's base */
+      padding-bottom: clamp(1.25rem, 6vw, 2.5rem);
+    }
+    .pd-stage__mac {
+      width: 84%;
+      max-width: 84%;
+      margin-left: auto; /* laptop sits to the right, leaving room for the phone */
+      flex: none;
     }
     .pd-stage__phone {
-      width: 150px;
-      margin-top: -1.75rem;
+      position: absolute;
+      left: 3%;
+      bottom: 0;
+      width: 22%;
+      z-index: 1;
     }
   }
 
@@ -340,28 +340,4 @@ const story = [
     }
   }
 
-  /* ── CTA final ─────────────────────────────────────────────────── */
-  .pd-final {
-    border-radius: var(--radius);
-    background: var(--color-brand);
-    color: var(--color-on-brand);
-    padding: 3rem 1.5rem;
-    text-align: center;
-  }
-  @media (min-width: 640px) {
-    .pd-final {
-      padding: 4rem 2rem;
-    }
-  }
-  .pd-final__title {
-    color: #ffffff;
-    max-width: 22ch;
-    margin-inline: auto;
-  }
-  .pd-final__text {
-    margin-top: 1rem;
-    max-width: 32rem;
-    margin-inline: auto;
-    color: rgba(255, 255, 255, 0.82);
-  }
 </style>
