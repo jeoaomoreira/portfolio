@@ -7,7 +7,7 @@ export const site = {
   name: 'nambuku',
   tagline: 'Estudio tecnológico · Guanacaste',
   description:
-    'nambuku — estudio tecnológico para negocios de Guanacaste. Sitios web modernos, presencia en Google y mantenimiento continuo.',
+    'nambuku: estudio tecnológico para negocios de Guanacaste. Sitios web modernos, presencia en Google y mantenimiento continuo.',
   // Full international number, digits only (Costa Rica = 506). PLACEHOLDER:
   whatsappNumber: '50600000000',
   whatsappMessage: 'Hola nambuku, me gustaría saber más sobre un sitio web para mi negocio.',
@@ -63,7 +63,7 @@ export const offers = [
   },
   {
     name: 'Plan nambuku',
-    desc: 'Hospedaje, mantenimiento, cambios, SEO básico y soporte — todos los meses.',
+    desc: 'Hospedaje, mantenimiento, cambios, SEO básico y soporte, todos los meses.',
   },
 ] as const;
 

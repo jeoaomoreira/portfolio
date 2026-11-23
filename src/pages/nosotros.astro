@@ -1,18 +1,531 @@
 ---
 import Base from '@/layouts/Base.astro';
+import { Image } from 'astro:assets';
+import portrait from '@/assets/gerardo.webp';
+import { whatsappLink } from '@/site';
+
+// Nosotros — the trust moat (website-architecture.md §3). The third flood in
+// the set: where Proyectos floods Kinetic Orange and Servicios floods Deep
+// Black, Nosotros floods Pure White (Base chrome="light"). Three ink roles on
+// the white: Kinetic Orange carries every TITLE (hero, manifesto, section
+// headings, value names, names), neutral grey carries the non-title body copy
+// (AA on white), and Deep Black is reserved for the marks/highlights — the hero
+// dot and the value index numbers. Content is sourced from the company docs —
+// foundations.md (vision/mission/values, §2–5), brand.md (the Chorotega name
+// story) and the founder (ContactCard).
+
+const values = [
+  {
+    name: 'Raíces',
+    desc: 'Somos parte de esta comunidad. Damos la cara en persona, no detrás de una pantalla.',
+  },
+  {
+    name: 'Oficio moderno',
+    desc: 'La calidad de diseño de un estudio de ciudad grande, sin salir de Guanacaste.',
+  },
+  {
+    name: 'Claridad',
+    desc: 'Nada de tecnicismos. Siempre vas a entender qué estás pagando y por qué.',
+  },
+  {
+    name: 'Acompañamiento',
+    desc: 'No construimos y desaparecemos. Nos quedamos con vos con el Plan nambuku.',
+  },
+];
 ---
 
 <Base
   title="Nosotros"
-  description="nambuku nace en Tempate, Guanacaste. Trabajo web de nivel mundial, con raíces locales."
+  description="nambuku nace en Tempate, Guanacaste: un estudio tecnológico con raíces locales y estándar global. Conocé la historia, la misión y la persona detrás."
+  chrome="light"
 >
-  <section class="container section max-w-2xl">
-    <h1 class="page-title">Nosotros<span class="text-accent">.</span></h1>
-    <p class="text-muted mt-6 text-lg leading-relaxed">
-      nambuku nace en Tempate, Guanacaste, con una idea simple: que un negocio
-      local pueda tener un sitio web tan bueno como el de una gran ciudad — sin
-      dejar de ser de aquí.
+  {/* ── Hero — oversized orange type on the white field (inverts Servicios) ── */}
+  <section class="container ns-hero">
+    <h1 class="ns-title">Nosotros<span class="ns-dot">.</span></h1>
+    <p class="ns-intro">
+      Somos un estudio tecnológico con raíces en Tempate, Guanacaste. Creemos
+      que un negocio local merece verse tan bien en internet como se siente en
+      persona.
     </p>
-    <p class="text-muted mt-6 text-sm font-mono">[Historia de Gerardo · fotos · confianza local]</p>
+  </section>
+
+  {/* ── Manifiesto — the brand essence, set big ───────────────────────────── */}
+  <section class="container ns-manifesto">
+    <p class="ns-manifesto__text">
+      Trabajo web de nivel mundial, hecho desde el campo de Guanacaste,
+      <span class="ns-manifesto__soft">y que nunca deja de ser de aquí.</span>
+    </p>
+  </section>
+
+  {/* ── El nombre — the Chorotega water story (authenticity asset) ─────────
+       Copy held to brand.md's approved sentence exactly — never claim a literal
+       meaning the record can't back. */}
+  <section class="container ns-section ns-name">
+    <p class="ns-kicker">El nombre</p>
+    <div class="ns-name__grid">
+      <h2 class="ns-name__lead">
+        nambuku toma su nombre de <em>nambu</em>, la palabra chorotega para agua,
+        en la provincia más seca de Costa Rica.
+      </h2>
+      <p class="ns-body">
+        El agua es escasa aquí, y aun así todo depende de ella. Nos pusimos ese
+        nombre porque queremos ser justo eso para los negocios de la zona: algo
+        de aquí, necesario, que no se va.
+      </p>
+    </div>
+  </section>
+
+  {/* ── Misión y Visión ───────────────────────────────────────────────────── */}
+  <section class="container ns-section ns-mv">
+    <div class="ns-mv__col">
+      <p class="ns-kicker">Misión</p>
+      <p class="ns-mv__text">
+        Ayudar a los negocios locales a verse tan bien en internet como son en
+        persona: diseño moderno, encontrados en Google y cuidados en el tiempo,
+        explicado en palabras simples.
+      </p>
+    </div>
+    <div class="ns-mv__col">
+      <p class="ns-kicker">Visión</p>
+      <p class="ns-mv__text">
+        Ser el estudio tecnológico de más confianza de Guanacaste, el primer
+        nombre que piensa un negocio local cuando quiere crecer en internet,
+        demostrando que el trabajo web de clase mundial puede nacer del campo de
+        Costa Rica.
+      </p>
+    </div>
+  </section>
+
+  {/* ── Valores — the typographic list (mirrors the Servicios offer rows) ──── */}
+  <section class="container ns-section ns-values">
+    <p class="ns-kicker">Lo que nos mueve</p>
+    <div class="ns-list">
+      {
+        values.map((v, i) => (
+          <div class="ns-row">
+            <span class="ns-row__index">0{i + 1}</span>
+            <h3 class="ns-row__name">{v.name}</h3>
+            <p class="ns-row__desc">{v.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ── La persona — the founder, with the portrait ───────────────────────── */}
+  <section class="container ns-section ns-person">
+    <div class="ns-person__photo">
+      <Image
+        src={portrait}
+        alt="Gerardo Moreira, fundador de nambuku"
+        widths={[320, 480, 640]}
+        sizes="(min-width: 768px) 320px, 70vw"
+        format="webp"
+        quality={82}
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="ns-person__body">
+      <p class="ns-kicker">Quién está detrás</p>
+      <h2 class="ns-person__name">Gerardo Moreira</h2>
+      <p class="ns-person__role">Fundador · Ingeniero en Sistemas</p>
+      <p class="ns-body ns-person__note">
+        nambuku empezó con una idea simple y un compromiso: traer trabajo web de
+        verdad a los negocios de mi zona. Soy de aquí, y quiero que los negocios
+        de aquí compitan de igual a igual con cualquiera.
+      </p>
+    </div>
+  </section>
+
+  {/* ── CTA final — stays white; the orange pill is the one solid mark ─────── */}
+  <section class="container ns-section ns-cta">
+    <h2 class="ns-cta__title">Conozcámonos<span class="ns-dot">.</span></h2>
+    <div class="ns-cta__foot">
+      <p class="ns-cta__lead">
+        Si tu negocio es de por aquí, hablemos. La primera conversación es
+        gratis y sin compromiso.
+      </p>
+      <a href={whatsappLink} target="_blank" rel="noopener" class="ns-cta__btn">
+        Hablemos por WhatsApp
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+      </a>
+    </div>
   </section>
 </Base>
+
+<style>
+  /* The page floods Pure White via Base's chrome="light" (body.chrome-light) —
+     background, nav and footer all sit on white. This block only colours the
+     content. */
+
+  /* Ink roles: orange titles, grey body, black marks — plus the orange hairline
+     that draws the section rules and the portrait frame. */
+  .ns-hero,
+  .ns-section,
+  .ns-manifesto {
+    --ns-line: rgba(251, 83, 33, 0.22);
+  }
+
+  /* ── Hero — same oversized clamp as Servicios' .sv-title ───────────────── */
+  .ns-hero {
+    padding-top: clamp(2.5rem, 6vw, 5rem);
+    padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .ns-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3.25rem, 17vw, 12rem);
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+    color: var(--color-accent);
+  }
+  /* The dot is the one deep-black spark against the orange title. */
+  .ns-dot {
+    color: var(--color-ink);
+  }
+  .ns-intro {
+    margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
+    max-width: 34ch;
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    line-height: 1.5;
+    font-weight: 500;
+    color: var(--color-muted);
+  }
+
+  /* ── Manifiesto — a big statement, the second-brightest moment ─────────── */
+  .ns-manifesto {
+    padding-block: clamp(3rem, 7vw, 6rem);
+  }
+  .ns-manifesto__text {
+    margin: 0;
+    max-width: 22ch;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2rem, 6vw, 4rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--color-accent);
+  }
+  /* The resolve line drops to the softer orange, so the phrase has a cadence. */
+  .ns-manifesto__soft {
+    color: var(--color-accent-strong);
+  }
+
+  /* ── Shared section rhythm ─────────────────────────────────────────────── */
+  .ns-section {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  /* Kicker — the quiet mono label that opens each block. */
+  .ns-kicker {
+    margin: 0 0 clamp(1rem, 2vw, 1.5rem);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  /* Shared long-form body — neutral grey (AA on white), so the orange is
+     reserved for the titles and the deep-black for the marks. */
+  .ns-body {
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  /* ── El nombre ─────────────────────────────────────────────────────────── */
+  .ns-name {
+    border-top: 1px solid var(--ns-line);
+  }
+  .ns-name__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+  .ns-name__lead {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3.2vw, 2.4rem);
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    color: var(--color-accent);
+  }
+  .ns-name__lead em {
+    font-style: italic;
+  }
+  .ns-name .ns-body {
+    margin: 0;
+    max-width: 42ch;
+  }
+
+  /* ── Misión y Visión — two columns on a hairline ───────────────────────── */
+  .ns-mv {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.75rem, 5vw, 4rem);
+    border-top: 1px solid var(--ns-line);
+  }
+  .ns-mv__text {
+    margin: 0;
+    font-size: clamp(1.1rem, 1.7vw, 1.45rem);
+    line-height: 1.45;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-muted);
+  }
+
+  /* ── Valores — index · nombre · descripción, on orange hairlines ───────── */
+  .ns-values {
+    border-top: 1px solid var(--ns-line);
+  }
+  .ns-list {
+    border-bottom: 1px solid var(--ns-line);
+  }
+  .ns-row {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1.8fr);
+    align-items: baseline;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding-block: clamp(1.4rem, 2.6vw, 2.1rem);
+    border-top: 1px solid var(--ns-line);
+  }
+  .ns-row:first-of-type {
+    border-top: 0;
+  }
+  /* The index is a highlight mark — deep black, not orange. */
+  .ns-row__index {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--color-ink);
+  }
+  .ns-row__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--color-accent);
+  }
+  .ns-row__desc {
+    margin: 0;
+    font-size: clamp(0.98rem, 1.3vw, 1.1rem);
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  /* ── La persona — portrait + copy ──────────────────────────────────────── */
+  .ns-person {
+    display: grid;
+    grid-template-columns: clamp(14rem, 26vw, 20rem) minmax(0, 1fr);
+    gap: clamp(1.75rem, 5vw, 4rem);
+    align-items: center;
+    border-top: 1px solid var(--ns-line);
+  }
+  .ns-person__photo {
+    border-radius: var(--radius);
+    overflow: hidden;
+    /* A thin orange hairline frame rather than a shadow — keeps the field white. */
+    box-shadow: 0 0 0 1px var(--ns-line);
+  }
+  .ns-person__photo :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  .ns-person__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-accent);
+  }
+  .ns-person__role {
+    margin: 0.6rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+  }
+  .ns-person__note {
+    margin: clamp(1.1rem, 2.2vw, 1.6rem) 0 0;
+    max-width: 48ch;
+  }
+
+  /* ── CTA final — the one solid orange element on the white page ─────────── */
+  .ns-cta {
+    border-top: 1px solid var(--ns-line);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .ns-cta__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.6rem, 8vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    color: var(--color-accent);
+  }
+  .ns-cta__foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(1.5rem, 5vw, 4rem);
+    flex-wrap: wrap;
+    margin-top: clamp(1.75rem, 4vw, 3rem);
+  }
+  .ns-cta__lead {
+    margin: 0;
+    max-width: 34rem;
+    font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--color-muted);
+  }
+  /* Solid orange pill, white label — with the colour-aware skew sweep (ink
+     panel sweeps in, label stays white) mirroring the other pages' CTAs. */
+  .ns-cta__btn {
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.75rem;
+    min-height: 48px;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    transition:
+      transform 160ms var(--ease-out-strong),
+      background 200ms ease;
+  }
+  .ns-cta__btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -20%;
+    width: 140%;
+    height: 100%;
+    z-index: -1;
+    background: var(--color-accent-strong);
+    transform: skew(-20deg) translate3d(-130%, 0, 0);
+    transition: transform 400ms cubic-bezier(0.3, 1, 0.8, 1);
+  }
+  .ns-cta__btn:hover::before {
+    transform: skew(-20deg) translate3d(0, 0, 0);
+  }
+  .ns-cta__btn:active {
+    transform: scale(0.97);
+  }
+  .ns-cta__btn svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    transition: transform 200ms var(--ease-out-strong);
+  }
+  .ns-cta__btn:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* ── Tablet / phone ────────────────────────────────────────────────────── */
+  @media (max-width: 820px) {
+    .ns-name__grid,
+    .ns-mv {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 700px) {
+    .ns-row {
+      grid-template-columns: auto 1fr;
+      grid-template-areas:
+        'index name'
+        'desc  desc';
+      row-gap: 0.7rem;
+    }
+    .ns-row__index {
+      grid-area: index;
+    }
+    .ns-row__name {
+      grid-area: name;
+    }
+    .ns-row__desc {
+      grid-area: desc;
+    }
+    .ns-person {
+      grid-template-columns: 1fr;
+      justify-items: start;
+    }
+    .ns-person__photo {
+      max-width: 16rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ns-cta__btn,
+    .ns-cta__btn::before,
+    .ns-cta__btn:hover::before,
+    .ns-cta__btn svg,
+    .ns-cta__btn:hover svg {
+      transition: none;
+      transform: none;
+    }
+    .ns-cta__btn:active {
+      transform: none;
+    }
+  }
+
+  /* ── Scroll reveal — progressive enhancement, reduced-motion safe ──────────
+     Hide the real targets up front (only when JS is live and motion is allowed)
+     so there's no flash of visible-then-hidden before GSAP takes over. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js) .ns-manifesto__text,
+    :global(html.js) .ns-name__grid,
+    :global(html.js) .ns-mv__col,
+    :global(html.js) .ns-row,
+    :global(html.js) .ns-person__photo,
+    :global(html.js) .ns-person__body,
+    :global(html.js) .ns-cta__title {
+      opacity: 0;
+      transform: translateY(26px);
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  // Mark JS live so the CSS above can hide reveal targets before paint.
+  document.documentElement.classList.add('js');
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // The CSS above (html.js) has already hidden these; GSAP reveals them on scroll.
+    const targets = document.querySelectorAll<HTMLElement>(
+      '.ns-manifesto__text, .ns-name__grid, .ns-mv__col, .ns-row, .ns-person__photo, .ns-person__body, .ns-cta__title',
+    );
+    targets.forEach((el, i) => {
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+        delay: (i % 4) * 0.05,
+        scrollTrigger: { trigger: el, start: 'top 92%' },
+      });
+    });
+  }
+</script>

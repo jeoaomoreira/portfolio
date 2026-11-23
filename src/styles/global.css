@@ -179,6 +179,16 @@ body.chrome-dark {
   color: #ffffff;
 }
 
+/* ── Light chrome — the all-Pure-White page (Nosotros) ────────────────────
+   The counterpoint to accent/dark chrome: the whole field turns Pure White —
+   the page background and (via its own scoped override) the sticky nav — so the
+   white runs unbroken from the nav through the content to the footer. The copy
+   on this page carries the colour: every line runs in Kinetic Orange, so the
+   page sets no text colour of its own here (the page's own styles do). */
+body.chrome-light {
+  background: #ffffff;
+}
+
 /* Fixed-hero reveal (home): the hero stage is pinned to the viewport, and this
    opaque layer holds every section below the hero so it scrolls up over the
    image and fully covers it. */

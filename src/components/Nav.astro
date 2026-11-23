@@ -18,7 +18,7 @@ const centerLinks = nav.filter(
     Sticky and in normal flow (no floating pill, no scroll-dock). */}
 <header class="nav" data-nav>
   <div class="nav__inner container">
-    <a href="/" class="nav__brand" aria-label={`${site.name} — inicio`}>
+    <a href="/" class="nav__brand" aria-label={`${site.name}, inicio`}>
       <Logo class="nav__logo" />
       <span>nambuku<span class="nav__reg">®</span></span>
     </a>
@@ -489,6 +489,19 @@ const centerLinks = nav.filter(
   }
   :global(body.chrome-dark) .site-menu__reg {
     color: var(--color-accent);
+  }
+
+  /* ── Light chrome — the all-Pure-White page (Nosotros) ────────────────
+     Body carries `chrome-light`. The bar turns Pure White so the sticky nav
+     melts into the white field (the default bar is the grey canvas, which would
+     show as a faint band on white). Only the backgrounds change: the brand,
+     links and burger keep their default ink treatment, which already reads
+     cleanly on white. The mobile overlay flips white to match. */
+  :global(body.chrome-light) .nav {
+    background: #ffffff;
+  }
+  :global(body.chrome-light) .site-menu {
+    background: #ffffff;
   }
 </style>
 

@@ -102,13 +102,13 @@ export const projects: Project[] = [
     coverAlt: 'Página de inicio del sitio de Good Energy, tienda de suplementos.',
 
     intro:
-      'Una tienda en línea para una marca de bienestar con dos locales en Guanacaste: catálogo claro, compra por objetivo y pedidos por WhatsApp — pensada para el teléfono.',
+      'Una tienda en línea para una marca de bienestar con dos locales en Guanacaste: catálogo claro, compra por objetivo y pedidos por WhatsApp, pensada para el teléfono.',
     challenge:
-      'Good Energy ya vendía en dos tiendas físicas, en Huacas y Villarreal, pero sin una vitrina en línea que mostrara su catálogo ni recibiera pedidos fuera del mostrador. Necesitaban una presencia digital que se viera profesional y transmitiera confianza — algo clave cuando se habla de salud.',
+      'Good Energy ya vendía en dos tiendas físicas, en Huacas y Villarreal, pero sin una vitrina en línea que mostrara su catálogo ni recibiera pedidos fuera del mostrador. Necesitaban una presencia digital que se viera profesional y transmitiera confianza, algo clave cuando se habla de salud.',
     solution:
       'Diseñamos y lanzamos una tienda en línea completa: catálogo filtrable por categoría y por objetivo (energía, rendimiento, recuperación, inmunidad), páginas de producto con precio en colones y respaldo visible, carrito, y contacto directo por WhatsApp. Todo mobile-first, porque es desde el teléfono que llegan sus clientes.',
     result:
-      'Good Energy pasó de dos mostradores a una vitrina que trabaja a toda hora: los clientes exploran el catálogo, eligen por objetivo y escriben por WhatsApp desde donde estén — con envío local y retiro en tienda.',
+      'Good Energy pasó de dos mostradores a una vitrina que trabaja a toda hora: los clientes exploran el catálogo, eligen por objetivo y escriben por WhatsApp desde donde estén, con envío local y retiro en tienda.',
 
     desktopShots: [
       {
@@ -163,9 +163,9 @@ export const projects: Project[] = [
       'Página de inicio de MoSo Solutions, equipo de cuidado de propiedades en la costa de Guanacaste.',
 
     intro:
-      'Un sitio bilingüe para un equipo familiar que cuida propiedades en la costa del Pacífico — seis servicios bajo un mismo techo, presentados con claridad y pensados para el teléfono.',
+      'Un sitio bilingüe para un equipo familiar que cuida propiedades en la costa del Pacífico: seis servicios bajo un mismo techo, presentados con claridad y pensados para el teléfono.',
     challenge:
-      'MoSo ya atendía casas de la zona de Tamarindo, Avellanas y Hacienda Pinilla con pintura, piscinas, plomería, electricidad, madera y jardines — pero, como pasa con la mayoría de las cuadrillas locales, todo se movía de boca en boca y por WhatsApp. No tenían un sitio que mostrara el alcance completo ni que diera la confianza que buscan los dueños de casa, muchos de ellos extranjeros.',
+      'MoSo ya atendía casas de la zona de Tamarindo, Avellanas y Hacienda Pinilla con pintura, piscinas, plomería, electricidad, madera y jardines. Pero, como pasa con la mayoría de las cuadrillas locales, todo se movía de boca en boca y por WhatsApp. No tenían un sitio que mostrara el alcance completo ni que diera la confianza que buscan los dueños de casa, muchos de ellos extranjeros.',
     solution:
       'Diseñamos y lanzamos un sitio de una página, bilingüe (inglés y español), que reúne los seis servicios con fotos reales de cada trabajo, explica quiénes son y cómo trabajan, y deja el teléfono, el correo y la ubicación a un solo toque. Todo mobile-first, porque es desde el celular que los contactan.',
     result:
@@ -229,13 +229,13 @@ export const projects: Project[] = [
     coverAlt: 'Página de inicio de MOBA, traslados privados en Guanacaste.',
 
     intro:
-      'Un sitio para un servicio de traslados privados en Guanacaste — del aeropuerto de Liberia hasta la playa. El viajero arma la solicitud y la envía por WhatsApp, con un precio fijo confirmado antes de viajar, todo pensado para el teléfono.',
+      'Un sitio para un servicio de traslados privados en Guanacaste, del aeropuerto de Liberia hasta la playa. El viajero arma la solicitud y la envía por WhatsApp, con un precio fijo confirmado antes de viajar, todo pensado para el teléfono.',
     challenge:
-      'MOBA nació en Tamarindo porque demasiados visitantes aterrizaban de noche en Liberia y descubrían que el transporte que habían cotizado quería cobrar otro precio. Necesitaban una vitrina que diera confianza desde el primer clic — precio claro, vehículos reales y permisos a la vista — para turistas que reservan desde el extranjero.',
+      'MOBA nació en Tamarindo porque demasiados visitantes aterrizaban de noche en Liberia y descubrían que el transporte que habían cotizado quería cobrar otro precio. Necesitaban una vitrina que diera confianza desde el primer clic (precio claro, vehículos reales y permisos a la vista) para turistas que reservan desde el extranjero.',
     solution:
       'Diseñamos y lanzamos el sitio con un cotizador que arma un mensaje de WhatsApp (el cliente lo revisa y lo envía, sin pedir datos de tarjeta), una flota explicada por tipo de vehículo y tamaño de grupo, y las garantías que de verdad importan: seguimiento del vuelo, el nombre del chofer, permisos y seguro al día. Todo mobile-first, porque llegan desde el celular.',
     result:
-      'MOBA pasó a tener una vitrina que trabaja a toda hora: el viajero arma su traslado, recibe un precio fijo por WhatsApp y sabe quién lo espera a la salida de aduanas — con la confianza resuelta antes de aterrizar.',
+      'MOBA pasó a tener una vitrina que trabaja a toda hora: el viajero arma su traslado, recibe un precio fijo por WhatsApp y sabe quién lo espera a la salida de aduanas, con la confianza resuelta antes de aterrizar.',
 
     desktopShots: [],
     mobileShots: [
