@@ -1,29 +1,671 @@
 ---
 import Base from '@/layouts/Base.astro';
-import { offers } from '@/site';
+import Icon from '@/components/Icon.astro';
+import { offers, builds, whatsappLink } from '@/site';
+
+// Servicios — the mirror of Proyectos (website-architecture.md §3). Where
+// Proyectos floods Kinetic Orange, this page floods Deep Black (Base
+// chrome="dark") and hands off to a deep-black footer (footerTone="dark") so
+// the black runs unbroken to the bottom. Same oversized hero title as
+// Proyectos (.pz-title / .sv-title share one clamp) and the same typographic
+// list hierarchy — one row per offer: index · nombre · qué incluye — separated
+// by hairline rules inside the content margin. White copy on black (18:1+), the
+// Kinetic Orange kept as the single spot of colour (the title dot + the index).
 ---
 
 <Base
   title="Servicios"
   description="Lanzamiento, Renovación y Plan nambuku — presencia digital completa para tu negocio."
+  chrome="dark"
+  footerTone="accent"
 >
-  <section class="container section">
-    <h1 class="page-title">Servicios<span class="text-accent">.</span></h1>
-    <p class="text-muted mt-5 max-w-xl text-lg">
-      Todo lo que tu negocio necesita para que lo encuentren, confíen en él y lo elijan.
+  {/* ── Hero ─────────────────────────────────────────────────────── */}
+  <section class="container sv-hero">
+    <h1 class="sv-title">Servicios<span class="sv-dot">.</span></h1>
+    <p class="sv-intro">
+      Todo lo que tu negocio necesita para que lo encuentren, confíen en él y
+      lo elijan.
     </p>
+  </section>
 
-    <div class="mt-14 flex flex-col gap-5">
+  {/* ── Offers list ──────────────────────────────────────────────── */}
+  <section class="container sv-section">
+    <div class="sv-list">
+      {/* Column header */}
+      <div class="sv-head" aria-hidden="true">
+        <span></span>
+        <span>Servicio</span>
+        <span>Qué incluye</span>
+      </div>
+
       {
         offers.map((o, i) => (
-          <div class="card card-surface grid gap-x-8 gap-y-2 p-7 md:grid-cols-[auto_1fr_minmax(0,32rem)] md:items-baseline">
-            <span class="font-mono text-sm text-accent">0{i + 1}</span>
-            <h2 class="text-2xl font-semibold tracking-tight">{o.name}</h2>
-            <p class="text-muted">{o.desc}</p>
+          <div class="sv-row">
+            <span class="sv-row__index">0{i + 1}</span>
+            <h2 class="sv-row__name">{o.name}</h2>
+            <p class="sv-row__desc">{o.desc}</p>
           </div>
         ))
       }
     </div>
-    <p class="text-muted mt-10 text-sm font-mono">[Precios — pendiente documento de precios]</p>
+
+    <p class="sv-note">[Precios — pendiente documento de precios]</p>
+  </section>
+
+  {/* ── Qué construimos — tabbed catalog ─────────────────────────────
+       The point of this section: we build more than websites. A left rail of
+       product types swaps the right panel (descripción · qué incluye · para
+       quién). Works without JS — all panels render; JS just hides the inactive
+       ones and wires the tablist. */}
+  <section class="container sv-builds">
+    <div class="sv-builds__head">
+      <p class="sv-kicker">No solo sitios web</p>
+      <h2 class="sv-builds__title">Qué construimos</h2>
+      <p class="sv-builds__lead">
+        Un sitio web es el punto de partida. Según lo que tu operación necesite,
+        construimos la herramienta digital a medida — desde una landing hasta un
+        sistema interno completo.
+      </p>
+    </div>
+
+    <div class="sv-tabs" data-builds>
+      {/* Left rail — the product types */}
+      <div class="sv-tabs__rail" role="tablist" aria-label="Qué construimos" aria-orientation="vertical">
+        {
+          builds.map((b, i) => (
+            <button
+              type="button"
+              id={`build-tab-${i}`}
+              class:list={['sv-tab', i === 0 && 'is-active']}
+              role="tab"
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`build-panel-${i}`}
+              tabindex={i === 0 ? 0 : -1}
+              data-tab={i}
+            >
+              <span class="sv-tab__icon"><Icon paths={b.icon} class="h-5 w-5" /></span>
+              <span class="sv-tab__label">{b.name}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      {/* Right — one panel per product type */}
+      <div class="sv-panels">
+        {
+          builds.map((b, i) => (
+            <div
+              id={`build-panel-${i}`}
+              class:list={['sv-panel', i === 0 && 'is-active']}
+              role="tabpanel"
+              aria-labelledby={`build-tab-${i}`}
+              tabindex="0"
+              hidden={i !== 0}
+              data-panel={i}
+            >
+              <h3 class="sv-panel__title">{b.name}</h3>
+              <p class="sv-panel__desc">{b.desc}</p>
+
+              <ul class="sv-panel__features">
+                {b.features.map((f) => (
+                  <li class="sv-feat">
+                    <span class="sv-feat__check" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                    </span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div class="sv-forwho">
+                <p class="sv-forwho__label">Para quién</p>
+                {b.forWho.map((w) => (
+                  <p class="sv-forwho__item">{w}</p>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* ── CTA final — full-bleed Kinetic Orange band that runs into the footer.
+       The deep-black page hands off to orange here: the band and the accent
+       footer below read as one unbroken orange field (footerTone="accent"). */}
+  <section class="sv-cta">
+    <div class="container">
+      <h2 class="sv-cta__title">Construyamos lo que tu negocio necesita<span class="sv-cta__dot">.</span></h2>
+      <div class="sv-cta__foot">
+        <p class="sv-cta__lead">
+          Contanos qué tenés en mente — una página, una tienda o un sistema
+          interno — y te decimos cómo lo resolvemos. Sin compromiso.
+        </p>
+        <a href={whatsappLink} target="_blank" rel="noopener" class="sv-cta__btn">
+          Hablemos por WhatsApp
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+        </a>
+      </div>
+    </div>
   </section>
 </Base>
+
+<style>
+  /* ── Hero — oversized white type on the black field (matches Proyectos) ── */
+  .sv-hero {
+    padding-top: clamp(2.5rem, 6vw, 5rem);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .sv-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    /* Same clamp as Proyectos' .pz-title — the titles match in size. */
+    font-size: clamp(3.25rem, 17vw, 12rem);
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+    color: #ffffff;
+  }
+  .sv-dot {
+    color: var(--color-accent); /* the one spot of colour on the black */
+  }
+  .sv-intro {
+    margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
+    max-width: 36ch;
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    line-height: 1.5;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .sv-section {
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  /* ── List ─────────────────────────────────────────────────────────── */
+  /* Hairline rules in white, low alpha — visible on the black without buzzing. */
+  .sv-list {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  /* Shared column geometry for the header and every row:
+     index · nombre · qué incluye. */
+  .sv-head,
+  .sv-row {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1.9fr);
+    align-items: baseline;
+    gap: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .sv-head {
+    padding-block: 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .sv-row {
+    position: relative;
+    padding-block: clamp(1.4rem, 2.6vw, 2.1rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+  .sv-row:first-of-type {
+    border-top: 0; /* the header already draws the first line */
+  }
+
+  /* Index — the mono accent mark, aligned to the name's baseline. */
+  .sv-row__index {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--color-accent);
+  }
+
+  .sv-row__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: #ffffff;
+  }
+
+  .sv-row__desc {
+    margin: 0;
+    font-size: clamp(0.98rem, 1.3vw, 1.1rem);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  /* Precios note — quiet mono line below the list. */
+  .sv-note {
+    margin-top: clamp(1.75rem, 3vw, 2.5rem);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  /* ── Phone — stack each row: index + name, then the description ─────── */
+  @media (max-width: 700px) {
+    .sv-head {
+      display: none; /* the rows read fine without the column header */
+    }
+    .sv-row {
+      grid-template-columns: auto 1fr;
+      grid-template-areas:
+        'index name'
+        'desc  desc';
+      row-gap: 0.7rem;
+      align-items: baseline;
+    }
+    .sv-row__index {
+      grid-area: index;
+    }
+    .sv-row__name {
+      grid-area: name;
+    }
+    .sv-row__desc {
+      grid-area: desc;
+    }
+  }
+
+  /* ══ Qué construimos — tabbed catalog ═══════════════════════════════════ */
+  .sv-builds {
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+  }
+  .sv-builds__head {
+    max-width: 44ch;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .sv-kicker {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .sv-builds__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: #ffffff;
+  }
+  .sv-builds__lead {
+    margin: clamp(0.85rem, 1.6vw, 1.2rem) 0 0;
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  /* Outer frame — a hairline-bordered box holding the rail + the panel. */
+  .sv-tabs {
+    display: grid;
+    grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  /* ── Rail — the vertical list of product types ─────────────────────── */
+  .sv-tabs__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: clamp(1rem, 1.6vw, 1.4rem);
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .sv-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    width: 100%;
+    text-align: left;
+    padding: 0.85rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.7rem;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: var(--font-display);
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+      background 180ms ease,
+      color 180ms ease,
+      border-color 180ms ease;
+  }
+  .sv-tab__icon {
+    flex: none;
+    display: inline-flex;
+    color: currentColor;
+    opacity: 0.85;
+  }
+  .sv-tab:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.04);
+  }
+  /* Active tab — a raised card lifted off the black with a faint border. */
+  .sv-tab.is-active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+  .sv-tab.is-active .sv-tab__icon {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+
+  /* ── Panel — descripción · qué incluye · para quién ────────────────── */
+  .sv-panels {
+    min-width: 0;
+  }
+  .sv-panel {
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .sv-panel[hidden] {
+    display: none;
+  }
+  /* A soft fade when JS swaps panels (reduced-motion safe). */
+  @media (prefers-reduced-motion: no-preference) {
+    .sv-panel.is-active {
+      animation: sv-panel-in 280ms var(--ease-out-strong) both;
+    }
+  }
+  @keyframes sv-panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .sv-panel__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.6rem, 3vw, 2.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: #ffffff;
+  }
+  .sv-panel__desc {
+    margin: clamp(0.85rem, 1.6vw, 1.15rem) 0 0;
+    max-width: 58ch;
+    font-size: clamp(0.98rem, 1.3vw, 1.08rem);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  /* Feature checklist — accent checks on hairline rules. */
+  .sv-panel__features {
+    list-style: none;
+    margin: clamp(1.5rem, 3vw, 2.25rem) 0 0;
+    padding: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .sv-feat {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding-block: clamp(0.85rem, 1.5vw, 1.05rem);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: clamp(0.98rem, 1.3vw, 1.08rem);
+    line-height: 1.4;
+    color: #ffffff;
+  }
+  .sv-feat__check {
+    flex: none;
+    display: inline-flex;
+    align-self: center;
+    color: var(--color-accent);
+  }
+  .sv-feat__check svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  /* Para quién — a recessed darker block, items on hairlines. */
+  .sv-forwho {
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+    padding: clamp(1.1rem, 2vw, 1.6rem) clamp(1.2rem, 2.2vw, 1.75rem);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 0.8rem;
+  }
+  .sv-forwho__label {
+    margin: 0 0 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+  }
+  .sv-forwho__item {
+    margin: 0;
+    padding-block: 0.7rem;
+    font-size: clamp(0.95rem, 1.25vw, 1.02rem);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.68);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .sv-forwho__item:first-of-type {
+    border-top: 0;
+  }
+
+  /* ── Phone / tablet — rail becomes a horizontal scroller on top ─────── */
+  @media (max-width: 820px) {
+    .sv-tabs {
+      grid-template-columns: 1fr;
+    }
+    .sv-tabs__rail {
+      flex-direction: row;
+      gap: 0.5rem;
+      overflow-x: auto;
+      border-right: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      scrollbar-width: none;
+    }
+    .sv-tabs__rail::-webkit-scrollbar {
+      display: none;
+    }
+    .sv-tab {
+      width: auto;
+      flex: none;
+      white-space: nowrap;
+    }
+  }
+
+  /* ══ CTA final — full-bleed Kinetic Orange band → accent footer ═════════
+     The page is deep black; this band flips to orange and hands off to the
+     accent footer as one field. Ink copy on orange (6.1:1), white pill. */
+  .sv-cta {
+    background: var(--color-accent);
+    padding-top: clamp(3.5rem, 8vw, 6.5rem);
+    /* No gap between the band and the footer — they read as one orange field. */
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .sv-cta__title {
+    margin: 0;
+    max-width: 18ch;
+    font-family: var(--font-display);
+    font-weight: 800;
+    /* Same oversized title as the hero so the page opens and closes big. */
+    font-size: clamp(2.6rem, 8vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    color: var(--color-ink);
+  }
+  .sv-cta__dot {
+    color: #ffffff; /* the white spark on the orange, mirroring Proyectos */
+  }
+  .sv-cta__foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(2rem, 5vw, 4rem);
+    flex-wrap: wrap;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .sv-cta__lead {
+    margin: 0;
+    max-width: 34rem;
+    font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  /* White pill on the orange — ink label, with the colour-aware skew sweep
+     from the .btn primitives (ink panel sweeps in, label flips to white). */
+  .sv-cta__btn {
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.75rem;
+    min-height: 48px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--color-ink);
+    font-weight: 600;
+    font-size: 1rem;
+    transition:
+      color 400ms ease,
+      transform 160ms var(--ease-out-strong);
+  }
+  .sv-cta__btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -20%;
+    width: 140%;
+    height: 100%;
+    z-index: -1;
+    background: var(--color-ink);
+    transform: skew(-20deg) translate3d(-130%, 0, 0);
+    transition: transform 400ms cubic-bezier(0.3, 1, 0.8, 1);
+  }
+  .sv-cta__btn:hover::before {
+    transform: skew(-20deg) translate3d(0, 0, 0);
+  }
+  .sv-cta__btn:hover {
+    color: #ffffff;
+  }
+  .sv-cta__btn:active {
+    transform: scale(0.97);
+  }
+  .sv-cta__btn svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    transition: transform 200ms var(--ease-out-strong);
+  }
+  .sv-cta__btn:hover svg {
+    transform: translateX(3px);
+  }
+  @media (max-width: 900px) {
+    .sv-cta__foot {
+      align-items: flex-start;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sv-cta__btn {
+      transition: color 180ms ease;
+    }
+    .sv-cta__btn::before,
+    .sv-cta__btn:hover::before {
+      transition: none;
+    }
+    .sv-cta__btn:active {
+      transform: none;
+    }
+    .sv-cta__btn svg,
+    .sv-cta__btn:hover svg {
+      transition: none;
+      transform: none;
+    }
+  }
+
+  /* ── Scroll reveal — progressive enhancement, reduced-motion safe ──── */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js) .sv-row {
+      opacity: 0;
+      transform: translateY(26px);
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  // Mark that JS is live so the CSS above can hide the rows before paint
+  // (no flash of visible-then-hidden). Added as early as the module runs.
+  document.documentElement.classList.add('js');
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray<HTMLElement>('.sv-row').forEach((row, i) => {
+      gsap.to(row, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+        delay: i * 0.05,
+        scrollTrigger: { trigger: row, start: 'top 92%' },
+      });
+    });
+  }
+
+  // ── Qué construimos — tablist behaviour ──────────────────────────────
+  // Click or arrow-key a tab to swap the panel. Full WAI-ARIA tabs pattern:
+  // roving tabindex, aria-selected, Home/End, and Left/Right + Up/Down (the
+  // rail is vertical on desktop, horizontal on mobile — both key pairs work).
+  const widget = document.querySelector<HTMLElement>('[data-builds]');
+  if (widget) {
+    const tabs = Array.from(widget.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = Array.from(widget.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+    const select = (idx: number, focus = true) => {
+      tabs.forEach((tab, i) => {
+        const active = i === idx;
+        tab.setAttribute('aria-selected', String(active));
+        tab.tabIndex = active ? 0 : -1;
+        tab.classList.toggle('is-active', active);
+        panels[i]?.toggleAttribute('hidden', !active);
+        panels[i]?.classList.toggle('is-active', active);
+      });
+      if (focus) tabs[idx]?.focus();
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i, false));
+      tab.addEventListener('keydown', (e) => {
+        const last = tabs.length - 1;
+        let next: number | null = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = i === last ? 0 : i + 1;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = i === 0 ? last : i - 1;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = last;
+        if (next !== null) {
+          e.preventDefault();
+          select(next);
+        }
+      });
+    });
+  }
+</script>

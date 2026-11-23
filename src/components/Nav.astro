@@ -442,6 +442,54 @@ const centerLinks = nav.filter(
   :global(body.chrome-accent) .site-menu__reg {
     color: #ffffff;
   }
+
+  /* ── Dark chrome — the all-deep-black page (Servicios) ────────────────
+     Body carries `chrome-dark`. The bar turns Deep Black so the sticky nav
+     melts into the black field; links run white (quiet at 65%), the brand is
+     white, and the Contacto CTA keeps its Kinetic Orange — the one spot of
+     colour, reading cleanly on the black. */
+  :global(body.chrome-dark) .nav {
+    background: var(--color-ink);
+  }
+  :global(body.chrome-dark) .nav__brand {
+    color: #ffffff;
+  }
+  :global(body.chrome-dark) .nav__reg {
+    color: var(--color-accent);
+  }
+  :global(body.chrome-dark) .nav__link {
+    color: rgba(255, 255, 255, 0.65);
+  }
+  :global(body.chrome-dark) .nav__link:hover,
+  :global(body.chrome-dark) .nav__link.is-active {
+    color: #ffffff;
+  }
+  :global(body.chrome-dark) .nav__burger {
+    color: #ffffff;
+  }
+  /* Overlay goes black too, with white links/wordmark and an accent active mark. */
+  :global(body.chrome-dark) .site-menu {
+    background: var(--color-ink);
+  }
+  :global(body.chrome-dark) .site-menu__link {
+    color: #ffffff;
+    border-top-color: rgba(255, 255, 255, 0.16);
+  }
+  :global(body.chrome-dark) .site-menu__link:last-of-type {
+    border-bottom-color: rgba(255, 255, 255, 0.16);
+  }
+  :global(body.chrome-dark) .site-menu__link.is-active {
+    color: var(--color-accent);
+  }
+  :global(body.chrome-dark) .site-menu__email {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  :global(body.chrome-dark) .site-menu__wordmark {
+    color: #ffffff;
+  }
+  :global(body.chrome-dark) .site-menu__reg {
+    color: var(--color-accent);
+  }
 </style>
 
 <script>

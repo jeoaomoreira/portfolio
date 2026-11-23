@@ -16,9 +16,10 @@ interface Props {
    *  "dark" drops a deep-black footer (used to anchor the all-orange pages). */
   footerTone?: 'default' | 'accent' | 'dark';
   /** Page chrome theme. "accent" floods the whole page — nav included — in
-   *  Kinetic Orange (the radical Proyectos treatment). Stamps a body class the
-   *  global nav, footer and page background all respond to. */
-  chrome?: 'default' | 'accent';
+   *  Kinetic Orange (the radical Proyectos treatment); "dark" floods it in Deep
+   *  Black (the Servicios treatment). Stamps a body class the global nav, footer
+   *  and page background all respond to. */
+  chrome?: 'default' | 'accent' | 'dark';
 }
 
 const {
@@ -65,7 +66,7 @@ const ogImageUrl = new URL(image, Astro.site).href;
       rel="stylesheet"
     />
   </head>
-  <body class:list={[chrome === 'accent' && 'chrome-accent']}>
+  <body class:list={[chrome === 'accent' && 'chrome-accent', chrome === 'dark' && 'chrome-dark']}>
     {!hideNav && <Nav />}
     <main>
       <slot />
